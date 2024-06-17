@@ -38,7 +38,7 @@ const tableData = wikidata.data.map((item) => {
         </Column>
       </DataTable>
     </div>
-    <p><a href="/wikidata-mastodon-hochschulen-de.json">Formatierte Datenquelle im JSON Format</a></p>
+    <p><a href="/wikidata-mastodon-hochschulen-de.json">Formatierte Datenquelle im JSON Format</a>. Das letzte mal wurden die Daten aktualisiert: {{ new Date(wikidata.meta.created_at).toLocaleString('de-DE') }}</p>
   </div>
 
 </template>

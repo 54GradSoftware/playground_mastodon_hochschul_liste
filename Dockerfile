@@ -3,9 +3,7 @@ FROM node:alpine as builder
 WORKDIR /app
 ADD . .
 
-RUN cd backend && npm ci && node index.js
-
-RUN cd frontend && npm ci && npm run build
+RUN npm run grab-the-data-and-build
 
 # build nginx webserver
 FROM nginx:alpine
