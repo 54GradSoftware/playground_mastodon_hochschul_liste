@@ -1,5 +1,11 @@
 services:
-  app:  
-    build: .
+  backend:  
+    build: ./backend
+    command: npm run start-server
+    ports:
+      - "3002:3002"
+  frontend:  
+    build: ./frontend
     ports:
       - "3001:3001"
+  
