@@ -3,17 +3,9 @@ FROM node:alpine as builder
 WORKDIR /app
 ADD . .
 
+RUN mv .env.production .env
 
-ARG VITE_DATA_SERVER_URL
-
-ENV VITE_DATA_SERVER_URL={$VITE_DATA_SERVER_URL}
-
-RUN echo "test"
-
-RUN echo $VITE_DATA_SERVER_URL
-RUN echo VITE_DATA_SERVER_URL
-
-RUN npm ci && VITE_DATA_SERVER_URL="https://mastodon-listen-api.playground.54gradsoftware.de" npm run build
+RUN npm ci && npm run build
 
 # build nginx webserver
 FROM nginx:alpine
