@@ -1,6 +1,8 @@
 services:
   backend:  
     build: ./backend
+    environment:
+      - VITE_DATA_SERVER_URL=${VITE_DATA_SERVER_URL}
     command: npm run start-server
     ports:
       - "3002:3002"
