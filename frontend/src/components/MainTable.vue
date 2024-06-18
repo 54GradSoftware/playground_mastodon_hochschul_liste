@@ -21,7 +21,7 @@ const loadData = async () => {
         item: item.item.value,
       };
     });
-    metaData.value = data.meta
+    metaData.value = data?.meta
   } catch (error) {
     console.error(error)
   } finally {
@@ -42,7 +42,7 @@ loadData()
     </div>
     <template v-else>
       <h1>Liste Mastodon Accounts Hochschulen und Universitäten</h1>
-      <p>Erstellt am: {{ new Date(metaData.created_at).toLocaleString('de-DE', {
+      <p>Erstellt am: {{ new Date(metaData?.created_at).toLocaleString('de-DE', {
       year: "numeric", month: "2-digit",
       day: "2-digit"
     }) }}</p>
@@ -72,7 +72,7 @@ loadData()
       </div>
       <p><a href="/wikidata-mastodon-hochschulen-de.json">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
         wurden
-        die Daten aktualisiert: {{ new Date(metaData.created_at).toLocaleString('de-DE') }}</p>
+        die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
     </template>
   </div>
 
