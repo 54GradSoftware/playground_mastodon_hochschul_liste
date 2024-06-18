@@ -10,9 +10,10 @@ const metaData = ref({})
 const loading = ref(false)
 
 const loadData = async () => {
+  console.log(import.meta.env.MODE)
   try {
     loading.value = true
-    const { data } = await axios.get('http://localhost:3002/')
+    const { data } = await axios.get(`${import.meta.env.VITE_DATA_SERVER_URL}`)
     tableData.value = data.data.map((item) => {
       return {
         name: item.itemLabel.value,
