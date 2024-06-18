@@ -4,10 +4,11 @@ services:
     command: npm run start-server
     ports:
       - "3002:3002"
-  frontend:  
-    environment:
-      - VITE_DATA_SERVER_URL=${VITE_DATA_SERVER_URL}
-    build: ./frontend
+  frontend:
+    build: 
+      - dockerfile: ./frontend/Dockerfile
+      - args:
+          VITE_DATA_SERVER_URL: ${VITE_DATA_SERVER_URL}
     ports:
       - "3001:3001"
   
