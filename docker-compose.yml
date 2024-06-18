@@ -1,3 +1,4 @@
+version: '3'
 services:
   backend:  
     build: ./backend
@@ -5,10 +6,6 @@ services:
     ports:
       - "3002:3002"
   frontend:
-    build: 
-      - dockerfile: ./frontend/Dockerfile
-      - args:
-          VITE_DATA_SERVER_URL: ${VITE_DATA_SERVER_URL}
+    build: ./frontend
     ports:
       - "3001:3001"
-  

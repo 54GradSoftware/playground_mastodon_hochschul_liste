@@ -13,7 +13,7 @@ RUN echo "test"
 RUN echo $VITE_DATA_SERVER_URL
 RUN echo VITE_DATA_SERVER_URL
 
-RUN npm ci && VITE_DATA_SERVER_URL=$VITE_DATA_SERVER_URL npm run build
+RUN npm ci && VITE_DATA_SERVER_URL="https://c0g0ccs.cool.test.webrad.ar" npm run build
 
 # build nginx webserver
 FROM nginx:alpine
