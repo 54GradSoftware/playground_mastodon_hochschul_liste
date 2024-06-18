@@ -3,7 +3,7 @@ FROM node:alpine as builder
 WORKDIR /app
 ADD . .
 
-ENV VITE_DATA_SERVER_URL=$VITE_DATA_SERVER_URL
+ENV VITE_DATA_SERVER_URL='ABC'
 
 RUN echo "test"
 
