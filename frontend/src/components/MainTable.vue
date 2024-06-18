@@ -48,7 +48,7 @@ loadData()
     }) }}</p>
       <p>Liste von Mastodon Accounts von allen deutschen Hochschulen und Universitäten. Die Daten stammen aus Wikidata.
         Es
-        gibt insgesamt {{ tableData.length }} Accounts.</p>
+        gibt insgesamt {{ tableData?.length }} Accounts.</p>
       <div class="layout-main">
         <DataTable :value="tableData" stripedRows="">
           <Column field="name" header="Name" sortable />
