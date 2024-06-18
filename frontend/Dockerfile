@@ -3,7 +3,7 @@ FROM node:alpine as builder
 WORKDIR /app
 ADD . .
 
-RUN npm ci && npm run build
+RUN npm ci && VITE_DATA_SERVER_URL=$VITE_DATA_SERVER_URL npm run build
 
 # build nginx webserver
 FROM nginx:alpine
