@@ -42,7 +42,7 @@ const main = async () => {
           },
           data: filteredData
         })
-        writeFileSync('../frontend/public/wikidata-mastodon-hochschulen-de.json',jsonData);
+        writeFileSync('./data/wikidata-mastodon-hochschulen-de.json',jsonData);
    
     } catch (error) {
         console.error(error)
