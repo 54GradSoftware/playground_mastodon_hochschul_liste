@@ -14,7 +14,7 @@ const loadData = async () => {
   try {
     loading.value = true
     const { data } = await axios.get(`${import.meta.env.VITE_DATA_SERVER_URL}`)
-    tableData.value = data.data.map((item) => {
+    tableData.value = data?.data?.map((item) => {
       return {
         name: item.itemLabel.value,
         mastodon: item.mastodon.value,
@@ -67,6 +67,7 @@ loadData()
               </a>
             </template>
           </Column>
+          <template #empty> Es können keine Daten angezeigt werden. </template>
         </DataTable>
       </div>
       <p><a href="/wikidata-mastodon-hochschulen-de.json">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
