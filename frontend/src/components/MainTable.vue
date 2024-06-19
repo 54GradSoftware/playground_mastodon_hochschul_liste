@@ -61,7 +61,7 @@ loadData()
           <Column field="avatar" header="Profilbild">
             <template #body="slotProps">
               <Image 
-                :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="125"/>
+                :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85"/>
             </template>
           </Column>
           <Column field="name" header="Name" sortable />
