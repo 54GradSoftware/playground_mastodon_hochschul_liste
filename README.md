@@ -4,6 +4,12 @@
 
 Bugs oder Feature wünsche können gerne als [Issue angelegt werden](https://github.com/54GradSoftware/playground_mastodon_hochschul_liste/issues/new).
 
+# Mögliche Todos
+- [ ] Technisch mehrere Liste ermöglichen
+- [ ] Andere Länder hinzufügen
+- [ ] Prozentaler Anteil der Universitäten ausrechnen, die Mastodon nutzen
+- [ ] Docker Container mehr konfigurierbar machen
+
 ## Lizenz
 Die komplette Software steht unter der MIT Lizens. [Die Lizenz findest du hier](/LICENSE)
 

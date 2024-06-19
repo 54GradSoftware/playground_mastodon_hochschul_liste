@@ -53,9 +53,9 @@ loadData()
     <template v-else>
       <h1>Liste Mastodon Accounts Hochschulen und Universitäten</h1>
       <p>Erstellt am: {{formatDate(metaData?.created_at)}}</p>
-      <p>Liste von Mastodon Accounts von allen deutschen Hochschulen und Universitäten. Die Daten stammen aus Wikidata.
-        Es
-        gibt insgesamt {{ tableData?.length }} Accounts.</p>
+      <p>Liste von <a href="#mastodon">Mastodon</a> Accounts von allen deutschen Hochschulen und Universitäten.
+        Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es  {{ tableData?.length }}  Accounts.
+      </p>
       <div class="layout-main">
         <DataTable :value="tableData" stripedRows="">
           <Column field="avatar" header="Profilbild">
