@@ -112,7 +112,7 @@ loadData()
           <template #empty> Es können keine Daten angezeigt werden. </template>
         </DataTable>
       </div>
-      <p><a href="/wikidata-mastodon-hochschulen-de.json">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
+      <p><a :href="`import.meta.env.VITE_DATA_SERVER_URL`">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
         wurden
         die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
     </template>
