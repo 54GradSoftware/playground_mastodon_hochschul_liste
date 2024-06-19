@@ -4,12 +4,14 @@ import axios from 'axios';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ProgressSpinner from 'primevue/progressspinner';
+import InputText from 'primevue/inputtext';
 import Image from 'primevue/image';
 
 const tableData = ref([]);
 const metaData = ref({})
 const loading = ref(false)
 const dataserverUrl = import.meta.env.VITE_DATA_SERVER_URL
+const mastodonAccounts = ref("")
 
 const loadData = async () => {
   try {
@@ -24,6 +26,7 @@ const loadData = async () => {
       };
     }).sort((a, b) => b?.accountStatus?.followers_count -  a?.accountStatus?.followers_count);
     metaData.value = data?.meta
+    mastodonAccounts.value = tableData.value.map((item) => item.mastodon).join(" ")
   } catch (error) {
     console.error(error)
   } finally {
@@ -115,6 +118,11 @@ loadData()
       <p><a :href="dataserverUrl">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
         wurden
         die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
+      <div class="flex flex-column gap-2">
+    <label for="mastodonAccounts">Liste aller Mastodon Accounts zum kopieren</label>
+    <InputText  v-model="mastodonAccounts" readonly  id="mastodonAccounts"/>
+</div>
+
     </template>
   </div>
 
