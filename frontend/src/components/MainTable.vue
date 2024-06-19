@@ -9,11 +9,12 @@ import Image from 'primevue/image';
 const tableData = ref([]);
 const metaData = ref({})
 const loading = ref(false)
+const dataserverUrl = import.meta.env.VITE_DATA_SERVER_URL
 
 const loadData = async () => {
   try {
     loading.value = true
-    const { data } = await axios.get(`${import.meta.env.VITE_DATA_SERVER_URL}`)
+    const { data } = await axios.get(dataserverUrl)
     tableData.value = data?.data?.map((item) => {
       return {
         name: item.itemLabel.value,
@@ -112,7 +113,7 @@ loadData()
           <template #empty> Es können keine Daten angezeigt werden. </template>
         </DataTable>
       </div>
-      <p><a :href="import.meta.env.VITE_DATA_SERVER_URL">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
+      <p><a :href="dataserverUrl">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
         wurden
         die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
     </template>
