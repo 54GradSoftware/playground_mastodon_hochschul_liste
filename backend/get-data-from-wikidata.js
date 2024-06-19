@@ -32,9 +32,29 @@ const main = async () => {
                 'Accept': 'application/sparql-results+json'
             }
         })
-        const filteredData = data.results.bindings.filter((obj1, i, arr) => 
+        const uniqueResults = data.results.bindings.filter((obj1, i, arr) => 
             arr.findIndex(obj2 => (obj2.item.value === obj1.item.value)) === i
           )
+        
+          let filteredData = []
+
+          for(let result of uniqueResults){
+            console.log(result)
+            const mastodonHandle = result.mastodon.value
+            let accountStatus = null
+            try{
+              const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`)
+              accountStatus = response.data
+            }catch(error){
+              console.error(error)
+            }
+            filteredData.push({
+              ...result,
+              accountStatus
+            })
+          }
+        
+        filteredData = filteredData.sort((a, b) => b?.accountStatus?.followers_count -  a?.accountStatus?.followers_count)
 
         const jsonData =  JSON.stringify({
           meta:{
