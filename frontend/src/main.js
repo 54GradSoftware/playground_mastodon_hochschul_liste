@@ -15,7 +15,7 @@ const app = createApp(App)
             init: {
               domain: import.meta.env.VITE_PLAUSIBLE_ANALYTICS_DOMAIN,
               apiHost: 'https://plausible.io',
-              trackLocalhost: true,
+              trackLocalhost: false,
             },
             settings: {
               enableAutoOutboundTracking: true,

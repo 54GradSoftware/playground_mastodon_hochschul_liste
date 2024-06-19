@@ -5,7 +5,7 @@
           GmbH</a></span>
     </div>
     <div class="col-12 md:col-4">
-      Github | MIT Lizens
+      <a href="https://github.com/54GradSoftware/playground_mastodon_hochschul_liste">Github</a> | MIT Lizens
     </div>
     <div class="col-12 md:col-4">
       <a href="https://www.54gradsoftware.de/impressum">Impressum</a> | <a
