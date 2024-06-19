@@ -34,7 +34,7 @@
                 href="https://query.wikidata.org/#SELECT%20%3Fitem%20%3FitemLabel%20%3Fmastodon%20WHERE%20%7B%0A%20%20%7B%0A%20%20%20%20%3Fitem%20wdt%3AP31%20wd%3AQ875538%3B%0A%20%20%20%20%20%20wdt%3AP17%20wd%3AQ183.%0A%20%20%7D%0A%20%20UNION%0A%20%20%7B%0A%20%20%20%20%3Fitem%20wdt%3AP31%20wd%3AQ1365560%3B%0A%20%20%20%20%20%20wdt%3AP17%20wd%3AQ183.%0A%20%20%7D%0A%20%20%3Fitem%20wdt%3AP4033%20%3Fmastodon.%0A%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22de%2C%20en%22.%20%7D%0A%7D">Query
                 einmal verlinkt</a>.
         </p>
-        <h3 id="add-data">Daten hinzufügen</h3>
+        <h3 id="add-data">Daten hinzufügen oder ändern</h3>
         <p>
             Jeder kann bei Wikidata mitmachen und Daten hinzufügen. Weitere Informationen findest du im Artikel
             über <a href="https://www.wikidata.org/wiki/Help:Items/de">Datenobjekte</a>. Ganz konkret musst du zuerst
@@ -49,8 +49,8 @@
             neue Aussage hinzufügen. Mit dem Wert "Mastodon Adresse" und dann das Mastodon Account Handle. Nachdem
             Veröffentlichen" gedrückt hast, ist der Wert nun verfügbar. Wenn wir das nächste Mal
             Daten abrufen, wird der Wert auch angezeigt.
+        </p>
             <img src="/screenshot_create_mastodon_statement_german.png" alt="Screenshot aus Wikidata. Links ist ein Eingabefeld mit dem Wert Mastodon-Adresse und rechts ein Eingabefeld mit dem Wert 
 username@mastodon_server.social. Und die Schaltflächen Veröffentlichen und Abbrechen." />
-        </p>
     </div>
 </template>
