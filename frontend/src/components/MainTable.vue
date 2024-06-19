@@ -74,17 +74,17 @@ loadData()
               </a>
             </template>
           </Column>
-          <Column field="follower" header="Follower" sortable="">
+          <Column field="accountStatus.followers_count" header="Follower" sortable="">
             <template #body="slotProps">
               {{formatNumber(slotProps.data?.accountStatus?.followers_count)}}
             </template>
           </Column>
-          <Column field="toots" header="Toots" sortable="">
+          <Column field="accountStatus.statuses_count" header="Toots" sortable="">
             <template #body="slotProps">
               {{formatNumber(slotProps.data?.accountStatus?.statuses_count)}}
             </template>
           </Column>
-          <Column field="last_status_at" header="Letzter Toot" sortable="">
+          <Column field="accountStatus.last_status_at" header="Letzter Toot" sortable="">
             <template #body="slotProps">
 
               <span v-if="!!slotProps.data?.accountStatus?.last_status_at">
@@ -92,13 +92,13 @@ loadData()
               </span>
             </template>
           </Column>
-          <Column field="created_at" header="Erstellt" sortable="">
+          <Column field="accountStatus.created_at" header="Erstellt" sortable="">
 
             <template #body="slotProps">
                 {{formatDate(slotProps.data?.accountStatus?.created_at)}}
             </template>
           </Column>
-          <Column field="verified" header="Verifiziert" sortable="">
+          <Column field="verified" header="Verifiziert">
             <template #body="slotProps">
               {{slotProps.data?.accountStatus?.fields.find(field=>!!field.verified_at) ? 'Ja' : 'Nein'}}
             </template>
