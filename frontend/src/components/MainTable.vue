@@ -61,7 +61,7 @@ loadData()
         <DataTable :value="tableData" stripedRows="">
           <Column field="avatar" header="Profilbild">
             <template #body="slotProps">
-              <Image 
+              <Image :alt="'Profilbild von ' + slotProps.data.name" :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85"/>
                 :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85"/>
             </template>
           </Column>
