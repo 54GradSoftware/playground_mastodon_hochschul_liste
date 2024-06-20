@@ -55,9 +55,10 @@ loadData()
       <div class="text-center">Daten werden geladen.</div>
     </div>
     <template v-else>
-      <h1>Liste Mastodon Accounts Hochschulen und Universitäten</h1>
+      <h1 class="mb-1">Liste Mastodon Accounts</h1>
+      <h2 class="mt-1 text-grey">Deutsche Hochschulen und Universitäten</h2>
       <p>Erstellt am: {{formatDate(metaData?.created_at)}}</p>
-      <p>Liste von <a href="#mastodon">Mastodon</a> Accounts von allen deutschen Hochschulen und Universitäten.
+      <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller deutschen Hochschulen und Universitäten.
         Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es  {{ tableData?.length }}  Accounts.
       </p>
       <div class="layout-main">
@@ -127,3 +128,8 @@ loadData()
   </div>
 
 </template>
+<style scoped>
+.text-grey{
+  color: grey;
+}
+</style>
