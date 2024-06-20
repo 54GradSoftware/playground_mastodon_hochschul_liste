@@ -7,6 +7,7 @@ const wbk = WBK({
     instance: 'https://www.wikidata.org',
     sparqlEndpoint: 'https://query.wikidata.org/sparql'
   })
+// spaqrl query to get all schools of applied sciene and universities in Germany if they have a mastodon handle
 const sparql = `
 SELECT ?item ?itemLabel ?mastodon WHERE {
   {
@@ -21,15 +22,15 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
   ?item wdt:P4033 ?mastodon.
   SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }
-    `
+`
 const url = wbk.sparqlQuery(sparql)
-const headers = { 'User-Agent': '<FILL IN YOUR USER-AGENT INFORMATION>' }; // see https://meta.wikimedia.org/wiki/User-Agent_policy
-// request the generated URL with your favorite HTTP request library
+const userAgent = { 'User-Agent': 'MastodonListeBot/1.0 (https://mastodon-listen.playground.54gradsoftware.de/)' }; // see https://foundation.wikimedia.org/wiki/Policy:User-Agent_policy
 const main = async () => {
     try {
         const {data} = await axios.get(url, {
             headers: {
-                'Accept': 'application/sparql-results+json'
+                'Accept': 'application/sparql-results+json',
+                userAgent
             }
         })
         const uniqueResults = data.results.bindings.filter((obj1, i, arr) => 
