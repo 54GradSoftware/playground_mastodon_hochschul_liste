@@ -11,12 +11,12 @@ const wbk = WBK({
 const sparql = `
 SELECT ?item ?itemLabel ?mastodon WHERE {
   {
-    ?item wdt:P31 wd:Q875538;
+    ?item wdt:P31/wdt:P279* wd:Q875538;
       wdt:P17 wd:Q183.
   }
   UNION
   {
-    ?item wdt:P31 wd:Q1365560;
+    ?item wdt:P31/wdt:P279* wd:Q1365560;
       wdt:P17 wd:Q183.
   }
   ?item wdt:P4033 ?mastodon.
