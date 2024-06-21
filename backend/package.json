@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "get-data": "node get-data-from-wikidata",
-    "start-server": "node server",
+    "get-data": "node src/get-data-from-wikidata.js",
+    "start-server": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

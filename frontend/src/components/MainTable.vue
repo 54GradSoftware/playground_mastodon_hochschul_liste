@@ -5,17 +5,46 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ProgressSpinner from 'primevue/progressspinner';
 import InputText from 'primevue/inputtext';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import Button from 'primevue/button';
 import Image from 'primevue/image';
+import lists from '../assets/lists.json'
+import { getCurrentKey } from '../helper.js'
+import { FilterMatchMode } from 'primevue/api';
 
 const tableData = ref([]);
 const metaData = ref({})
 const loading = ref(false)
-const dataserverUrl = import.meta.env.VITE_DATA_SERVER_URL
+
 const mastodonAccounts = ref("")
+const selectedList = ref({})
+const filters = ref();
+
+const initFilters = () => {
+  filters.value = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  };
+};
+
+initFilters();
+const clearFilter = () => {
+  initFilters();
+};
 
 const loadData = async () => {
   try {
     loading.value = true
+    let dataserverUrl = import.meta.env.VITE_DATA_SERVER_URL
+    const currentKey = getCurrentKey()
+    if (currentKey === null || currentKey === 'hochschulen-de') {
+      selectedList.value = lists.find(list => list.key === 'hochschulen-de')
+    } else if (currentKey === 'institute-de') {
+      selectedList.value = lists.find(list => list.key === 'institute-de')
+      dataserverUrl += "/institute-de"
+    } else {
+      alert('Liste nicht gefunden')
+    }
     const { data } = await axios.get(dataserverUrl)
     tableData.value = data?.data?.map((item) => {
       return {
@@ -24,7 +53,7 @@ const loadData = async () => {
         item: item.item.value,
         accountStatus: item.accountStatus,
       };
-    }).sort((a, b) => b?.accountStatus?.followers_count -  a?.accountStatus?.followers_count);
+    }).sort((a, b) => b?.accountStatus?.followers_count - a?.accountStatus?.followers_count);
     metaData.value = data?.meta
     mastodonAccounts.value = tableData.value.map((item) => item.mastodon).join(" ")
   } catch (error) {
@@ -56,16 +85,33 @@ loadData()
     </div>
     <template v-else>
       <h1 class="mb-1">Liste Mastodon Accounts</h1>
-      <h2 class="mt-1 text-grey">Deutsche Hochschulen und Universitäten</h2>
-      <p>Erstellt am: {{formatDate(metaData?.created_at)}}</p>
-      <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller deutschen Hochschulen und Universitäten.
-        Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es  {{ tableData?.length }}  Accounts.
+      <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
+      <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
+      <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller {{ selectedList?.subTitle }}.
+        Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es {{ tableData?.length }} Accounts.
       </p>
       <div class="layout-main">
-        <DataTable :value="tableData" stripedRows="">
+        <DataTable :value="tableData" stripedRows="" paginator :rows="50" :rowsPerPageOptions="[25, 50, 100, 250]"
+          v-model:filters="filters">
+          <template #header>
+            <div class="flex justify-content-between">
+              <div>
+                <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash" label="Suche zurücksetzen" outlined @click="clearFilter()" />
+              </div>
+              <div class="flex justify-content-end">
+                <IconField iconPosition="left">
+                <InputIcon>
+                  <i class="pi pi-search" />
+                </InputIcon>
+                <InputText v-model="filters['global'].value" placeholder="Suche" />
+              </IconField>
+              </div>
+            </div>
+          </template>
           <Column field="avatar" header="Profilbild">
             <template #body="slotProps">
-              <Image :alt="'Profilbild von ' + slotProps.data.name" :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85" height="85"/>
+              <Image :alt="'Profilbild von ' + slotProps.data.name"
+                :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85" height="85" />
             </template>
           </Column>
           <Column field="name" header="Name" sortable />
@@ -79,31 +125,31 @@ loadData()
           </Column>
           <Column field="accountStatus.followers_count" header="Follower" sortable="">
             <template #body="slotProps">
-              {{formatNumber(slotProps.data?.accountStatus?.followers_count)}}
+              {{ formatNumber(slotProps.data?.accountStatus?.followers_count) }}
             </template>
           </Column>
           <Column field="accountStatus.statuses_count" header="Toots" sortable="">
             <template #body="slotProps">
-              {{formatNumber(slotProps.data?.accountStatus?.statuses_count)}}
+              {{ formatNumber(slotProps.data?.accountStatus?.statuses_count) }}
             </template>
           </Column>
           <Column field="accountStatus.last_status_at" header="Letzter Toot" sortable="">
             <template #body="slotProps">
 
               <span v-if="!!slotProps.data?.accountStatus?.last_status_at">
-              {{formatDate(slotProps.data?.accountStatus?.last_status_at)}}
+                {{ formatDate(slotProps.data?.accountStatus?.last_status_at) }}
               </span>
             </template>
           </Column>
           <Column field="accountStatus.created_at" header="Erstellt" sortable="">
 
             <template #body="slotProps">
-                {{formatDate(slotProps.data?.accountStatus?.created_at)}}
+              {{ formatDate(slotProps.data?.accountStatus?.created_at) }}
             </template>
           </Column>
           <Column field="verified" header="Verifiziert">
             <template #body="slotProps">
-              {{slotProps.data?.accountStatus?.fields.find(field=>!!field.verified_at) ? 'Ja' : 'Nein'}}
+              {{ slotProps.data?.accountStatus?.fields.find(field => !!field.verified_at) ? 'Ja' : 'Nein' }}
             </template>
           </Column>
           <Column field="wikidata" header="Wikidata">
@@ -120,16 +166,16 @@ loadData()
         wurden
         die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
       <div class="flex flex-column gap-2">
-    <label for="mastodonAccounts">Liste aller Mastodon Accounts zum kopieren</label>
-    <InputText  v-model="mastodonAccounts" readonly  id="mastodonAccounts"/>
-</div>
+        <label for="mastodonAccounts">Liste aller Mastodon Accounts zum kopieren</label>
+        <InputText v-model="mastodonAccounts" readonly id="mastodonAccounts" />
+      </div>
 
     </template>
   </div>
 
 </template>
 <style scoped>
-.text-grey{
+.text-grey {
   color: grey;
 }
 </style>
