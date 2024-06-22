@@ -16,7 +16,7 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
   ?item wdt:P4033 ?mastodon.
   SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }`
-    }, 
+    },
     {
         key: 'institute-de',
         // sparql query to get all research institutes in Germany if they have a mastodon handle
@@ -33,6 +33,22 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
     ?item wdt:P4033 ?mastodon.
     SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
   }`
+    },
+    {
+        key: 'wissenschaftler_innen-de',
+        sparqlQuery: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
+  {
+    ?item wdt:P106/wdt:P279* wd:Q901.
+    ?item wdt:P1412/wdt:P279* wd:Q188;
+  }
+  ?item wdt:P4033 ?mastodon.
+  ?item wdt:P106 ?doing.
+  SERVICE wikibase:label { 
+    bd:serviceParam wikibase:language "de, en". 
+    ?item rdfs:label ?itemName .
+    ?doing rdfs:label ?doingName .
+  }
+}`
     }
 ]
 

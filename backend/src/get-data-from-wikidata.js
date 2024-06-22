@@ -22,9 +22,18 @@ const main = async () => {
           userAgent
         }
       })
-      const uniqueResults = data.results.bindings.filter((obj1, i, arr) =>
-        arr.findIndex(obj2 => (obj2.item.value === obj1.item.value)) === i
+      const results = data.results.bindings
+      let uniqueResults = results.filter((obj1, i, arr) =>
+        arr.findIndex(obj2 => (obj2.item?.value === obj1.item?.value)) === i
       )
+      if (query.key == 'wissenschaftler_innen-de') {
+        uniqueResults = uniqueResults.map(result => {
+          return {
+            ...result,
+            doings: [...new Set(results.filter(obj => obj.item.value === result?.item?.value).map(obj => obj?.doingName?.value))]
+          }
+        })
+      }
 
       let filteredData = []
 
@@ -50,10 +59,27 @@ const main = async () => {
 
       filteredData = filteredData.sort((a, b) => b?.accountStatus?.followers_count - a?.accountStatus?.followers_count)
 
+      let meta = {
+        created_at: +new Date(),
+        mastodonAccounts: filteredData.length,
+        totalToots: filteredData.map(obj => obj.accountStatus?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0)
+      }
+      if (query.key == 'wissenschaftler_innen-de') {
+        meta = {
+          ...meta,
+          doingsStats:
+            [...new Set(filteredData.flatMap(obj => obj.doings))].map(doing => {
+              return {
+                doing,
+                count: filteredData.filter(obj => obj.doings.includes(doing)).length
+              }
+            }
+            ).sort((a, b) => b.count - a.count)
+
+        }
+      }
       const jsonData = JSON.stringify({
-        meta: {
-          created_at: +new Date(),
-        },
+        meta,
         data: filteredData
       })
       writeFileSync(`./data/wikidata-mastodon-${query.key}.json`, jsonData);
