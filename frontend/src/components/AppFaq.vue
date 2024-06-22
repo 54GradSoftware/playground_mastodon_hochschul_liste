@@ -1,6 +1,15 @@
+<script setup>
+import lists from '../assets/lists.json'</script>
 <template>
     <div class="card">
         <h2 id="faq">FAQ</h2>
+        <h3 id="listen">Listen</h3>
+        <p>
+            Es gibt verschiedene Listen mit unterschiedlichen Kategorien:
+        </p>
+            <div v-for="list in lists" :key="list.key">
+                <a :href="`/?liste=${list.key}`" class="mr-2">{{ list.subTitle }}</a>
+            </div>
         <h3 id="mastodon">Mastodon</h3>
         <p>
             Mastodon ist ein dezentrales soziales Netzwerk, das auf offenen Standards basiert. Es ist Teil eines

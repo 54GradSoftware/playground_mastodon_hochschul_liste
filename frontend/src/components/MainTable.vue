@@ -9,6 +9,7 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
+import Tag from 'primevue/tag';
 import lists from '../assets/lists.json'
 import { getCurrentKey } from '../helper.js'
 import { FilterMatchMode } from 'primevue/api';
@@ -42,16 +43,21 @@ const loadData = async () => {
     } else if (currentKey === 'institute-de') {
       selectedList.value = lists.find(list => list.key === 'institute-de')
       dataserverUrl += "/institute-de"
+    } else if (currentKey === 'wissenschaftler_innen-de') {
+      selectedList.value = lists.find(list => list.key === 'wissenschaftler_innen-de')
+      dataserverUrl += "/wissenschaftler_innen-de"
     } else {
       alert('Liste nicht gefunden')
     }
     const { data } = await axios.get(dataserverUrl)
     tableData.value = data?.data?.map((item) => {
       return {
-        name: item.itemLabel.value,
+        filerNmame: `${item?.itemLabel?.value || item.itemName.value} ${item?.doings?.join(" ")}`,
+        name: `${item?.itemLabel?.value || item.itemName.value}`,
         mastodon: item.mastodon.value,
         item: item.item.value,
         accountStatus: item.accountStatus,
+        doings: item?.doings,
       };
     }).sort((a, b) => b?.accountStatus?.followers_count - a?.accountStatus?.followers_count);
     metaData.value = data?.meta
@@ -88,7 +94,8 @@ loadData()
       <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
       <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
       <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller {{ selectedList?.subTitle }}.
-        Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es {{ tableData?.length }} Accounts.
+        Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es {{ tableData?.length }} Accounts <span
+          v-if="metaData.totalToots">mit insgesamt {{ formatNumber(metaData.totalToots) }} Toots</span>.
       </p>
       <div class="layout-main">
         <DataTable :value="tableData" stripedRows="" paginator :rows="50" :rowsPerPageOptions="[25, 50, 100, 250]"
@@ -96,15 +103,16 @@ loadData()
           <template #header>
             <div class="flex justify-content-between">
               <div>
-                <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash" label="Suche zurücksetzen" outlined @click="clearFilter()" />
+                <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash"
+                  label="Suche zurücksetzen" outlined @click="clearFilter()" />
               </div>
               <div class="flex justify-content-end">
                 <IconField iconPosition="left">
-                <InputIcon>
-                  <i class="pi pi-search" />
-                </InputIcon>
-                <InputText v-model="filters['global'].value" placeholder="Suche" />
-              </IconField>
+                  <InputIcon>
+                    <i class="pi pi-search" />
+                  </InputIcon>
+                  <InputText v-model="filters['global'].value" placeholder="Suche" aria-label="Suche" />
+                </IconField>
               </div>
             </div>
           </template>
@@ -114,7 +122,15 @@ loadData()
                 :src="`${slotProps.data?.accountStatus?.avatar_static}`" width="85" height="85" />
             </template>
           </Column>
-          <Column field="name" header="Name" sortable />
+          <Column field="filerNmame" header="Name" sortable>
+            <template #body="slotProps">
+              {{ slotProps.data.name }}
+              <div v-if="slotProps.data.doings">
+                <Tag style="transform: scale(1.2)" class="m-3 cursor-pointer	" severity="secondary" value="Secondary"
+                  v-for="doing in slotProps.data.doings" :key="doing"  @click="filters['global'].value = doing">{{ doing }}</Tag>
+              </div>
+            </template>
+          </Column>
           <Column field="mastodon" header="Mastodon" sortable>
             <template #body="slotProps">
               <a target="_blank"
@@ -165,6 +181,14 @@ loadData()
       <p><a :href="dataserverUrl">Formatierte Datenquelle im JSON Format</a>. Das letzte mal
         wurden
         die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}</p>
+      <template v-if="metaData?.doingsStats">
+        <p>Folgende Tätigkeiten wurden von 5 oder mehr Forscher*innen geteilt:</p>
+        <Tag style="transform: scale(1.5)" class="mx-6 my-3 cursor-pointer" severity="secondary" value="Secondary"
+          v-for="doing in metaData?.doingsStats.filter(doing => doing.count > 5)" :key="doing"
+          @click="filters['global'].value = doing.doing">{{ doing.doing }} ({{ doing.count }})</Tag>.
+        <p>Tipp: In der Suche kann auch nach Aktivität gefiltert werden, alternativ in dieser Liste auf eine Aktivität
+          klicken.</p>
+      </template>
       <div class="flex flex-column gap-2">
         <label for="mastodonAccounts">Liste aller Mastodon Accounts zum kopieren</label>
         <InputText v-model="mastodonAccounts" readonly id="mastodonAccounts" />

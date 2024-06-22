@@ -6,5 +6,9 @@
     {
         "key": "institute-de",
         "subTitle": "Forschungseinrichtung (DE)"
+    },
+    {
+        "key": "wissenschaftler_innen-de",
+        "subTitle": "Wissenschaftler*innen (DE)"
     }
 ]
