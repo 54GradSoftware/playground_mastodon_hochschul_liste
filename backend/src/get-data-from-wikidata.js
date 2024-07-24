@@ -62,7 +62,8 @@ const main = async () => {
       let meta = {
         created_at: +new Date(),
         mastodonAccounts: filteredData.length,
-        totalToots: filteredData.map(obj => obj.accountStatus?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0)
+        totalToots: filteredData.map(obj => obj.accountStatus?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
+        totalFollowers: filteredData.map(obj => obj.accountStatus?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
       }
       if (query.key == 'wissenschaftler_innen-de') {
         meta = {

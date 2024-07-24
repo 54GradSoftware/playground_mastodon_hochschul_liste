@@ -95,7 +95,8 @@ loadData()
       <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
       <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller {{ selectedList?.subTitle }}.
         Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es {{ tableData?.length }} Accounts <span
-          v-if="metaData.totalToots">mit insgesamt {{ formatNumber(metaData.totalToots) }} Toots</span>.
+        v-if="metaData.totalToots">mit insgesamt {{ formatNumber(metaData.totalToots) }} Toots</span><span
+        v-if="metaData.totalFollowers">und insgesamt {{ formatNumber(metaData.totalFollowers) }} Follower</span>.
       </p>
       <div class="layout-main">
         <DataTable :value="tableData" stripedRows="" paginator :rows="50" :rowsPerPageOptions="[25, 50, 100, 250]"
