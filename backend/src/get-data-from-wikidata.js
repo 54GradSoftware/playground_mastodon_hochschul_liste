@@ -16,7 +16,7 @@ const main = async () => {
     for (const query of queries) {
       const url = wbk.sparqlQuery(query.sparqlQuery)
       const { data } = await axios.get(url, {
-        timeout: 10000,
+        timeout: 20000,
         headers: {
           'Accept': 'application/sparql-results+json',
           userAgent
@@ -24,7 +24,7 @@ const main = async () => {
       })
       const results = data.results.bindings
       let uniqueResults = results.filter((obj1, i, arr) =>
-        arr.findIndex(obj2 => (obj2.item?.value === obj1.item?.value)) === i
+        arr.findIndex(obj2 => (obj2.mastodon?.value === obj1.mastodon?.value)) === i
       )
       if (query.key == 'wissenschaftler_innen-de') {
         uniqueResults = uniqueResults.map(result => {
