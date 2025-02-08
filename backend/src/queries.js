@@ -41,6 +41,11 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
     ?item wdt:P106/wdt:P279* wd:Q901.
     ?item wdt:P1412/wdt:P279* wd:Q188;
   }
+  UNION
+  {
+    ?item wdt:P106/wdt:P279* wd:Q1622272.
+    ?item wdt:P1412/wdt:P279* wd:Q188;
+  }
   ?item wdt:P4033 ?mastodon.
   ?item wdt:P106 ?doing.
   SERVICE wikibase:label { 

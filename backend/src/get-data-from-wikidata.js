@@ -16,7 +16,7 @@ const main = async () => {
     for (const query of queries) {
       const url = wbk.sparqlQuery(query.sparqlQuery)
       const { data } = await axios.get(url, {
-        timeout: 20000,
+        timeout: 30000,
         headers: {
           'Accept': 'application/sparql-results+json',
           userAgent
