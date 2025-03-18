@@ -10,6 +10,7 @@ import InputIcon from 'primevue/inputicon';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
 import Tag from 'primevue/tag';
+import ExportCsv from './ExportCsv.vue';
 import lists from '../assets/lists.json'
 import { getCurrentKey } from '../helper.js'
 import { FilterMatchMode } from 'primevue/api';
@@ -66,7 +67,6 @@ const loadData = async () => {
     console.error(error)
   } finally {
     loading.value = false
-
   }
 }
 
@@ -91,7 +91,14 @@ loadData()
     </div>
     <template v-else>
       <h1 class="mb-1">Liste Mastodon Accounts</h1>
-      <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
+      <div class="grid">
+        <div class="col-12 md:col-8">
+          <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
+        </div>
+        <div class="col-12  md:col-4 flex justify-content-end">
+          <ExportCsv :tableData="tableData" :name="getCurrentKey()"/>
+        </div>
+      </div>
       <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
       <p>Liste der <a href="#mastodon">Mastodon</a> Accounts aller {{ selectedList?.subTitle }}.
         Die Daten stammen von <a href="#wikidata">Wikidata</a>. Insgesamt gibt es {{ tableData?.length }} Accounts <span

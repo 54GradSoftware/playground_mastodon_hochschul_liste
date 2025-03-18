@@ -5,7 +5,8 @@
 Bugs oder Feature wünsche können gerne als [Issue angelegt werden](https://github.com/54GradSoftware/playground_mastodon_hochschul_liste/issues/new).
 
 # Mögliche Todos
-- [ ] Technisch mehrere Liste ermöglichen
+- [x] Technisch mehrere Liste ermöglichen
+- [x] CSV Export von Listen
 - [ ] Andere Länder hinzufügen
 - [ ] Prozentaler Anteil der Universitäten ausrechnen, die Mastodon nutzen
 - [ ] Docker Container mehr konfigurierbar machen
