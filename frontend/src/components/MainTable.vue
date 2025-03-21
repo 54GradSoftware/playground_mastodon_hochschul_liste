@@ -90,13 +90,13 @@ loadData()
       <div class="text-center">Daten werden geladen.</div>
     </div>
     <template v-else>
-      <h1 class="mb-1">Liste Mastodon Accounts</h1>
       <div class="grid">
         <div class="col-12 md:col-8">
+          <h1 class="mb-1">Liste Mastodon Accounts</h1>
           <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
         </div>
         <div class="col-12  md:col-4 flex justify-content-end">
-          <ExportCsv :tableData="tableData" :name="getCurrentKey()"/>
+          <ExportCsv :tableData="tableData" :name="getCurrentKey()" :subTitle="selectedList?.subTitle"/>
         </div>
       </div>
       <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
