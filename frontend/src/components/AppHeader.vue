@@ -30,14 +30,27 @@ import Menubar from 'primevue/menubar';
 import lists from '../assets/lists.json'
 
 const items = ref([
-    {
+{
         label: 'Wissenschaft',
         icon: 'pi pi-search',
         hasSubmenu: true,
         items: lists.filter(list => list.category === 'Wissenschaft')
             .map(list => ({
                 label: list.subTitle,
-                icon: list?.icon || 'pi pi-users',
+                icon: list?.icon || 'pi pi-search',
+                route: '/',
+                query: { liste: list.key }
+            }))
+
+    },
+    {
+        label: 'Kommunale Verwaltung (DE)',
+        icon: 'pi pi-globe',
+        hasSubmenu: true,
+        items: lists.filter(list => list.category === 'Kommunale Verwaltung (DE)')
+            .map(list => ({
+                label: list.subTitle,
+                icon: list?.icon || 'pi pi-globe',
                 route: '/',
                 query: { liste: list.key }
             }))

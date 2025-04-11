@@ -18,6 +18,18 @@ app.get('/wissenschaftler_innen-de', (req, res) => {
         res.json(obj);
     });
 });
+app.get('/staedte-und-gemeinden-DE', (req, res) => {
+    readFile('./data/wikidata-mastodon-staedte-und-gemeinden-DE.json', (err, json) => {
+        let obj = JSON.parse(json);
+        res.json(obj);
+    });
+});
+app.get('/kreise-DE', (req, res) => {
+    readFile('./data/wikidata-mastodon-kreise-DE.json', (err, json) => {
+        let obj = JSON.parse(json);
+        res.json(obj);
+    });
+});
 app.get('/', (req, res) => {
     readFile('./data/wikidata-mastodon-hochschulen-de.json', (err, json) => {
         let obj = JSON.parse(json);

@@ -47,6 +47,12 @@ const loadData = async () => {
     } else if (currentKey === 'wissenschaftler_innen-de') {
       selectedList.value = lists.find(list => list.key === 'wissenschaftler_innen-de')
       dataserverUrl += "/wissenschaftler_innen-de"
+    } else if (currentKey === 'staedte-und-gemeinden-DE') {
+      selectedList.value = lists.find(list => list.key === 'staedte-und-gemeinden-DE')
+      dataserverUrl += "/staedte-und-gemeinden-DE"
+    } else if (currentKey === 'kreise-DE') {
+      selectedList.value = lists.find(list => list.key === 'kreise-DE')
+      dataserverUrl += "/kreise-DE"
     } else {
       alert('Liste nicht gefunden')
     }

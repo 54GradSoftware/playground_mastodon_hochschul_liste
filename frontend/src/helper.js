@@ -1,12 +1,16 @@
 export const getCurrentKey = () => {
-    const queryString = window.location.search;
-    if(queryString === '' || queryString.includes('=hochschulen-de')){
-      return 'hochschulen-de'
-    }else if(queryString.includes('=institute-de')){
-      return 'institute-de'
-  }else if(queryString.includes('=wissenschaftler_innen-de')){
+  const queryString = window.location.search;
+  if (queryString === '' || queryString.includes('=hochschulen-de')) {
+    return 'hochschulen-de'
+  } else if (queryString.includes('=institute-de')) {
+    return 'institute-de'
+  } else if (queryString.includes('=wissenschaftler_innen-de')) {
     return 'wissenschaftler_innen-de'
-}else{
-      return null
-    }
+  } else if (queryString.includes('=staedte-und-gemeinden-DE')) {
+    return 'staedte-und-gemeinden-DE'
+  } else if (queryString.includes('=kreise-DE')) {
+    return 'kreise-DE'
+  } else {
+    return null
+  }
 }
