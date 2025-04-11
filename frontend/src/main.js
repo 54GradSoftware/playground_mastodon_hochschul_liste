@@ -19,7 +19,7 @@ const app = createApp(App)
               trackLocalhost: false,
             },
             settings: {
-              enableAutoOutboundTracking: true,
+              enableAutoOutboundTracking: false,
               enableAutoPageviews: true,
             },
             partytown: false,

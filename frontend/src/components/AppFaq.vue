@@ -1,7 +1,9 @@
 <script setup>
-import lists from '../assets/lists.json'</script>
+import lists from '../assets/lists.json'
+import Image from 'primevue/image';
+</script>
 <template>
-    <div class="card">
+    <div class="card overflow-scroll">
         <h2 id="faq">FAQ</h2>
         <h3 id="listen">Listen</h3>
         <p>
@@ -59,7 +61,7 @@ import lists from '../assets/lists.json'</script>
             Veröffentlichen" gedrückt hast, ist der Wert nun verfügbar. Wenn wir das nächste Mal
             Daten abrufen, wird der Wert auch angezeigt.
         </p>
-            <img src="/screenshot_create_mastodon_statement_german.png" alt="Screenshot aus Wikidata. Links ist ein Eingabefeld mit dem Wert Mastodon-Adresse und rechts ein Eingabefeld mit dem Wert 
+        <Image src="./screenshot_create_mastodon_statement_german.png" alt="Screenshot aus Wikidata. Links ist ein Eingabefeld mit dem Wert Mastodon-Adresse und rechts ein Eingabefeld mit dem Wert 
 username@mastodon_server.social. Und die Schaltflächen Veröffentlichen und Abbrechen." />
     </div>
 </template>

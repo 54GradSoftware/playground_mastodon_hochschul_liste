@@ -1,14 +1,19 @@
 [
     {
         "key": "hochschulen-de",
-        "subTitle": "Hochschulen und Universitäten (DE)"
+        "subTitle": "Hochschulen und Universitäten (DE)",
+        "category": "Wissenschaft",
+        "icon": "pi pi-building-columns"
     },
     {
         "key": "institute-de",
-        "subTitle": "Forschungseinrichtung (DE)"
+        "subTitle": "Forschungseinrichtung (DE)",
+        "category": "Wissenschaft",
+        "icon": "pi pi-warehouse"
     },
     {
         "key": "wissenschaftler_innen-de",
-        "subTitle": "Wissenschaftler*innen (DE)"
+        "subTitle": "Wissenschaftler*innen (DE)",
+        "category": "Wissenschaft"
     }
 ]

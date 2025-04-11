@@ -15,4 +15,8 @@ import AppFooter from './components/AppFooter.vue';
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.layout-main-container{
+  padding-top: 1rem;
+}
+</style>

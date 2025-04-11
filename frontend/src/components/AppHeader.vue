@@ -1,20 +1,52 @@
-<script setup>
-import lists from '../assets/lists.json'
-import { getCurrentKey } from '../helper.js'
-</script>
 <template>
-
-    <div class="layout-topbar">
-        <div>
-            <div>Mastodon Liste</div>
-        </div>
-        <div class="layout-topbar-menu">
-            <div v-for="list in lists" :key="list.key">
-                <a :href="`/?liste=${list.key}`" class="mr-2" :class="{'font-bold': getCurrentKey() === list.key}">{{ list.subTitle }}</a>
-            </div>
-            <div>
-                <a href="https://github.com/54GradSoftware/playground_mastodon_hochschul_liste" target="_blank">Github</a>
-            </div>
-        </div>
-    </div>
+    <Menubar :model="items" style="padding: 1rem 2.5rem 1rem 4.5rem;">
+        <template #end>
+            Mastodon Listen
+        </template>
+        <div class="test"></div>
+        <template #item="{ item, props, hasSubmenu, root }">
+            <a v-ripple class="flex align-items-center" v-bind="props.action" v-if="!item.route">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+                <i v-if="hasSubmenu"
+                    :class="['pi pi-angle-down', { 'pi-angle-down ml-2': root, 'pi-angle-right ml-auto': !root }]"></i>
+            </a>
+            <a v-else-if="item.label === 'FAQ'" v-ripple class="flex align-items-center" v-bind="props.action"
+                href="#faq">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+            <a v-else v-ripple class="flex align-items-center" v-bind="props.action"
+                :href="`${item.route}?liste=${item.query.liste}`">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+        </template>
+    </Menubar>
 </template>
+<script setup>
+import { ref } from "vue";
+import Menubar from 'primevue/menubar';
+import lists from '../assets/lists.json'
+
+const items = ref([
+    {
+        label: 'Wissenschaft',
+        icon: 'pi pi-search',
+        hasSubmenu: true,
+        items: lists.filter(list => list.category === 'Wissenschaft')
+            .map(list => ({
+                label: list.subTitle,
+                icon: list?.icon || 'pi pi-users',
+                route: '/',
+                query: { liste: list.key }
+            }))
+
+    },
+    {
+        label: 'FAQ',
+        icon: 'pi pi-info-circle',
+        route: '/#faq'
+    }
+]);
+</script>
