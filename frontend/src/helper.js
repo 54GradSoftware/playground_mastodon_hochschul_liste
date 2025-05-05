@@ -14,3 +14,18 @@ export const getCurrentKey = () => {
     return null
   }
 }
+
+export const formatDate = (date) => {
+  return new Date(date).toLocaleString('de-DE', {
+    year: "numeric", month: "2-digit",
+    day: "2-digit"
+  })
+}
+
+export const formatNumber = (number) => {
+  return new Intl.NumberFormat('de-DE').format(number)
+}
+
+export const formatBoolean = (value) => {
+  return  value === true ? 'Ja' : 'Nein'
+}

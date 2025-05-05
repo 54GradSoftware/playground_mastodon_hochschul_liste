@@ -1,9 +1,10 @@
 export const queries = [
   // spaqrl query to get all schools of applied sciene and universities in Germany if they have a mastodon handle
+  
   {
     key: 'hochschulen-de',
     sparqlQuery: `
-SELECT ?item ?itemLabel ?mastodon WHERE {
+SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   {
     ?item wdt:P31/wdt:P279* wd:Q875538;
       wdt:P17 wd:Q183.
@@ -14,13 +15,14 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
       wdt:P17 wd:Q183.
   }
   ?item wdt:P4033 ?mastodon.
+  OPTIONAL { ?item wdt:P625 ?coordinates. }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }`
   },
   {
     key: 'institute-de',
     // sparql query to get all research institutes in Germany if they have a mastodon handle
-    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon WHERE {
+    sparqlQuery: `SELECT ?item ?itemLabel ?coordinates ?mastodon WHERE {
     {
       ?item wdt:P31/wdt:P279* wd:Q31855;
         wdt:P17 wd:Q183.
@@ -31,6 +33,7 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
         wdt:P17 wd:Q183.
     }
     ?item wdt:P4033 ?mastodon.
+    OPTIONAL { ?item wdt:P625 ?coordinates. }
     SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
   }`
   },
@@ -59,19 +62,20 @@ SELECT ?item ?itemLabel ?mastodon WHERE {
   {
     key: 'staedte-und-gemeinden-DE',
     sparqlQuery: `
-SELECT ?item ?itemLabel ?mastodon WHERE {
+SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
 {
   ?item wdt:P31/wdt:P279* wd:Q262166;
     wdt:P17 wd:Q183.
 }
 ?item wdt:P4033 ?mastodon.
+OPTIONAL { ?item wdt:P625 ?coordinates. }
 SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }`
   },
   // (Land-)Kreise und Kreisfreie Städe in Deutschland - Verwaltungseinheit dritter Ebene
   {
     key: 'kreise-DE',
-    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon WHERE {
+    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   { ?item wdt:P31 wd:Q61856889. } # Kreis in Schleswig-Holstein
   UNION
   { ?item wdt:P31 wd:Q17302772. } # Landkreis in Sachsen-Anhalt
@@ -130,6 +134,7 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
   UNION
   { ?item wdt:P31 wd:Q17278423. } # Bremen
   ?item wdt:P4033 ?mastodon.
+  OPTIONAL { ?item wdt:P625 ?coordinates. }
 SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }
 `

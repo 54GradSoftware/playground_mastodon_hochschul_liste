@@ -63,7 +63,7 @@ const downloadCSVExport = (type) => {
 <template>
     <div>
         <Button icon="pi pi-download" label="Accounts folgen Importieren" @click="downloadCSVExport('follow')" />
-        <Button class="mt-1" icon="pi pi-list" label="Liste mit Accounts Importieren"
+        <Button class="mt-1 xl:ml-1" icon="pi pi-list" label="Liste mit Accounts Importieren"
             @click="downloadCSVExport('list')" />
     </div>
     <Dialog v-model:visible="visible" modal header="Mastodon Importieren" :style="{ width: '50rem', max_width: '90vw' }">

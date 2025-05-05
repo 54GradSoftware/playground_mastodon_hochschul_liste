@@ -2,6 +2,7 @@ import { WBK } from 'wikibase-sdk'
 import axios from 'axios'
 import { writeFileSync } from 'fs'
 import { queries } from './queries.js'
+import { calculateMastodonAccountScore } from "mastodon-profile-checker"
 
 // Make sure you initialize wbk with a sparqlEndpoint
 const wbk = WBK({
@@ -40,30 +41,33 @@ const main = async () => {
       for (let result of uniqueResults) {
         console.log(result)
         const mastodonHandle = result.mastodon.value
-        let accountStatus = null
+        let accountLookup = null
+        let score = null
         try {
           const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
             timeout: 10000
           })
-          accountStatus = response.data
+          accountLookup = response.data
+          //score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
         } catch (error) {
           console.error(error)
         }
         filteredData.push({
           ...result,
-          accountStatus
+          score,
+          accountLookup
         })
         // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
-      filteredData = filteredData.sort((a, b) => b?.accountStatus?.followers_count - a?.accountStatus?.followers_count)
+      filteredData = filteredData.sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
 
       let meta = {
         created_at: +new Date(),
         mastodonAccounts: filteredData.length,
-        totalToots: filteredData.map(obj => obj.accountStatus?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
-        totalFollowers: filteredData.map(obj => obj.accountStatus?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
+        totalToots: filteredData.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
+        totalFollowers: filteredData.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
       }
       if (query.key == 'wissenschaftler_innen-de') {
         meta = {
