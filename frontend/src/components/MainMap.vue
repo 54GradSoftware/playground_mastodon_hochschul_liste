@@ -11,6 +11,10 @@ const props = defineProps({
         type: Array,
         default: () => [10.4541194, 51.1642292], // center of germany
     },
+    mapZoom: {
+        type: Number,
+        default: 5,
+    },
     data: {
         type: Array,
     }
@@ -34,7 +38,7 @@ const formatCoordinates = (coordinates) => {
 <template>
     <MapboxMap style="height: 600px"
         access-token="pk.eyJ1Ijoic2JyYSIsImEiOiJjbG02ZjF6ZDgwbG1jM2VtbWZyNXkza2E3In0.lRf9QNEJKwhvuirQwPKFCA"
-        map-style="mapbox://styles/mapbox/streets-v11" :center="mapCenter" :zoom="5"
+        map-style="mapbox://styles/mapbox/streets-v11" :center="mapCenter" :zoom="mapZoom"
         :cooperativeGestures="!isMobile()"
         :locale="{
             'ScrollZoomBlocker.CtrlMessage': 'Zum Vergrößern der Karte Strg + Scrollen verwenden.',

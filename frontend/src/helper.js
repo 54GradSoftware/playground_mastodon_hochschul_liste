@@ -1,18 +1,14 @@
-export const getCurrentKey = () => {
+import lists from './assets/lists.json'
+
+export const getCurrentList = () => {
   const queryString = window.location.search;
-  if (queryString === '' || queryString.includes('=hochschulen-de')) {
-    return 'hochschulen-de'
-  } else if (queryString.includes('=institute-de')) {
-    return 'institute-de'
-  } else if (queryString.includes('=wissenschaftler_innen-de')) {
-    return 'wissenschaftler_innen-de'
-  } else if (queryString.includes('=staedte-und-gemeinden-DE')) {
-    return 'staedte-und-gemeinden-DE'
-  } else if (queryString.includes('=kreise-DE')) {
-    return 'kreise-DE'
-  } else {
-    return null
+  const params = new URLSearchParams(queryString);
+  const listQuery = params.get('liste');
+  console.log('list', listQuery)
+  if (listQuery === null) {
+    return lists[0]
   }
+  return lists.find((list) => list.key === listQuery)
 }
 
 export const formatDate = (date) => {

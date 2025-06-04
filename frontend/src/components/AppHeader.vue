@@ -57,6 +57,19 @@ const items = ref([
 
     },
     {
+        label: 'Weitere',
+        icon: 'pi-directions-alt',
+        hasSubmenu: true,
+        items: lists.filter(list => list.category === 'Weitere')
+            .map(list => ({
+                label: list.subTitle,
+                icon: list?.icon || 'pi-directions-alt',
+                route: '/',
+                query: { liste: list.key }
+            }))
+
+    },
+    {
         label: 'FAQ',
         icon: 'pi pi-info-circle',
         route: '/#faq'

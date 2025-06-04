@@ -1,12 +1,12 @@
 [
     {
-        "key": "hochschulen-de",
+        "key": "hochschulen-DE",
         "subTitle": "Hochschulen und Universitäten (DE)",
         "category": "Wissenschaft",
         "icon": "pi pi-building-columns"
     },
     {
-        "key": "institute-de",
+        "key": "institute-DE",
         "subTitle": "Forschungseinrichtung (DE)",
         "category": "Wissenschaft",
         "icon": "pi pi-warehouse"
@@ -27,5 +27,25 @@
         "subTitle": "(Land-)Kreise und Kreisfreie Städte (DE)",
         "category": "Kommunale Verwaltung (DE)",
         "icon": "pi pi-map"
+    },
+    {
+        "key": "non-profit-organisationen-DE",
+        "subTitle": "Non-Profit-Organisationen (DE)",
+        "category": "Weitere",
+        "icon": null,
+        "map": {
+            "center": [10.4515, 51.1657],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "museum-DACH",
+        "subTitle": "Museen (DACH)",
+        "category": "Wissenschaft",
+        "icon": "pi pi-database",
+        "map": {
+            "center": [10.4515, 51.1657],
+            "zoom": 4
+        }
     }
 ]

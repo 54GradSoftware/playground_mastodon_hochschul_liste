@@ -1,40 +1,27 @@
 import {readFile} from 'fs';
 import express from "express"
 import cors from "cors"
+import { queries } from './queries.js';
+
+const allKeys = queries.map((query) => query.key);
 
 const app = express()
 app.options('*', cors())
 app.use(cors())
 
-app.get('/institute-de', (req, res) => {
-    readFile('./data/wikidata-mastodon-institute-de.json', (err, json) => {
-        let obj = JSON.parse(json);
-        res.json(obj);
-    });
-});
-app.get('/wissenschaftler_innen-de', (req, res) => {
-    readFile('./data/wikidata-mastodon-wissenschaftler_innen-de.json', (err, json) => {
-        let obj = JSON.parse(json);
-        res.json(obj);
-    });
-});
-app.get('/staedte-und-gemeinden-DE', (req, res) => {
-    readFile('./data/wikidata-mastodon-staedte-und-gemeinden-DE.json', (err, json) => {
-        let obj = JSON.parse(json);
-        res.json(obj);
-    });
-});
-app.get('/kreise-DE', (req, res) => {
-    readFile('./data/wikidata-mastodon-kreise-DE.json', (err, json) => {
-        let obj = JSON.parse(json);
-        res.json(obj);
-    });
-});
-app.get('/', (req, res) => {
-    readFile('./data/wikidata-mastodon-hochschulen-de.json', (err, json) => {
-        let obj = JSON.parse(json);
-        res.json(obj);
-    });
+app.get('/*', (req, res) => {
+    const { url } = req;
+    const requestKey = url.split('/')[1];
+    const isValidKey = allKeys.includes(requestKey);
+    if (!isValidKey) {
+        res.status(404).json({ error: 'Invalid key' });
+        return;
+    }else{
+        readFile(`./data/wikidata-mastodon-${requestKey}.json`, (err, json) => {
+            let obj = JSON.parse(json);
+            res.json(obj);
+        });
+    }
 });
 
 app.listen(3002)

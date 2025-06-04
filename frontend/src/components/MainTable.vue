@@ -11,8 +11,7 @@ import Button from 'primevue/button';
 import Image from 'primevue/image';
 import Tag from 'primevue/tag';
 import ExportCsv from './ExportCsv.vue';
-import lists from '../assets/lists.json'
-import { getCurrentKey, formatDate, formatNumber, formatBoolean } from '../helper.js'
+import { getCurrentList, formatDate, formatNumber, formatBoolean } from '../helper.js'
 import { FilterMatchMode } from 'primevue/api';
 import MainMap from './MainMap.vue';
 import MastodonLink from './MastodonLink.vue';
@@ -43,26 +42,12 @@ const clearFilter = () => {
 const loadData = async () => {
   try {
     loading.value = true
-    let dataserverUrl = import.meta.env.VITE_DATA_SERVER_URL
-    const currentKey = getCurrentKey()
-    if (currentKey === null || currentKey === 'hochschulen-de') {
-      selectedList.value = lists.find(list => list.key === 'hochschulen-de')
-    } else if (currentKey === 'institute-de') {
-      selectedList.value = lists.find(list => list.key === 'institute-de')
-      dataserverUrl += "/institute-de"
-    } else if (currentKey === 'wissenschaftler_innen-de') {
-      selectedList.value = lists.find(list => list.key === 'wissenschaftler_innen-de')
-      dataserverUrl += "/wissenschaftler_innen-de"
-    } else if (currentKey === 'staedte-und-gemeinden-DE') {
-      selectedList.value = lists.find(list => list.key === 'staedte-und-gemeinden-DE')
-      dataserverUrl += "/staedte-und-gemeinden-DE"
-    } else if (currentKey === 'kreise-DE') {
-      selectedList.value = lists.find(list => list.key === 'kreise-DE')
-      dataserverUrl += "/kreise-DE"
-    } else {
-      alert('Liste nicht gefunden')
+    selectedList.value = getCurrentList()
+    if(!selectedList.value){
+      alert("Liste nicht gefunden")
+      return
     }
-    const { data } = await axios.get(dataserverUrl)
+    const { data } = await axios.get(`${import.meta.env.VITE_DATA_SERVER_URL}/${selectedList.value.key}`);
     tableData.value = data?.data?.map((item) => {
       return {
         filerNmame: `${item?.itemLabel?.value || item.itemName.value} ${item?.doings?.join(" ")}`,
@@ -104,7 +89,7 @@ loadData()
           <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
         </div>
         <div class="col-12  md:col-4 flex justify-content-end">
-          <ExportCsv :tableData="tableData" :name="getCurrentKey()" :subTitle="selectedList?.subTitle" />
+          <ExportCsv :tableData="tableData" :name="selectedList.key" :subTitle="selectedList?.subTitle" />
         </div>
       </div>
       <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
@@ -204,7 +189,7 @@ loadData()
           </TabPanel>
           <TabPanel header="Karte" v-if="!!showMapTab">
             <MapConsentWrapper>
-              <MainMap :data="tableData" />
+              <MainMap :data="tableData" :map-center="selectedList?.map?.center" :map-zoom="selectedList?.map?.zoom" />
             </MapConsentWrapper>
           </TabPanel>
         </TabView>

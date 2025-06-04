@@ -25,7 +25,7 @@ const main = async () => {
       })
       const results = data.results.bindings
       let uniqueResults = results.filter((obj1, i, arr) =>
-        arr.findIndex(obj2 => (obj2.mastodon?.value === obj1.mastodon?.value)) === i
+        arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
       )
       if (query.key == 'wissenschaftler_innen-de') {
         uniqueResults = uniqueResults.map(result => {

@@ -1,8 +1,8 @@
 export const queries = [
   // spaqrl query to get all schools of applied sciene and universities in Germany if they have a mastodon handle
-  
+
   {
-    key: 'hochschulen-de',
+    key: 'hochschulen-DE',
     sparqlQuery: `
 SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   {
@@ -20,7 +20,7 @@ SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
 }`
   },
   {
-    key: 'institute-de',
+    key: 'institute-DE',
     // sparql query to get all research institutes in Germany if they have a mastodon handle
     sparqlQuery: `SELECT ?item ?itemLabel ?coordinates ?mastodon WHERE {
     {
@@ -139,6 +139,48 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }
 `
   },
+  // Non-Profit-Organisationen in Deutschland
+  {
+    key: 'non-profit-organisationen-DE',
+    sparqlQuery: `
+SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
+{
+  ?item wdt:P31/wdt:P279* wd:Q163740;
+    wdt:P17 wd:Q183.
+}
+?item wdt:P4033 ?mastodon.
+  OPTIONAL { ?item wdt:P625 ?coordinates. }
+SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
+}`
+  },
+  {
+    key: 'museum-DACH',
+    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?countryName ?coordinates WHERE {
+  {
+    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
+      wdt:P17 wd:Q183. #germany
+  }
+  UNION
+  {
+    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
+      wdt:P17 wd:Q39. #switzerland
+  }
+  UNION
+  {
+    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
+      wdt:P17 wd:Q40. #austria
+  }
+  ?item wdt:P4033 ?mastodon;
+    wdt:P17 ?country.
+  OPTIONAL { ?item wdt:P625 ?coordinates. }
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "de, en".
+    ?item rdfs:label ?itemLabel.
+    ?country rdfs:label ?countryName.
+  }
+}
+  `
+  }
 ]
 
 
