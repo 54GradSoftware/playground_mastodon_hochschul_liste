@@ -59,7 +59,8 @@ const loadData = async () => {
         score: item.score?.score,
         scoreData: item.score,
         coordinates: item?.coordinates?.value,
-        verified: !!item.accountLookup?.fields.find(field => !!field.verified_at)
+        verified: !!item.accountLookup?.fields.find(field => !!field.verified_at),
+        countryName: item?.countryName?.value
       };
     }).sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count);
     metaData.value = data?.meta
@@ -141,6 +142,7 @@ loadData()
                   <MastodonLink :mastodonHandle="slotProps.data.mastodon" />
                 </template>
               </Column>
+              <Column v-if="selectedList.key === 'museum-DACH'" field="countryName" header="Land" sortable/>
               <!--
           <Column field="score" header="Score" sortable>
             <template #body="slotProps">
