@@ -4,5 +4,3 @@ WORKDIR /app
 ADD . .
 
 RUN npm ci
-
-RUN npm run get-data
