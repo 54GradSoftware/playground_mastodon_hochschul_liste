@@ -8,7 +8,7 @@ Bugs oder Feature wünsche können gerne als [Issue angelegt werden](https://git
 - [x] Technisch mehrere Liste ermöglichen
 - [x] CSV Export von Listen
 - [x] Karten Ansicht
-- [ ] Liste von NGO's in DE anbieten
+- [x] Liste von NGO's in DE anbieten
 - [ ] PDFs pro Liste erstellen, mit allen Logos und Links zu den Accounts
 - [ ] Verbesserte SEO und aussagen in natürlicher Sprache 
 - [ ] Sharepics mit den Daten erstellen
