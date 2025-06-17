@@ -15,6 +15,7 @@ const userAgent = { 'User-Agent': 'MastodonListeBot/1.0 (https://mastodon-listen
 const main = async () => {
   try {
     for (const query of queries) {
+      console.log('Running query:', query.key)
       const url = wbk.sparqlQuery(query.sparqlQuery)
       const { data } = await axios.get(url, {
         timeout: 65000,
@@ -88,6 +89,7 @@ const main = async () => {
         data: filteredData
       })
       writeFileSync(`./data/wikidata-mastodon-${query.key}.json`, jsonData);
+      console.log('write json file', `./data/wikidata-mastodon-${query.key}.json`)
     }
   } catch (error) {
     console.error(error)
