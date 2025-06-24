@@ -34,7 +34,7 @@ const main = async () => {
         uniqueResults = uniqueResults.map(result => {
           return {
             ...result,
-            doings: [...new Set(results.filter(obj => obj.item.value === result?.item?.value).map(obj => obj?.doingName?.value))]
+            doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
           }
         })
       }
