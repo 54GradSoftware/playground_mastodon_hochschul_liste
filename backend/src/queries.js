@@ -1,6 +1,5 @@
 export const queries = [
   // spaqrl query to get all schools of applied sciene and universities in Germany if they have a mastodon handle
-/*
   {
     key: 'hochschulen-DE',
     sparqlQuery: `
@@ -37,28 +36,6 @@ SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
     SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
   }`
   },
-  {
-    key: 'wissenschaftler_innen-de',
-    sparqlQuery: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
-  {
-    ?item wdt:P106/wdt:P279* wd:Q901.
-    ?item wdt:P1412/wdt:P279* wd:Q188;
-  }
-  UNION
-  {
-    ?item wdt:P106/wdt:P279* wd:Q1622272.
-    ?item wdt:P1412/wdt:P279* wd:Q188;
-  }
-  ?item wdt:P4033 ?mastodon.
-  ?item wdt:P106 ?doing.
-  SERVICE wikibase:label { 
-    bd:serviceParam wikibase:language "de, en". 
-    ?item rdfs:label ?itemName .
-    ?doing rdfs:label ?doingName .
-  }
-}`
-  },
-*/
   // Städte und Gemeinden in Deutschland - Verwaltungseinheit vierter Ebene
   {
     key: 'staedte-und-gemeinden-DE',
@@ -181,7 +158,28 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
   }
 }
   `
+  },
+  {
+    key: 'wissenschaftler_innen-de',
+    sparqlQuery: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
+  {
+    ?item wdt:P106/wdt:P279* wd:Q901.
+    ?item wdt:P1412/wdt:P279* wd:Q188;
   }
+  UNION
+  {
+    ?item wdt:P106/wdt:P279* wd:Q1622272.
+    ?item wdt:P1412/wdt:P279* wd:Q188;
+  }
+  ?item wdt:P4033 ?mastodon.
+  ?item wdt:P106 ?doing.
+  SERVICE wikibase:label { 
+    bd:serviceParam wikibase:language "de, en". 
+    ?item rdfs:label ?itemName .
+    ?doing rdfs:label ?doingName .
+  }
+}`
+  },
 ]
 
 
