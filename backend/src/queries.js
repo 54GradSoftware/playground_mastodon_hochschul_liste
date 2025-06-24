@@ -1,6 +1,6 @@
 export const queries = [
   // spaqrl query to get all schools of applied sciene and universities in Germany if they have a mastodon handle
-
+/*
   {
     key: 'hochschulen-DE',
     sparqlQuery: `
@@ -58,6 +58,7 @@ SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   }
 }`
   },
+*/
   // Städte und Gemeinden in Deutschland - Verwaltungseinheit vierter Ebene
   {
     key: 'staedte-und-gemeinden-DE',
