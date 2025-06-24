@@ -14,6 +14,8 @@ const userAgent = { 'User-Agent': 'MastodonListeBot/1.0 (https://mastodon-listen
 
 const main = async () => {
   try {
+    console.log('Starting to fetch data from Wikidata...')
+    console.log('Queries to run:', queries.map(query => query.key).join(', '))
     for (const query of queries) {
       console.log('Running query:', query.key)
       const url = wbk.sparqlQuery(query.sparqlQuery)
