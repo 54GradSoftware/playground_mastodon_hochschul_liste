@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="col-12 md:col-4">
-      <a href="https://github.com/54GradSoftware/playground_mastodon_hochschul_liste">Github</a> | <a
+      <a href="https://github.com/54GradSoftware/playground_mastodon_hochschul_liste">Github (Software)</a> | <a
         href="https://github.com/54GradSoftware/playground_mastodon_hochschul_liste/blob/main/LICENSE">MIT Lizens</a>
     </div>
     <div class="col-12 md:col-4">
