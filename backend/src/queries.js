@@ -7,7 +7,6 @@ import museumDACH from './queries/museum-DACH.js'
 import wissenschatlerInnenDe from './queries/wissenschaftler_innen-de.js'
 
 export const queries = [
-  /*
   // Hochschulen und Universitäten in Deutschland
   hochschulenDE,
   // Forschungseinrichtungen und Institute in Deutschland
@@ -18,7 +17,6 @@ export const queries = [
   kreiseDE,
   // Non-Profit-Organisationen in Deutschland
   nonProfitOrganisationenDE,
-  */
   // Museen in Deutschland, Österreich und der Schweiz
   museumDACH,
   // Wissenschaftler:innen die auch deutsch Sprechen
