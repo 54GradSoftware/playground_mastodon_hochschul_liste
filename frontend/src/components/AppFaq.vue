@@ -1,6 +1,12 @@
 <script setup>
+import { ref } from 'vue'
+import { getCurrentList } from '../helper.js'
+
 import lists from '../assets/lists.json'
 import Image from 'primevue/image';
+
+const selectedList = ref({})
+selectedList.value = getCurrentList()
 </script>
 <template>
     <div class="card overflow-scroll">
@@ -41,9 +47,10 @@ import Image from 'primevue/image';
             in unserem Blog Artikel: <a
                 href="https://www.54gradsoftware.de/blog/wikidata-oder-linked-open-data">"Wikidata oder Linked Open Data"
             </a>.
-            Wir haben die Daten also nicht selbst händisch zusammengetragen, sondern holen uns jeden Tag über eine Schnittstelle die Daten von allen Hochschulen und Universitäten in Deutschland. Wir haben den <a
-                href="https://query.wikidata.org/index.html#SELECT%20%3Fitem%20%3FitemLabel%20%3Fmastodon%20WHERE%20%7B%0A%20%20%7B%0A%20%20%20%20%3Fitem%20wdt%3AP31%2Fwdt%3AP279%2a%20wd%3AQ875538%3B%0A%20%20%20%20%20%20wdt%3AP17%20wd%3AQ183.%0A%20%20%7D%0A%20%20UNION%0A%20%20%7B%0A%20%20%20%20%3Fitem%20wdt%3AP31%2Fwdt%3AP279%20wd%3AQ1365560%3B%0A%20%20%20%20%20%20wdt%3AP17%20wd%3AQ183.%0A%20%20%7D%0A%20%20%3Fitem%20wdt%3AP4033%20%3Fmastodon.%0A%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22de%2C%20en%22.%20%7D%0A%7D">Query
+            Wir haben die Daten also nicht selbst händisch zusammengetragen, sondern holen uns jeden Tag über eine Schnittstelle die Daten von allen Hochschulen und Universitäten in Deutschland. <template v-if="selectedList.key">Wir haben den<a
+                :href="`https://github.com/54GradSoftware/playground_mastodon_hochschul_liste/blob/main/backend/src/queries/${selectedList.key}.js`"> Query
                 einmal verlinkt</a>.
+                </template>
         </p>
         <h3 id="add-data">Daten hinzufügen oder ändern</h3>
         <p>

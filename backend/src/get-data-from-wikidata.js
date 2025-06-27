@@ -18,27 +18,17 @@ const main = async () => {
     console.log('Queries to run:', queries.map(query => query.key).join(', '))
     for (const query of queries) {
       console.log('Running query:', query.key)
-      const url = wbk.sparqlQuery(query.sparqlQuery)
-      const { data } = await axios.get(url, {
-        timeout: 65000,
-        headers: {
-          'Accept': 'application/sparql-results+json',
-          userAgent
-        }
-      })
-      const results = data.results.bindings
-      let uniqueResults = results.filter((obj1, i, arr) =>
-        arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
-      )
-      if (query.key == 'wissenschaftler_innen-de') {
-        uniqueResults = uniqueResults.map(result => {
-          return {
-            ...result,
-            doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
-          }
-        })
-      }
 
+      let uniqueResults;
+
+      if(!!query.sparqlQuery1){
+        const resultsSparqlQuery1 = await getWikidataResults(query.key, query.sparqlQuery1);
+        const resultsSparqlQuery2 = await getWikidataResults(query.key, query.sparqlQuery2);
+        uniqueResults = [...resultsSparqlQuery1, ...resultsSparqlQuery2]
+      }else{
+        uniqueResults = await getWikidataResults(query.key, query.sparqlQuery);
+      }
+      
       let filteredData = []
 
       for (let result of uniqueResults) {
@@ -95,6 +85,35 @@ const main = async () => {
     }
   } catch (error) {
     console.error(error)
+  }
+}
+
+const getWikidataResults = async (key, sparqlQuery) => {
+  try{
+    const url = wbk.sparqlQuery(sparqlQuery)
+      const { data } = await axios.get(url, {
+        timeout: 65000,
+        headers: {
+          'Accept': 'application/sparql-results+json',
+          userAgent
+        }
+      })
+      const results = data.results.bindings
+      let uniqueResults = results.filter((obj1, i, arr) =>
+        arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
+      )
+      if (key == 'wissenschaftler_innen-de') {
+        uniqueResults = uniqueResults.map(result => {
+          return {
+            ...result,
+            doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
+          }
+        })
+      }
+      return uniqueResults
+  }catch(error) {
+    console.error(`Error fetching data for query ${key}:`, error)
+    return []
   }
 }
 
