@@ -1,5 +1,6 @@
 export default {
     key: 'wissenschaftler_innen-de',
+    type: 'accounts',
     sparqlQuery1: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
   {
     ?item wdt:P106/wdt:P279* wd:Q901.

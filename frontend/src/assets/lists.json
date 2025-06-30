@@ -1,35 +1,48 @@
 [
     {
         "key": "hochschulen-DE",
+        "type": "accounts",
         "subTitle": "Hochschulen und Universitäten (DE)",
         "category": "Wissenschaft",
         "icon": "pi pi-building-columns"
     },
     {
+        "key": "hochschulen-ACH'",
+        "type": "accounts",
+        "subTitle": "Hochschulen und Universitäten (AT, CH)",
+        "category": "Wissenschaft",
+        "icon": "pi pi-building-columns"
+    },
+    {
         "key": "institute-DE",
+        "type": "accounts",
         "subTitle": "Forschungseinrichtung (DE)",
         "category": "Wissenschaft",
         "icon": "pi pi-warehouse"
     },
     {
         "key": "wissenschaftler_innen-de",
+        "type": "accounts",
         "subTitle": "Wissenschaftler*innen (de)",
         "category": "Wissenschaft"
     },
     {
         "key": "staedte-und-gemeinden-DE",
+        "type": "accounts",
         "subTitle": "Städte und Gemeinden (DE)",
         "category": "Kommunale Verwaltung (DE)",
         "icon": "pi pi-home"
     },
     {
         "key": "kreise-DE",
+        "type": "accounts",
         "subTitle": "(Land-)Kreise und Kreisfreie Städte (DE)",
         "category": "Kommunale Verwaltung (DE)",
         "icon": "pi pi-map"
     },
     {
         "key": "non-profit-organisationen-DE",
+        "type": "accounts",
         "subTitle": "Non-Profit-Organisationen (DE)",
         "category": "Weitere",
         "icon": null,
@@ -39,7 +52,19 @@
         }
     },
     {
+        "key": "hochschulen-mastodon-instance-GLOBAL",
+        "type": "instances",
+        "subTitle": "Instanzen von Hochschulen auf Mastodon (Global)",
+        "category": "Wissenschaft",
+        "icon": null,
+        "map": {
+            "center": [10.4515, 51.1657],
+            "zoom": 4
+        }
+    },
+    {
         "key": "museum-DACH",
+        "type": "accounts",
         "subTitle": "Museen (DACH)",
         "category": "Wissenschaft",
         "icon": "pi pi-database",

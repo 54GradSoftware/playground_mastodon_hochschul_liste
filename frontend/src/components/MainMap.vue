@@ -1,10 +1,9 @@
 <script setup>
-import { ref } from 'vue';
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { formatDate, formatNumber, formatBoolean } from '../helper.js'
+import { getCurrentList } from '../helper.js'
 import MastodonLink from './MastodonLink.vue';
-
 
 const props = defineProps({
     mapCenter: {
@@ -20,11 +19,10 @@ const props = defineProps({
     }
 });
 
-const isMobile = () => { return /Mobi|Android/i. test(navigator. userAgent); };
-
+const isMobile = () => { return /Mobi|Android/i.test(navigator.userAgent); };
 
 const formatCoordinates = (coordinates) => {
-    if(!coordinates) {
+    if (!coordinates) {
         return null;
     }
     if (coordinates.startsWith('Point')) {
@@ -39,25 +37,38 @@ const formatCoordinates = (coordinates) => {
     <MapboxMap style="height: 600px"
         access-token="pk.eyJ1Ijoic2JyYSIsImEiOiJjbG02ZjF6ZDgwbG1jM2VtbWZyNXkza2E3In0.lRf9QNEJKwhvuirQwPKFCA"
         map-style="mapbox://styles/mapbox/streets-v11" :center="mapCenter" :zoom="mapZoom"
-        :cooperativeGestures="!isMobile()"
-        :locale="{
+        :cooperativeGestures="!isMobile()" :locale="{
             'ScrollZoomBlocker.CtrlMessage': 'Zum Vergrößern der Karte Strg + Scrollen verwenden.',
             'ScrollZoomBlocker.CmdMessage': 'Zum Vergrößern der Karte ⌘ + Scrollen verwenden.'
         }">
         <template v-for="entry in data" :key="entry.item">
-            <MapboxMarker v-if="formatCoordinates(entry.coordinates)" :lng-lat="formatCoordinates(entry.coordinates)" popup color="lightblue">
+            <MapboxMarker v-if="formatCoordinates(entry.coordinates)" :lng-lat="formatCoordinates(entry.coordinates)"
+                popup color="lightblue">
                 <template #popup>
                     <div class="mapbox-popup-content">
                         <h2>{{ entry.name }}</h2>
                         <ul>
                             <li><b>Mastodon: </b>
-                                <MastodonLink :mastodonHandle="entry.mastodon" />
+                                <template v-if="getCurrentList().type=== 'accounts'">
+                                    <MastodonLink :mastodonHandle="entry.mastodon" />
+                                </template>
+                                <template v-else-if="getCurrentList().type=== 'instances'">
+                                    <a target="_blank" :href="entry.mastodon">
+                                                        {{ entry.mastodon }}
+                                                        </a>
+                                </template>
                             </li>
-                            <li><b>Follower: </b> {{ formatNumber(entry.accountLookup?.followers_count) }}</li>
-                            <li><b>Toots: </b> {{ formatNumber(entry.accountLookup?.statuses_count) }}</li>
-                            <li><b>Letzter Toot: </b> {{ formatDate(entry.accountLookup?.last_status_at) }}</li>
-                            <li><b>Erstellt: </b> {{ formatDate(entry.accountLookup?.created_at) }}</li>
-                            <li><b>Verifiziert: </b> {{ formatBoolean(entry.verified) }}</li>
+                            <li v-if="entry.accountLookup?.followers_count"><b>Follower: </b> {{
+                                formatNumber(entry.accountLookup?.followers_count) }}</li>
+                            <li v-if="entry.accountLookup?.statuses_coun"><b>Toots: </b> {{
+                                formatNumber(entry.accountLookup?.statuses_count) }}</li>
+                            <li v-if="entry.accountLookup?.last_status_at"><b>Letzter Toot: </b> {{
+                                formatDate(entry.accountLookup?.last_status_at) }}</li>
+                            <li v-if="entry.accountLookup?.created_at"><b>Erstellt: </b> {{
+                                formatDate(entry.accountLookup?.created_at) }}</li>
+                            <li v-if="entry.verified"><b>Verifiziert: </b> {{ formatBoolean(entry.verified) }}</li>
+                            <li v-if="entry.users_active_last_month"><b>Aktive Accounts: </b> {{
+                                formatNumber(entry.users_active_last_month) }}</li>
                         </ul>
                     </div>
                 </template>
@@ -67,10 +78,11 @@ const formatCoordinates = (coordinates) => {
 </template>
 
 <style>
-.mapboxgl-popup{
+.mapboxgl-popup {
     max-width: 300px !important;
     overflow-wrap: break-word;
 }
+
 .mapbox-popup-content ul {
     list-style-type: none;
     padding: 0;

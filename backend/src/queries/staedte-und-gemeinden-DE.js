@@ -1,5 +1,6 @@
 export default {
     key: 'staedte-und-gemeinden-DE',
+    type: 'accounts',
     sparqlQuery: `
 SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
 {

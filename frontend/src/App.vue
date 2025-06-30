@@ -1,6 +1,6 @@
 <script setup>
 import AppHeader from './components/AppHeader.vue';
-import MainTable from './components/MainTable.vue';
+import MainContent from './components/MainContent.vue';
 import AppFaq from './components/AppFaq.vue';
 import AppFooter from './components/AppFooter.vue';
 </script>
@@ -8,7 +8,7 @@ import AppFooter from './components/AppFooter.vue';
   <div class="layout-wrapper">
     <AppHeader/>
     <main class="layout-main-container">
-      <MainTable/>
+      <MainContent/>
       <AppFaq/>
       <AppFooter/>
     </main>

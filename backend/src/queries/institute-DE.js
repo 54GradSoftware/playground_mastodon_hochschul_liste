@@ -1,5 +1,6 @@
 export default {
     key: 'institute-DE',
+    type: 'accounts',
     sparqlQuery: `SELECT ?item ?itemLabel ?coordinates ?mastodon WHERE {
     {
       ?item wdt:P31/wdt:P279* wd:Q31855;

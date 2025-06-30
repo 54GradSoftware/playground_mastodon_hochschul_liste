@@ -1,5 +1,6 @@
 export default {
     key: 'non-profit-organisationen-DE',
+    type: 'accounts',
     sparqlQuery: `
 SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
 {

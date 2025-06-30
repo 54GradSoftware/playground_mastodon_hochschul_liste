@@ -21,35 +21,59 @@ const main = async () => {
 
       let uniqueResults;
 
-      if(!!query.sparqlQuery1){
+      if (!!query.sparqlQuery1) {
         const resultsSparqlQuery1 = await getWikidataResults(query.key, query.sparqlQuery1);
         const resultsSparqlQuery2 = await getWikidataResults(query.key, query.sparqlQuery2);
         uniqueResults = [...resultsSparqlQuery1, ...resultsSparqlQuery2]
-      }else{
+      } else {
         uniqueResults = await getWikidataResults(query.key, query.sparqlQuery);
       }
-      
+
       let filteredData = []
 
       for (let result of uniqueResults) {
         console.log(result)
-        const mastodonHandle = result.mastodon.value
-        let accountLookup = null
-        let score = null
-        try {
-          const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
-            timeout: 10000
+        if (query?.type === 'instances') {
+          let accountLookup;
+          try {
+            let mastodonInstanceUrl = result.mastodon.value
+            // check if last charachter of "mastodonInstanceUrl" is / if, not add a /
+            if (!mastodonInstanceUrl.endsWith('/')) {
+              mastodonInstanceUrl = `${mastodonInstanceUrl}/`
+            }
+            console.log('Mastodon Instance URL:', mastodonInstanceUrl)
+            console.log('FUll Mastodon Instance URL:', `${mastodonInstanceUrl}api/v2/instance`)
+            const response = await axios.get(`${mastodonInstanceUrl}api/v2/instance`, {
+              timeout: 20_000
+            })
+            accountLookup = response.data
+          } catch (error) {
+            console.error(error)
+          }
+          filteredData.push({
+            ...result,
+            accountLookup
           })
-          accountLookup = response.data
-          //score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
-        } catch (error) {
-          console.error(error)
+        } else if (query?.type === 'accounts') {
+          const mastodonHandle = result.mastodon.value
+          let accountLookup = null
+          let score = null
+          try {
+            const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
+              timeout: 10_000
+            })
+            accountLookup = response.data
+            //score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
+          } catch (error) {
+            console.error(error)
+          }
+          filteredData.push({
+            ...result,
+            score,
+            accountLookup
+          })
         }
-        filteredData.push({
-          ...result,
-          score,
-          accountLookup
-        })
+
         // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
@@ -89,29 +113,29 @@ const main = async () => {
 }
 
 const getWikidataResults = async (key, sparqlQuery) => {
-  try{
+  try {
     const url = wbk.sparqlQuery(sparqlQuery)
-      const { data } = await axios.get(url, {
-        timeout: 65000,
-        headers: {
-          'Accept': 'application/sparql-results+json',
-          userAgent
+    const { data } = await axios.get(url, {
+      timeout: 65000,
+      headers: {
+        'Accept': 'application/sparql-results+json',
+        userAgent
+      }
+    })
+    const results = data.results.bindings
+    let uniqueResults = results.filter((obj1, i, arr) =>
+      arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
+    )
+    if (key == 'wissenschaftler_innen-de') {
+      uniqueResults = uniqueResults.map(result => {
+        return {
+          ...result,
+          doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
         }
       })
-      const results = data.results.bindings
-      let uniqueResults = results.filter((obj1, i, arr) =>
-        arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
-      )
-      if (key == 'wissenschaftler_innen-de') {
-        uniqueResults = uniqueResults.map(result => {
-          return {
-            ...result,
-            doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
-          }
-        })
-      }
-      return uniqueResults
-  }catch(error) {
+    }
+    return uniqueResults
+  } catch (error) {
     console.error(`Error fetching data for query ${key}:`, error)
     return []
   }

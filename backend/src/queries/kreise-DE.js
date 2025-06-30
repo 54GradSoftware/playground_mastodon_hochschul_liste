@@ -1,5 +1,6 @@
 export default{
     key: 'kreise-DE',
+    type: 'accounts',
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   { ?item wdt:P31 wd:Q61856889. } # Kreis in Schleswig-Holstein
   UNION

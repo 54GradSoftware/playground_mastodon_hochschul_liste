@@ -5,6 +5,8 @@ import kreiseDE from './queries/kreise-DE.js'
 import nonProfitOrganisationenDE from './queries/non-profit-organisationen-DE.js'
 import museumDACH from './queries/museum-DACH.js'
 import wissenschatlerInnenDe from './queries/wissenschaftler_innen-de.js'
+import hochschulenMastodonInstanceGLOBAL from './queries/hochschulen-mastodon-instance-GLOBAL.js'
+import hochschulenACH from './queries/hochschulen-ACH.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -17,6 +19,10 @@ export const queries = [
   kreiseDE,
   // Non-Profit-Organisationen in Deutschland
   nonProfitOrganisationenDE,
+  // Instanzten von Hochschulen und Universitäten weltweit
+  hochschulenMastodonInstanceGLOBAL,
+  // Hochschulen und Universitäten in Österreich und der Schweiz
+  hochschulenACH,
   // Museen in Deutschland, Österreich und der Schweiz
   museumDACH,
   // Wissenschaftler:innen die auch deutsch Sprechen

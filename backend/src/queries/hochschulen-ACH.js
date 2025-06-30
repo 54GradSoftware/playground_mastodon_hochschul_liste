@@ -1,20 +1,25 @@
 export default {
-    key: 'museum-DACH',
+    key: 'hochschulen-ACH',
     type: 'accounts',
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?countryName ?coordinates WHERE {
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
-      wdt:P17 wd:Q183. #germany
+    ?item (wdt:P31/(wdt:P279*)) wd:Q875538;
+      wdt:P17 wd:Q40.
   }
   UNION
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
-      wdt:P17 wd:Q39. #switzerland
+    ?item (wdt:P31/(wdt:P279*)) wd:Q1365560;
+      wdt:P17 wd:Q40.
   }
   UNION
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q33506;
-      wdt:P17 wd:Q40. #austria
+    ?item (wdt:P31/(wdt:P279*)) wd:Q1365560;
+      wdt:P17 wd:Q39.
+  }
+  UNION
+  {
+    ?item (wdt:P31/(wdt:P279*)) wd:Q875538;
+      wdt:P17 wd:Q39.
   }
   ?item wdt:P4033 ?mastodon;
     wdt:P17 ?country.
@@ -24,6 +29,5 @@ export default {
     ?item rdfs:label ?itemLabel.
     ?country rdfs:label ?countryName.
   }
+}`
 }
-  `
-  }
