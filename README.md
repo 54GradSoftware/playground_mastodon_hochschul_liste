@@ -18,7 +18,7 @@ Bugs oder Feature wünsche können gerne als [Issue angelegt werden](https://git
 - [ ] Docker Container mehr konfigurierbar machen
 
 ## Lizenz
-Die komplette Software steht unter der MIT Lizens. [Die Lizenz findest du hier](/LICENSE)
+Die komplette Software steht unter der MIT Lizenz. [Die Lizenz findest du hier](/LICENSE)
 
 ## 54 Grad Software GmbH
 Wir freuen uns immer über neue Kontakte und Projekt(ideen). Mehr Infos zu findest du auf unserer [Website](https://www.54gradsoftware.de/) oder schreib uns direkt an kontakt@54gradsoftware.de. Mann kann uns auch auf Mastodon folgen [54gradsoftware@norden.social](https://norden.social/@54gradsoftware).
