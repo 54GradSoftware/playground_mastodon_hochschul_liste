@@ -3,22 +3,22 @@ export default {
     type: 'accounts',
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?countryName ?coordinates WHERE {
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q875538;
+    ?item (wdt:P31/(wdt:P279*)) wd:Q3918;
       wdt:P17 wd:Q40.
   }
   UNION
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q1365560;
+    ?item (wdt:P31/(wdt:P279*)) wd:Q3918;
       wdt:P17 wd:Q40.
   }
   UNION
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q1365560;
+    ?item (wdt:P31/(wdt:P279*)) wd:Q3918;
       wdt:P17 wd:Q39.
   }
   UNION
   {
-    ?item (wdt:P31/(wdt:P279*)) wd:Q875538;
+    ?item (wdt:P31/(wdt:P279*)) wd:Q3918;
       wdt:P17 wd:Q39.
   }
   ?item wdt:P4033 ?mastodon;
