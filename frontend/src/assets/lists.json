@@ -72,5 +72,16 @@
             "center": [10.4515, 51.1657],
             "zoom": 4
         }
+    },
+    {
+        "key": "fachgesellschaften-DE",
+        "type": "accounts",
+        "subTitle": "Fachgesellschaft DE",
+        "category": "Wissenschaft",
+        "icon": "pi pi-briefcase",
+        "map": {
+            "center": [10.4515, 51.1657],
+            "zoom": 5
+        }
     }
 ]

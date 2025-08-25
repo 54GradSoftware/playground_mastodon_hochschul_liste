@@ -7,6 +7,7 @@ import museumDACH from './queries/museum-DACH.js'
 import wissenschatlerInnenDe from './queries/wissenschaftler_innen-de.js'
 import hochschulenMastodonInstanceGLOBAL from './queries/hochschulen-mastodon-instance-GLOBAL.js'
 import hochschulenACH from './queries/hochschulen-ACH.js'
+import fachgesellschaftenDE from './queries/fachgesellschaften-DE.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -27,6 +28,8 @@ export const queries = [
   museumDACH,
   // Wissenschaftler:innen die auch deutsch Sprechen
   wissenschatlerInnenDe,
+  // Fachgesellschaften in Deutschland
+  fachgesellschaftenDE,
 ]
 
 
