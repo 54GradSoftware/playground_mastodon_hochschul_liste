@@ -44,10 +44,10 @@ const items = ref([
 
     },
     {
-        label: 'Kommunale Verwaltung (DE)',
+        label: 'Öffentliche Verwaltung (DE)',
         icon: 'pi pi-globe',
         hasSubmenu: true,
-        items: lists.filter(list => list.category === 'Kommunale Verwaltung (DE)')
+        items: lists.filter(list => list.category === 'Öffentliche Verwaltung (DE)')
             .map(list => ({
                 label: list.subTitle,
                 icon: list?.icon || 'pi pi-globe',

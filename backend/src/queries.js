@@ -8,6 +8,8 @@ import wissenschatlerInnenDe from './queries/wissenschaftler_innen-de.js'
 import hochschulenMastodonInstanceGLOBAL from './queries/hochschulen-mastodon-instance-GLOBAL.js'
 import hochschulenACH from './queries/hochschulen-ACH.js'
 import fachgesellschaftenDE from './queries/fachgesellschaften-DE.js'
+import bundesbehoerdenDE from './queries/bundesbehoerden-DE.js'
+import landesbehoerdenRegierungenDE from './queries/landesbehoerden-regierungen-DE.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -30,6 +32,10 @@ export const queries = [
   wissenschatlerInnenDe,
   // Fachgesellschaften in Deutschland
   fachgesellschaftenDE,
+  // Bundesbehörden in Deutschland
+  bundesbehoerdenDE,
+  // Landesbehörden und Landesregierungen in Deutschland
+  landesbehoerdenRegierungenDE,
 ]
 
 

@@ -30,15 +30,29 @@
         "key": "staedte-und-gemeinden-DE",
         "type": "accounts",
         "subTitle": "Städte und Gemeinden (DE)",
-        "category": "Kommunale Verwaltung (DE)",
+        "category": "Öffentliche Verwaltung (DE)",
         "icon": "pi pi-home"
     },
     {
         "key": "kreise-DE",
         "type": "accounts",
         "subTitle": "(Land-)Kreise und Kreisfreie Städte (DE)",
-        "category": "Kommunale Verwaltung (DE)",
+        "category": "Öffentliche Verwaltung (DE)",
         "icon": "pi pi-map"
+    },
+    {
+        "key": "bundesbehoerden-DE",
+        "type": "accounts",
+        "subTitle": "Bundesbehörden (DE)",
+        "category": "Öffentliche Verwaltung (DE)",
+        "icon": "pi pi-building"
+    },
+    {
+        "key": "landesbehoerden-regierungen-DE",
+        "type": "accounts",
+        "subTitle": "Landesbehörden und Landesregierungen (DE)",
+        "category": "Öffentliche Verwaltung (DE)",
+        "icon": "pi pi-objects-column"
     },
     {
         "key": "non-profit-organisationen-DE",
