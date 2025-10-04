@@ -42,7 +42,7 @@ const main = async () => {
               mastodonInstanceUrl = `${mastodonInstanceUrl}/`
             }
             const response = await axios.get(`${mastodonInstanceUrl}api/v2/instance`, {
-              timeout: 20_000
+              timeout: 25_000
             })
             accountLookup = response.data
           } catch (error) {
@@ -62,18 +62,18 @@ const main = async () => {
             })
             accountLookup = response.data
             //score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
+            filteredData.push({
+              ...result,
+              score,
+              accountLookup
+            })
           } catch (error) {
             console.error(error)
           }
-          filteredData.push({
-            ...result,
-            score,
-            accountLookup
-          })
         }
 
         // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 1_100));
       }
 
       filteredData = filteredData.sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
