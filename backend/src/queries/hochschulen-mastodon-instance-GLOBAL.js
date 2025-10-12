@@ -1,6 +1,7 @@
 export default {
     key: 'hochschulen-mastodon-instance-GLOBAL',
     type: 'instances',
+    isOrganisations: true,
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates ?countryName WHERE {
   { ?item (wdt:P31/(wdt:P279*)) wd:Q875538. }
   UNION

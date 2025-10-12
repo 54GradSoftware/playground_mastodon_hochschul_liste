@@ -66,6 +66,17 @@
         }
     },
     {
+        "key": "all-organisations",
+        "type": "accounts",
+        "subTitle": "Alle Organisationen",
+        "category": "Weitere",
+        "icon": null,
+        "map": {
+            "center": [10.4515, 51.1657],
+            "zoom": 5
+        }
+    },
+    {
         "key": "hochschulen-mastodon-instance-GLOBAL",
         "type": "instances",
         "subTitle": "Instanzen von Hochschulen auf Mastodon (Global)",

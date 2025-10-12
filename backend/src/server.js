@@ -13,7 +13,7 @@ app.get('/*', (req, res) => {
     const { url } = req;
     const requestKey = url.split('/')[1];
     const isValidKey = allKeys.includes(requestKey);
-    if (!isValidKey) {
+    if (!isValidKey && requestKey != 'all-organisations') {
         res.status(404).json({ error: 'Invalid key' });
         return;
     }else{

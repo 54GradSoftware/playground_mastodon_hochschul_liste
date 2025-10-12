@@ -1,6 +1,7 @@
 export default {
     key: 'landesbehoerden-regierungen-DE',
     type: 'accounts',
+    isOrganisations: true,
     sparqlQuery: `
 SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   {

@@ -1,6 +1,7 @@
 export default {
     key: 'fachgesellschaften-DE',
     type: 'accounts',
+    isOrganisations: true,
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
   {
     ?item wdt:P31/wdt:P279* wd:Q1391145;

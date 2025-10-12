@@ -16,6 +16,7 @@ const main = async () => {
   try {
     console.log('Starting to fetch data from Wikidata...')
     console.log('Queries to run:', queries.map(query => query.key).join(', '))
+    let allOrganistions = []
     for (const query of queries) {
       console.log('Running query:', query.key)
 
@@ -84,7 +85,7 @@ const main = async () => {
         totalToots: filteredData.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
         totalFollowers: filteredData.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
       }
-      if (query.key == 'wissenschaftler_innen-de') {
+      if (!query.isOrganisations) {
         meta = {
           ...meta,
           doingsStats:
@@ -97,6 +98,8 @@ const main = async () => {
             ).sort((a, b) => b.count - a.count)
 
         }
+      }else if(query?.type != 'instances'){
+        allOrganistions = [...allOrganistions, ...filteredData]
       }
       const jsonData = JSON.stringify({
         meta,
@@ -105,6 +108,22 @@ const main = async () => {
       writeFileSync(`./data/wikidata-mastodon-${query.key}.json`, jsonData);
       console.log('write json file', `./data/wikidata-mastodon-${query.key}.json`)
     }
+    // write all organistions to one file
+    allOrganistions = allOrganistions.filter((obj1, i, arr) =>
+      arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
+    )
+    .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
+    const jsonDataAllOrganistions = JSON.stringify({
+      meta: {
+        created_at: +new Date(),
+        mastodonAccounts: allOrganistions.length,
+        totalToots: allOrganistions.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
+        totalFollowers: allOrganistions.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
+      },
+      data: allOrganistions
+    })
+    writeFileSync(`./data/wikidata-mastodon-all-organisations.json`, jsonDataAllOrganistions);
+    console.log('write json file', `./data/wikidata-mastodon-all-organisations.json`)
   } catch (error) {
     console.error(error)
   }

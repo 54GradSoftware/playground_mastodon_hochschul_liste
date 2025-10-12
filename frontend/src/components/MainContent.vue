@@ -61,7 +61,7 @@ const loadData = async () => {
           score: item.score?.score,
           scoreData: item.score,
           coordinates: item?.coordinates?.value,
-          verified: !!item.accountLookup?.fields.find(field => !!field.verified_at),
+          verified: !!item.accountLookup?.fields?.find(field => !!field?.verified_at),
           countryName: item?.countryName?.value
         };
       }).sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count);

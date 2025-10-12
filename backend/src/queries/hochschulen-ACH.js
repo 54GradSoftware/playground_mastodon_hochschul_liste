@@ -1,6 +1,7 @@
 export default {
     key: 'hochschulen-ACH',
     type: 'accounts',
+    isOrganisations: true,
     sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?countryName ?coordinates WHERE {
   {
     ?item (wdt:P31/(wdt:P279*)) wd:Q3918;
