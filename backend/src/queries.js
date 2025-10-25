@@ -10,6 +10,7 @@ import hochschulenACH from './queries/hochschulen-ACH.js'
 import fachgesellschaftenDE from './queries/fachgesellschaften-DE.js'
 import bundesbehoerdenDE from './queries/bundesbehoerden-DE.js'
 import landesbehoerdenRegierungenDE from './queries/landesbehoerden-regierungen-DE.js'
+import archiveDE from './queries/archive-DE.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -17,7 +18,7 @@ export const queries = [
   // Forschungseinrichtungen und Institute in Deutschland
   instituteDE,
   // Städte und Gemeinden in Deutschland - Verwaltungseinheit vierter Ebene
-  staedteUndGemeindenDE ,
+  staedteUndGemeindenDE,
   // (Land-)Kreise und Kreisfreie Städe in Deutschland - Verwaltungseinheit dritter Ebene
   kreiseDE,
   // Non-Profit-Organisationen in Deutschland
@@ -36,6 +37,8 @@ export const queries = [
   bundesbehoerdenDE,
   // Landesbehörden und Landesregierungen in Deutschland
   landesbehoerdenRegierungenDE,
+  // Archive in Deutschland
+  archiveDE
 ]
 
 

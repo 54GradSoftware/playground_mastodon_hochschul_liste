@@ -61,7 +61,24 @@
         "category": "Weitere",
         "icon": null,
         "map": {
-            "center": [10.4515, 51.1657],
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "archive-DE",
+        "type": "accounts",
+        "subTitle": "Archive (DE)",
+        "category": "Weitere",
+        "icon": "pi pi-address-book",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
             "zoom": 5
         }
     },
@@ -72,7 +89,10 @@
         "category": "Weitere",
         "icon": null,
         "map": {
-            "center": [10.4515, 51.1657],
+            "center": [
+                10.4515,
+                51.1657
+            ],
             "zoom": 5
         }
     },
@@ -83,7 +103,10 @@
         "category": "Wissenschaft",
         "icon": null,
         "map": {
-            "center": [10.4515, 51.1657],
+            "center": [
+                10.4515,
+                51.1657
+            ],
             "zoom": 4
         }
     },
@@ -94,7 +117,10 @@
         "category": "Wissenschaft",
         "icon": "pi pi-database",
         "map": {
-            "center": [10.4515, 51.1657],
+            "center": [
+                10.4515,
+                51.1657
+            ],
             "zoom": 4
         }
     },
@@ -105,7 +131,10 @@
         "category": "Wissenschaft",
         "icon": "pi pi-briefcase",
         "map": {
-            "center": [10.4515, 51.1657],
+            "center": [
+                10.4515,
+                51.1657
+            ],
             "zoom": 5
         }
     }
