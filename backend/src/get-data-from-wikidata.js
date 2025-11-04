@@ -98,7 +98,7 @@ const main = async () => {
             ).sort((a, b) => b.count - a.count)
 
         }
-      }else if(query?.type != 'instances'){
+      } else if (query?.type != 'instances') {
         allOrganistions = [...allOrganistions, ...filteredData]
       }
       const jsonData = JSON.stringify({
@@ -112,7 +112,7 @@ const main = async () => {
     allOrganistions = allOrganistions.filter((obj1, i, arr) =>
       arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
     )
-    .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
+      .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
     const jsonDataAllOrganistions = JSON.stringify({
       meta: {
         created_at: +new Date(),
@@ -136,7 +136,7 @@ const getWikidataResults = async (key, sparqlQuery) => {
       timeout: 65000,
       headers: {
         'Accept': 'application/sparql-results+json',
-        userAgent
+        ...userAgent
       }
     })
     const results = data.results.bindings
