@@ -2,7 +2,7 @@ import { WBK } from 'wikibase-sdk'
 import axios from 'axios'
 import { writeFileSync } from 'fs'
 import { queries } from './queries.js'
-import { calculateMastodonAccountScore } from "mastodon-profile-checker"
+import { calculateMastodonAccountScore } from "mastodon-account-checker"
 
 // Make sure you initialize wbk with a sparqlEndpoint
 const wbk = WBK({
@@ -62,7 +62,7 @@ const main = async () => {
               timeout: 15_000
             })
             accountLookup = response.data
-            //score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
+            score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
             filteredData.push({
               ...result,
               score,

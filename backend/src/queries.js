@@ -11,6 +11,7 @@ import fachgesellschaftenDE from './queries/fachgesellschaften-DE.js'
 import bundesbehoerdenDE from './queries/bundesbehoerden-DE.js'
 import landesbehoerdenRegierungenDE from './queries/landesbehoerden-regierungen-DE.js'
 import archiveDE from './queries/archive-DE.js'
+import schulenDE from './queries/schulen-DE.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -38,7 +39,9 @@ export const queries = [
   // Landesbehörden und Landesregierungen in Deutschland
   landesbehoerdenRegierungenDE,
   // Archive in Deutschland
-  archiveDE
+  archiveDE,
+  // Schulen in Deutschland
+  schulenDE
 ]
 
 

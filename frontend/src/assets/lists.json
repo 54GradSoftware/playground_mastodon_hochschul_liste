@@ -137,5 +137,19 @@
             ],
             "zoom": 5
         }
+    },
+    {
+        "key": "schulen-DE",
+        "type": "accounts",
+        "subTitle": "Schulen DE",
+        "category": "Weitere",
+        "icon": "pi pi-book",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
     }
 ]
