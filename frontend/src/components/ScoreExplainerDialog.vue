@@ -131,7 +131,8 @@ const mastodonServerUrl = computed(() => {
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
                                 <i :class="result.values.discoverable ? 'pi pi-check-circle' : 'pi pi-times-circle'"
                                     :style="{ color: result.values.discoverable ? 'var(--p-green-500)' : 'var(--p-red-500)' }"></i>
-                                <span>Auffindbar (Discoverable)</span>
+                                <span>Auffindbar - "Profil und Beiträge in Suchalgorithmen berücksichtigen"
+                                    (Discoverable)</span>
                                 <Tag :value="`${result.values.discoverable ? result.scoreMatrix.discoverable : 0}/${result.scoreMatrix.discoverable} Punkte`"
                                     :severity="result.values.discoverable ? 'success' : 'danger'" />
                             </div>
@@ -156,7 +157,7 @@ const mastodonServerUrl = computed(() => {
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
                                 <i :class="result.values.indexable === true ? 'pi pi-check-circle' : 'pi pi-times-circle'"
                                     :style="{ color: result.values.indexable === true ? 'var(--p-green-500)' : 'var(--p-red-500)' }"></i>
-                                <span>Indexierbar</span>
+                                <span>Indexierbar - "Öffentliche Beiträge in die Suchergebnisse einbeziehen"</span>
                                 <Tag :value="`${result.values.indexable === true ? result.scoreMatrix.indexable : 0}/${result.scoreMatrix.indexable} Punkte`"
                                     :severity="result.values.indexable === true ? 'success' : 'danger'" />
                             </div>
