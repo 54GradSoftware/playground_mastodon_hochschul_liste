@@ -2,7 +2,7 @@ export default{
     key: 'kreise-DE',
     type: 'accounts',
     isOrganisations: true,
-    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates WHERE {
+    sparqlQuery: `SELECT ?item ?itemLabel ?mastodon ?coordinates ?population WHERE {
   { ?item wdt:P31 wd:Q61856889. } # Kreis in Schleswig-Holstein
   UNION
   { ?item wdt:P31 wd:Q17302772. } # Landkreis in Sachsen-Anhalt
@@ -62,6 +62,7 @@ export default{
   { ?item wdt:P31 wd:Q17278423. } # Bremen
   ?item wdt:P4033 ?mastodon.
   OPTIONAL { ?item wdt:P625 ?coordinates. }
+  OPTIONAL { ?item wdt:P1082 ?population. }
 SERVICE wikibase:label { bd:serviceParam wikibase:language "de, en". }
 }
 `

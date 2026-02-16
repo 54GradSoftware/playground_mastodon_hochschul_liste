@@ -77,11 +77,12 @@ const main = async () => {
         await new Promise(resolve => setTimeout(resolve, 1_100));
       }
 
-      filteredData = filteredData.sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
+      filteredData = filteredData.sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
 
       let meta = {
         created_at: +new Date(),
         mastodonAccounts: filteredData.length,
+        totalPopulation: filteredData.map(obj => obj.population?.value).filter(population => !!population).reduce((acc, population) => acc + parseInt(population), 0),
         totalToots: filteredData.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
         totalFollowers: filteredData.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
       }
@@ -112,7 +113,7 @@ const main = async () => {
     allOrganistions = allOrganistions.filter((obj1, i, arr) =>
       arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
     )
-      .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
+      .sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
     const jsonDataAllOrganistions = JSON.stringify({
       meta: {
         created_at: +new Date(),
