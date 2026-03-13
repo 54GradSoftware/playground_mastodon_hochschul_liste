@@ -16,7 +16,7 @@ import volkshochschulenDE from './queries/volkshochschulen-DE.js'
 import bibliothekenDE from './queries/bibliotheken-DE.js'
 import { nlQueries } from './queries/NL/index.js'
 
-export const queries = [/*
+export const queries = [
   // Hochschulen und Universitäten in Deutschland
   hochschulenDE,
   // Forschungseinrichtungen und Institute in Deutschland
@@ -45,7 +45,6 @@ export const queries = [/*
   archiveDE,
   // Schulen in Deutschland
   schulenDE,
-  */
   // Volkshochschulen in Deutschland
   volkshochschulenDE,
   // Bibliotheken in Deutschland
