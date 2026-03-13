@@ -1,0 +1,207 @@
+{
+  "nav": {
+    "science": "Wissenschaft",
+    "publicAdministration": "Öffentliche Verwaltung (DE)",
+    "other": "Weitere",
+    "netherlands": "Niederlande (NL)",
+    "faq": "FAQ",
+    "mastodonLists": "Mastodon Listen"
+  },
+  "main": {
+    "listNotFound": "Liste nicht gefunden",
+    "accounts": "Accounts",
+    "instances": "Instanzen",
+    "loading": "Daten werden geladen.",
+    "listTitle": "Liste Mastodon {type}",
+    "createdAt": "Erstellt am: {date}",
+    "description": "Liste der {mastodonLink} {type} aller {subTitle}. Die Daten stammen von {wikidataLink}.",
+    "totalCount": "Insgesamt gibt es {count} {type}",
+    "withToots": "mit insgesamt {count} Toots ",
+    "andFollowers": "und insgesamt {count} Follower",
+    "totalPopulation": "Die Gesamtbevölkerung beträgt {count}.",
+    "table": "Tabelle",
+    "map": "Karte",
+    "dataSource": "Formatierte Datenquelle im JSON Format",
+    "lastUpdated": "Das letzte mal wurden die Daten aktualisiert: {date}",
+    "copyList": "Liste aller Mastodon Accounts zum kopieren"
+  },
+  "table": {
+    "avatar": "Profilbild",
+    "avatarAlt": "Profilbild von {name}",
+    "name": "Name",
+    "mastodon": "Mastodon",
+    "country": "Land",
+    "score": "Score",
+    "follower": "Follower",
+    "toots": "Toots",
+    "lastToot": "Letzter Toot",
+    "created": "Erstellt",
+    "verified": "Verifiziert",
+    "wikidata": "Wikidata",
+    "resetSearch": "Suche zurücksetzen",
+    "search": "Suche",
+    "noData": "Es können keine Daten angezeigt werden.",
+    "activeAccounts": "Aktive Accounts",
+    "version": "Version",
+    "languages": "Sprachen"
+  },
+  "doings": {
+    "sharedBy": "Folgende Tätigkeiten wurden von 5 oder mehr Forscher*innen geteilt:",
+    "tip": "Tipp: In der Suche kann auch nach Aktivität gefiltert werden, alternativ in dieser Liste auf eine Aktivität klicken."
+  },
+  "statistics": {
+    "title": "Statistik dieser Liste",
+    "avgScore": "Ø Score",
+    "displayName": "Anzeigename",
+    "profileDescription": "Profilbeschreibung",
+    "discoverable": "Auffindbar",
+    "indexable": "Indexierbar",
+    "verifiedLinks": "Verifizierte Links",
+    "pinnedPosts": "Angeheftete Beiträge",
+    "note": "Die Statistik berücksichtigt nur Accounts, die innerhalb des letzten Jahres mindestens einen Toot veröffentlicht haben."
+  },
+  "export": {
+    "followImport": "Accounts folgen Importieren",
+    "listImport": "Liste mit Accounts Importieren",
+    "dialogTitle": "Mastodon Importieren",
+    "intro": "Stand 18.03.2025: Wenn du allen Mastodon-Accounts in der Tabelle folgen möchtest oder eine Liste mit allen Accounts anlegen möchtest, kannst du die CSV-Datei in der Standardweboberfläche in deinen Einstellungen importieren.",
+    "warning": "Wenn du eine Liste mit Accounts erstellen möchtest, musst du zuerst allen Accounts folgen. Die \"Accounts folgen\" muss zuerst importiert werden, bevor die \"Liste mit Accounts\" importiert werden kann.",
+    "moreAboutLists": "Mehr zum Thema Listen in Mastodon (Englisch)",
+    "step1": "Du findest die Einstellungen entweder, indem du auf das Zahnradsymbol drückst oder einfach auf \"Einstellungen\" klickst.",
+    "step2": "Und dann klickst du auf \"Importieren und Exportieren\".",
+    "step3": "Klick dann bitte weiter auf \"Importieren\".",
+    "step4": "Du siehst jetzt ein Formular. Wähle dort unter \"Typ\" den Wert \"Folge ich\" wenn du den Accounts folgende möchtest oder \"Listen\" aus. Im nächsten Schritt wählst du unter dem Punkt \"Daten\" die heruntergeladene CSV-Liste. Anschließend importierst du mit dem Punkt \"Datei importieren\" die Accounts.",
+    "step5": "Tipp: Wenn du eine Liste erstellt hast, kannst du dir die Toots aus dieser Liste in der erweiterten Ansicht (Einstellungen -> Design -> Erweitertes Webinterface verwenden) von Mastodon anzeigen lassen, indem du auf das Icon \"Listen\" klickst. Du kannst diese Liste auch als Spalte an Permament anheften. Am Anfang ist diese Spalte leer und füllt sich erst nach und nach.",
+    "close": "Schließen",
+    "follow": "Folgen",
+    "list": "Liste"
+  },
+  "mapConsent": {
+    "title": "Datenschutz",
+    "description": "Die Kartensoftware wird vom externen Anbieter {mapboxLink} bereitgestellt. Es gilt die {privacyLink}. Bei der Zustimmung zum Laden der Karten wird u.a. die IP-Adresse mit dem Anbieter geteilt.",
+    "mapboxPrivacy": "Datenschutzerklärung von Mapbox Inc",
+    "consent": "Zustimmen und Karte anzeigen"
+  },
+  "mapPopup": {
+    "mastodon": "Mastodon:",
+    "follower": "Follower:",
+    "toots": "Toots:",
+    "lastToot": "Letzter Toot:",
+    "created": "Erstellt:",
+    "verified": "Verifiziert:",
+    "activeAccounts": "Aktive Accounts:",
+    "scrollCtrl": "Zum Vergrößern der Karte Strg + Scrollen verwenden.",
+    "scrollCmd": "Zum Vergrößern der Karte ⌘ + Scrollen verwenden."
+  },
+  "score": {
+    "title": "Score Erklärung",
+    "ariaLabel": "Analyseergebnis",
+    "excellent": "Ausgezeichnet",
+    "good": "Gut",
+    "needsImprovement": "Verbesserungswürdig",
+    "optimizationRecommended": "Optimierung empfohlen",
+    "detailedRating": "Detaillierte Bewertung",
+    "points": "{points} Punkte",
+    "optimized": "Dein Account ist hervorragend optimiert! Weiter so!",
+    "testAny": "Einfach jeden Mastodon Account testen",
+    "displayName": {
+      "title": "Anzeigename",
+      "description": "Ein Anzeigename hilft anderen, dich auf den ersten Blick zu erkennen. Er kann von deinem Benutzernamen abweichen und Emojis oder deinen echten Namen enthalten.",
+      "yours": "Dein Anzeigename:",
+      "tip": "Gehe zu {link} und füge einen Anzeigenamen hinzu.",
+      "tipLinkText": "Einstellungen > Profil"
+    },
+    "bio": {
+      "title": "Profilbeschreibung (Bio)",
+      "description": "Die Profilbeschreibung gibt anderen einen Einblick in deine Interessen, deinen Beruf oder deine Persönlichkeit. Sie ist oft das Erste, was Leute lesen.",
+      "tip": "Erzähle anderen etwas über dich in deiner {link}.",
+      "tipLinkText": "Profilbeschreibung"
+    },
+    "discoverable": {
+      "title": "Auffindbar - \"Profil und Beiträge in Suchalgorithmen berücksichtigen\" (Discoverable)",
+      "description": "Wenn diese Option aktiviert ist, erscheint dein Profil im Profilverzeichnis deiner Instanz. Dies macht es für andere einfacher, neue interessante Accounts zu entdecken.",
+      "tip": "Aktiviere \"Im Profilverzeichnis erscheinen\" in den {link}.",
+      "tipLinkText": "Einstellungen > Datenschutz und Reichweite"
+    },
+    "indexable": {
+      "title": "Indexierbar - \"Öffentliche Beiträge in die Suchergebnisse einbeziehen\"",
+      "description": "Erlaubt es, dass deine öffentlichen Beiträge in der Suche gefunden werden können. Dies erhöht deine Sichtbarkeit im Fediverse erheblich.",
+      "tip": "Erlaube die Indexierung deiner Beiträge in den {link}.",
+      "tipLinkText": "Einstellungen > Datenschutz und Reichweite"
+    },
+    "verifiedLinks": {
+      "title": "Verifizierte Links",
+      "description": "Verifizierte Links beweisen, dass du der Besitzer einer Website bist. Du kannst dies tun, indem du einen speziellen Link auf deiner Website einbaust, der zurück auf dein Mastodon-Profil verweist.",
+      "yours": "Verifizierte Links:",
+      "tip": "Gehe zu {link} und füge einen rel=\"me\" Link auf deiner Website hinzu.",
+      "tipLinkText": "Einstellungen > Öffentliches Profil > Verifizierung"
+    },
+    "pinnedPosts": {
+      "title": "Angeheftete Beiträge",
+      "description": "Angeheftete Beiträge erscheinen oben auf deinem Profil und sind das Erste, was Besucher sehen. Nutze sie, um wichtige Informationen über dich oder deine besten Beiträge hervorzuheben.",
+      "yours": "Angeheftete Beiträge:",
+      "tip": "Hefte interessante Beiträge an, damit Profilbesucher sie sofort sehen."
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "lists": "Listen",
+    "listsDescription": "Es gibt verschiedene Listen mit unterschiedlichen Kategorien:",
+    "mastodon": "Mastodon",
+    "mastodonDescription": "Mastodon ist ein dezentrales soziales Netzwerk, das auf offenen Standards basiert. Es ist Teil eines größeren Netzwerks namens Fediverse. Mehr Informationen darüber, was Mastodon genau ist, gibt es hier: {joinLink}. Weitere Informationen findest auch in unserem {blogLink}.",
+    "blogLinkText": "Blogartikel: \"Hackathons & super RE-toot\"",
+    "howCanBenefit": "Wie können Hochschulen und Universitäten von dezentralen sozialen Netzwerken profitieren?",
+    "fediverse": "Hochschulen aller Länder ins Fediverse!",
+    "fediverseQuote": "Während viel über ein mögliches Engagement öffentlich-rechtlicher Medien im Fediverse diskutiert wird, sind die Potenziale von Fediverse-Instanzen von Hochschulen bislang kaum Thema. Dabei wäre es höchste Zeit, dass sich gerade Hochschulen ins Fediverse begeben. Ein Aufruf.",
+    "fullArticle": "Den ganzen Artikel dazu findet ihr {netzpolitikLink} dort gibt es auch folgenden Lesenswerten Artikel: {interviewLink}.",
+    "netzpolitikLinkText": "auf netzpolitik.org",
+    "interviewLinkText": "\"Souveränität über eigene, zentrale Kommunikationsräume\"",
+    "wikidataTitle": "Wikidata",
+    "wikidataDescription": "Wikidata ist eine freie Wissensdatenbank der Wikimedia Foundation. Man kann es sich wie Wikipedia vorstellen, aber mit strukturierten Daten. Mehr Informationen gibt es hier: {wikidataLink} oder in unserem Blog Artikel: {blogLink}.",
+    "wikidataBlogLinkText": "\"Wikidata oder Linked Open Data\"",
+    "wikidataDataExplanation": "Wir haben die Daten also nicht selbst händisch zusammengetragen, sondern holen uns jeden Tag über eine Schnittstelle die Daten von allen Hochschulen und Universitäten in Deutschland.",
+    "queryLinked": "Wir haben den {queryLink} einmal verlinkt.",
+    "queryLinkText": "Query",
+    "addDataTitle": "Daten hinzufügen oder ändern",
+    "addDataDescription": "Jeder kann bei Wikidata mitmachen und Daten hinzufügen. Weitere Informationen findest du im Artikel über {dataObjectsLink}. Ganz konkret musst du zuerst das richtige Datenobjekt finden. In unserem Fall die {europaUniLink}. Dort gibt es verschiedene Aussagen. Wenn du bereits einen Mastodon-Account hast und diesen Mastodon Account ändern möchtest, kannst du einfach zu dem bestehenden Statement \"Mastodon Adresse\" gehen und den Inhalt Bearbeiten. Dies ist teilweise nur mit Account möglich. Wenn es noch keine Aussage zu Mastodon gibt, musst du eine neue neue Aussage hinzufügen. Mit dem Wert \"Mastodon Adresse\" und dann das Mastodon Account Handle. Nachdem Veröffentlichen\" gedrückt hast, ist der Wert nun verfügbar. Wenn wir das nächste Mal Daten abrufen, wird der Wert auch angezeigt.",
+    "dataObjectsLinkText": "Datenobjekte",
+    "europaUniLinkText": "Europa-Universität Flensburg (Q506436)"
+  },
+  "footer": {
+    "by": "Von:",
+    "github": "GitHub (Software)",
+    "license": "MIT-Lizenz",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz"
+  },
+  "common": {
+    "yes": "Ja",
+    "no": "Nein",
+    "tip": "Tipp:"
+  },
+  "lists": {
+    "hochschulen-DE": "Hochschulen und Universitäten (DE)",
+    "hochschulen-ACH": "Hochschulen und Universitäten (AT, CH)",
+    "institute-DE": "Forschungseinrichtung (DE)",
+    "wissenschaftler_innen-de": "Wissenschaftler*innen (de)",
+    "staedte-und-gemeinden-DE": "Städte und Gemeinden (DE)",
+    "kreise-DE": "(Land-)Kreise und Kreisfreie Städte (DE)",
+    "bundesbehoerden-DE": "Bundesbehörden (DE)",
+    "landesbehoerden-regierungen-DE": "Landesbehörden und Landesregierungen (DE)",
+    "non-profit-organisationen-DE": "Non-Profit-Organisationen (DE)",
+    "archive-DE": "Archive (DE)",
+    "all-organisations": "Alle Organisationen (DACH)",
+    "hochschulen-mastodon-instance-GLOBAL": "Instanzen von Hochschulen auf Mastodon (Global)",
+    "museum-DACH": "Museen (DACH)",
+    "fachgesellschaften-DE": "Fachgesellschaften DE",
+    "schulen-DE": "Schulen DE",
+    "hochschulen-NL": "Hochschulen und Universitäten (NL)",
+    "behoerden-NL": "Behörden (NL)",
+    "institute-NL": "Forschungseinrichtungen (NL)",
+    "non-profit-organisationen-NL": "Non-Profit-Organisationen (NL)",
+    "staedte-und-gemeinden-NL": "Städte und Gemeinden (NL)",
+    "grosse-staedte-DE": "Große Städte (DE)",
+    "volkshochschulen-DE": "Volkshochschulen (DE)",
+    "bibliotheken-DE": "Bibliotheken (DE)"
+  }
+}

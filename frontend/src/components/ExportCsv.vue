@@ -1,8 +1,11 @@
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InlineMessage from 'primevue/inlinemessage';
+
+const { t, locale } = useI18n()
 
 const props = defineProps({
     tableData: {
@@ -20,8 +23,8 @@ const props = defineProps({
 })
 
 const typeKeys = {
-    follow: 'Folgen',
-    list: 'Liste'
+    follow: () => t('export.follow'),
+    list: () => t('export.list')
 }
 
 const visible = ref(false)
@@ -52,7 +55,7 @@ const downloadCSVExport = (type) => {
         const anchor = document.createElement('a');
         anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
         anchor.target = '_blank';
-        anchor.download = `${typeKeys[type]}-${props.name}-${new Date().toLocaleDateString("de-DE")}.csv`
+        anchor.download = `${typeKeys[type]()}-${props.name}-${new Date().toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US')}.csv`
         anchor.click();
         console.log(csvData);
     } catch (error) {
@@ -62,31 +65,27 @@ const downloadCSVExport = (type) => {
 </script>
 <template>
     <div>
-        <Button icon="pi pi-download" label="Accounts folgen Importieren" @click="downloadCSVExport('follow')" />
-        <Button class="mt-1 xl:ml-1" icon="pi pi-list" label="Liste mit Accounts Importieren"
+        <Button icon="pi pi-download" :label="t('export.followImport')" @click="downloadCSVExport('follow')" />
+        <Button class="mt-1 xl:ml-1" icon="pi pi-list" :label="t('export.listImport')"
             @click="downloadCSVExport('list')" />
     </div>
-    <Dialog v-model:visible="visible" modal header="Mastodon Importieren" :style="{ width: '50rem', max_width: '90vw' }">
+    <Dialog v-model:visible="visible" modal :header="t('export.dialogTitle')" :style="{ width: '50rem', max_width: '90vw' }">
         <div>
-            Stand 18.03.2025: Wenn du allen Mastodon-Accounts in der Tabelle folgen möchtest oder eine Liste mit allen Accounts anlegen möchtest, kannst du die CSV-Datei in
-            der Standardweboberfläche in deinen Einstellungen importieren.
+            {{ t('export.intro') }}
 
-            <InlineMessage severity="warn" class="mt-2 mb-2">Wenn du eine Liste mit Accounts erstellen möchtest, musst du zuerst allen Accounts folgen. Die "Accounts folgen" muss zuerst importiert werden, bevor die "Liste mit Accounts" importiert werden kann.</InlineMessage>
-            <a href="https://fedi.tips/how-to-use-the-lists-feature-on-mastodon/" target="_blank">Mehr zum Thema Listen in Mastodon (Englisch) <i class="pi pi-external-link"></i></a>
+            <InlineMessage severity="warn" class="mt-2 mb-2">{{ t('export.warning') }}</InlineMessage>
+            <a href="https://fedi.tips/how-to-use-the-lists-feature-on-mastodon/" target="_blank">{{ t('export.moreAboutLists') }} <i class="pi pi-external-link"></i></a>
 
             <ol>
-                <li>Du findest die Einstellungen entweder, indem du auf das Zahnradsymbol drückst oder einfach auf
-                    "Einstellungen" klickst.</li>
-                <li>Und dann klickst du auf "Importieren und Exportieren".</li>
-                <li>Klick dann bitte weiter auf "Importieren".</li>
-                <li>Du siehst jetzt ein Formular. Wähle dort unter "Typ" den Wert "Folge ich" wenn du den Accounts folgende möchtest oder "Listen" aus. Im nächsten Schritt
-                    wählst du unter dem Punkt "Daten" die heruntergeladene CSV-Liste. Anschließend importierst du mit
-                    dem Punkt "Datei importieren" die Accounts.</li>
-                <li>Tipp: Wenn du eine Liste erstellt hast, kannst du dir die Toots aus dieser Liste in der erweiterten Ansicht (Einstellungen -> Design -> Erweitertes Webinterface verwenden) von Mastodon anzeigen lassen, indem du auf das Icon "Listen" klickst. Du kannst diese Liste auch als Spalte an Permament anheften. Am Anfang ist diese Spalte leer und füllt sich erst nach und nach.</li>
+                <li>{{ t('export.step1') }}</li>
+                <li>{{ t('export.step2') }}</li>
+                <li>{{ t('export.step3') }}</li>
+                <li>{{ t('export.step4') }}</li>
+                <li>{{ t('export.step5') }}</li>
             </ol>
         </div>
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Schließen" @click="visible = false"></Button>
+            <Button type="button" :label="t('export.close')" @click="visible = false"></Button>
         </div>
     </Dialog>
 </template>

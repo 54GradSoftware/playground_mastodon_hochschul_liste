@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
@@ -9,6 +10,8 @@ import InputText from 'primevue/inputtext';
 import Image from 'primevue/image';
 import { formatNumber } from '../helper.js'
 import { FilterMatchMode } from 'primevue/api';
+
+const { t } = useI18n()
 
 const filters = ref();
 
@@ -37,7 +40,7 @@ const clearFilter = () => {
     <template #header>
       <div class="flex justify-content-between">
         <div>
-          <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash" label="Suche zurücksetzen"
+          <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash" :label="t('table.resetSearch')"
             outlined @click="clearFilter()" />
         </div>
         <div class="flex justify-content-end">
@@ -45,53 +48,52 @@ const clearFilter = () => {
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Suche" aria-label="Suche" />
+            <InputText v-model="filters['global'].value" :placeholder="t('table.search')" :aria-label="t('table.search')" />
           </IconField>
         </div>
       </div>
     </template>
-    <Column field="avatar" header="Profilbild">
+    <Column field="avatar" :header="t('table.avatar')">
       <template #body="slotProps">
-        <Image :alt="'Profilbild von ' + slotProps.data.name" :src="`${slotProps.data?.accountLookup?.avatar_static}`"
+        <Image :alt="t('table.avatarAlt', { name: slotProps.data.name })" :src="`${slotProps.data?.accountLookup?.avatar_static}`"
           width="85" height="85" />
       </template>
     </Column>
-    <Column field="filerNmame" header="Name" sortable>
+    <Column field="filerNmame" :header="t('table.name')" sortable>
       <template #body="slotProps">
         {{ slotProps.data.name }}
       </template>
     </Column>
-    <Column field="mastodon" header="Mastodon" sortable>
+    <Column field="mastodon" :header="t('table.mastodon')" sortable>
       <template #body="slotProps">
         <a target="_blank" :href="slotProps.data.mastodon">
           {{ slotProps.data.mastodon }}
         </a>
       </template>
     </Column>
-    <Column field="countryName" header="Land" sortable />
-    <Column field="users_active_last_month" header="Aktive Accounts" sortable>
+    <Column field="countryName" :header="t('table.country')" sortable />
+    <Column field="users_active_last_month" :header="t('table.activeAccounts')" sortable>
       <template #body="slotProps">
         {{ formatNumber(slotProps.data?.users_active_last_month) }}
       </template>
     </Column>
-    <Column field="version" header="Version">
+    <Column field="version" :header="t('table.version')">
       <template #body="slotProps">
         {{ slotProps.data?.version }}
       </template>
     </Column>
-    <Column field="laguages" header="Sprachen">
+    <Column field="laguages" :header="t('table.languages')">
       <template #body="slotProps">
-        <!-- languages are array, transform to string-->
         {{ slotProps.data?.laguages.join(", ") }}
       </template>
     </Column>
-    <Column field="wikidata" header="Wikidata">
+    <Column field="wikidata" :header="t('table.wikidata')">
       <template #body="slotProps">
         <a target="_blank" :href="slotProps.data.item">
           {{ slotProps.data.item }}
         </a>
       </template>
     </Column>
-    <template #empty> Es können keine Daten angezeigt werden. </template>
+    <template #empty> {{ t('table.noData') }} </template>
   </DataTable>
 </template>

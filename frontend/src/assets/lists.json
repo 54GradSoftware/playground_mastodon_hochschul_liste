@@ -151,5 +151,103 @@
             ],
             "zoom": 5
         }
+    },
+    {
+        "key": "volkshochschulen-DE",
+        "type": "accounts",
+        "subTitle": "Volkshochschulen (DE)",
+        "category": "Weitere",
+        "icon": "pi pi-book",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "bibliotheken-DE",
+        "type": "accounts",
+        "subTitle": "Bibliotheken (DE)",
+        "category": "Weitere",
+        "icon": "pi pi-book",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "hochschulen-NL",
+        "type": "accounts",
+        "subTitle": "Hochschulen und Universitäten (NL)",
+        "category": "Niederlande (NL)",
+        "icon": "pi pi-building-columns",
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "behoerden-NL",
+        "type": "accounts",
+        "subTitle": "Behörden (NL)",
+        "category": "Niederlande (NL)",
+        "icon": "pi pi-building",
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "institute-NL",
+        "type": "accounts",
+        "subTitle": "Forschungseinrichtungen (NL)",
+        "category": "Niederlande (NL)",
+        "icon": "pi pi-warehouse",
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "non-profit-organisationen-NL",
+        "type": "accounts",
+        "subTitle": "Non-Profit-Organisationen (NL)",
+        "category": "Niederlande (NL)",
+        "icon": null,
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "staedte-und-gemeinden-NL",
+        "type": "accounts",
+        "subTitle": "Städte und Gemeinden (NL)",
+        "category": "Niederlande (NL)",
+        "icon": "pi pi-home",
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
     }
 ]

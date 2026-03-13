@@ -1,9 +1,15 @@
 <script setup>
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useI18n } from 'vue-i18n'
 import { formatDate, formatNumber, formatBoolean } from '../helper.js'
 import { getCurrentList } from '../helper.js'
+import { useRoute } from 'vue-router'
 import MastodonLink from './MastodonLink.vue';
+
+const { t } = useI18n()
+const route = useRoute()
+const currentList = getCurrentList(route.params.liste)
 
 const props = defineProps({
     mapCenter: {
@@ -38,8 +44,8 @@ const formatCoordinates = (coordinates) => {
         access-token="pk.eyJ1Ijoic2JyYSIsImEiOiJjbG02ZjF6ZDgwbG1jM2VtbWZyNXkza2E3In0.lRf9QNEJKwhvuirQwPKFCA"
         map-style="mapbox://styles/mapbox/streets-v11" :center="mapCenter" :zoom="mapZoom"
         :cooperativeGestures="!isMobile()" :locale="{
-            'ScrollZoomBlocker.CtrlMessage': 'Zum Vergrößern der Karte Strg + Scrollen verwenden.',
-            'ScrollZoomBlocker.CmdMessage': 'Zum Vergrößern der Karte ⌘ + Scrollen verwenden.'
+            'ScrollZoomBlocker.CtrlMessage': t('mapPopup.scrollCtrl'),
+            'ScrollZoomBlocker.CmdMessage': t('mapPopup.scrollCmd')
         }">
         <template v-for="entry in data" :key="entry.item">
             <MapboxMarker v-if="formatCoordinates(entry.coordinates)" :lng-lat="formatCoordinates(entry.coordinates)"
@@ -48,26 +54,26 @@ const formatCoordinates = (coordinates) => {
                     <div class="mapbox-popup-content">
                         <h2>{{ entry.name }}</h2>
                         <ul>
-                            <li><b>Mastodon: </b>
-                                <template v-if="getCurrentList().type=== 'accounts'">
+                            <li><b>{{ t('mapPopup.mastodon') }} </b>
+                                <template v-if="currentList.type=== 'accounts'">
                                     <MastodonLink :mastodonHandle="entry.mastodon" />
                                 </template>
-                                <template v-else-if="getCurrentList().type=== 'instances'">
+                                <template v-else-if="currentList.type=== 'instances'">
                                     <a target="_blank" :href="entry.mastodon">
                                                         {{ entry.mastodon }}
                                                         </a>
                                 </template>
                             </li>
-                            <li v-if="entry.accountLookup?.followers_count"><b>Follower: </b> {{
+                            <li v-if="entry.accountLookup?.followers_count"><b>{{ t('mapPopup.follower') }} </b> {{
                                 formatNumber(entry.accountLookup?.followers_count) }}</li>
-                            <li v-if="entry.accountLookup?.statuses_coun"><b>Toots: </b> {{
+                            <li v-if="entry.accountLookup?.statuses_coun"><b>{{ t('mapPopup.toots') }} </b> {{
                                 formatNumber(entry.accountLookup?.statuses_count) }}</li>
-                            <li v-if="entry.accountLookup?.last_status_at"><b>Letzter Toot: </b> {{
+                            <li v-if="entry.accountLookup?.last_status_at"><b>{{ t('mapPopup.lastToot') }} </b> {{
                                 formatDate(entry.accountLookup?.last_status_at) }}</li>
-                            <li v-if="entry.accountLookup?.created_at"><b>Erstellt: </b> {{
+                            <li v-if="entry.accountLookup?.created_at"><b>{{ t('mapPopup.created') }} </b> {{
                                 formatDate(entry.accountLookup?.created_at) }}</li>
-                            <li v-if="entry.verified"><b>Verifiziert: </b> {{ formatBoolean(entry.verified) }}</li>
-                            <li v-if="entry.users_active_last_month"><b>Aktive Accounts: </b> {{
+                            <li v-if="entry.verified"><b>{{ t('mapPopup.verified') }} </b> {{ formatBoolean(entry.verified) }}</li>
+                            <li v-if="entry.users_active_last_month"><b>{{ t('mapPopup.activeAccounts') }} </b> {{
                                 formatNumber(entry.users_active_last_month) }}</li>
                         </ul>
                     </div>

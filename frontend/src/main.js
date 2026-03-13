@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import { createPlausible } from 'v-plausible/vue'
 import PrimeVue from 'primevue/config';
+import i18n from './i18n'
+import router from './router'
 import App from './App.vue'
 
 
@@ -11,6 +13,8 @@ import 'primeicons/primeicons.css'
 
 const app = createApp(App)
     .use(PrimeVue)
+    .use(i18n)
+    .use(router)
     if(import.meta.env.VITE_ENABLE_PLAUSIBLE_ANALYTICS === 'true'){
         const plausible = createPlausible({
             init: {
@@ -24,7 +28,7 @@ const app = createApp(App)
             },
             partytown: false,
           })
-          
+
     app.use(plausible)
 }
     app.mount('#app')

@@ -1,16 +1,21 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProgressSpinner from 'primevue/progressspinner'
 import InputText from 'primevue/inputtext'
 import ExportCsv from './ExportCsv.vue'
-import { getCurrentList, formatDate, formatNumber } from '../helper.js'
+import { getCurrentList, formatDate, formatNumber, getLocalizedLabel } from '../helper.js'
 import MainMap from './MainMap.vue'
 import MapConsentWrapper from './MapConsentWrapper.vue'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InstancesTables from './InstancesTable.vue'
 import AccountsTable from './AccountsTable.vue'
+
+const { t, locale } = useI18n()
+const route = useRoute()
 
 const tableData = ref([])
 const metaData = ref({})
@@ -24,19 +29,19 @@ const showMapTab = ref(false)
 const loadData = async () => {
   try {
     loading.value = true
-    selectedList.value = getCurrentList()
+    selectedList.value = getCurrentList(route.params.liste)
     if (!selectedList.value) {
-      alert('Liste nicht gefunden')
+      alert(t('main.listNotFound'))
       return
     }
-    selectedListType.value = selectedList.value.type === 'accounts' ? 'Accounts' : 'Instanzen'
+    selectedListType.value =
+      selectedList.value.type === 'accounts' ? t('main.accounts') : t('main.instances')
     const { data } = await axios.get(
       `${import.meta.env.VITE_DATA_SERVER_URL}/${selectedList.value.key}`
     )
     if (selectedList.value.type === 'instances') {
       tableData.value = data?.data
         ?.map((item) => {
-          console.log(item)
           return {
             name: item?.itemLabel?.value,
             mastodon: item?.mastodon?.value,
@@ -56,8 +61,8 @@ const loadData = async () => {
       tableData.value = data?.data
         ?.map((item) => {
           return {
-            filerNmame: `${item?.itemLabel?.value || item.itemName.value} ${item?.doings?.join(' ')}`,
-            name: `${item?.itemLabel?.value || item.itemName.value}`,
+            filerNmame: `${getLocalizedLabel(item)} ${item?.doings?.join(' ')}`,
+            name: getLocalizedLabel(item),
             mastodon: item.mastodon.value,
             item: item.item.value,
             accountLookup: item.accountLookup,
@@ -82,6 +87,13 @@ const loadData = async () => {
 }
 
 loadData()
+
+watch(
+  () => route.params.liste,
+  () => {
+    loadData()
+  }
+)
 </script>
 <template>
   <div class="card">
@@ -89,13 +101,13 @@ loadData()
       <div class="flex justify-content-center">
         <ProgressSpinner />
       </div>
-      <div class="text-center">Daten werden geladen.</div>
+      <div class="text-center">{{ t('main.loading') }}</div>
     </div>
     <template v-else>
       <div class="grid">
         <div class="col-12 md:col-8">
-          <h1 class="mb-1">Liste Mastodon {{ selectedListType }}</h1>
-          <h2 class="mt-1 text-grey">{{ selectedList?.subTitle }}</h2>
+          <h1 class="mb-1">{{ t('main.listTitle', { type: selectedListType }) }}</h1>
+          <h2 class="mt-1 text-grey">{{ t('lists.' + selectedList?.key) }}</h2>
         </div>
         <div
           class="col-12 md:col-4 flex justify-content-end"
@@ -104,27 +116,32 @@ loadData()
           <ExportCsv
             :tableData="tableData"
             :name="selectedList.key"
-            :subTitle="selectedList?.subTitle"
+            :subTitle="t('lists.' + selectedList?.key)"
           />
         </div>
       </div>
-      <p>Erstellt am: {{ formatDate(metaData?.created_at) }}</p>
+      <p>{{ t('main.createdAt', { date: formatDate(metaData?.created_at) }) }}</p>
       <p>
-        Liste der <a href="#mastodon">Mastodon</a> {{ selectedListType }} aller
-        {{ selectedList?.subTitle }}. Die Daten stammen von <a href="#wikidata">Wikidata</a>.
-        Insgesamt gibt es {{ tableData?.length }} {{ selectedListType }}
-        <span v-if="metaData.totalToots"
-          >mit insgesamt {{ formatNumber(metaData.totalToots) }} Toots</span
+        <i18n-t keypath="main.description" tag="span">
+          <template #mastodonLink><a href="#mastodon">Mastodon</a></template>
+          <template #type>{{ selectedListType }}</template>
+          <template #subTitle>{{ t('lists.' + selectedList?.key) }}</template>
+          <template #wikidataLink><a href="#wikidata">Wikidata</a></template>
+        </i18n-t>
+        {{ t('main.totalCount', { count: tableData?.length, type: selectedListType }) }}
+        <span v-if="metaData.totalToots">{{
+          t('main.withToots', { count: formatNumber(metaData.totalToots) })
+        }}</span
         ><span v-if="metaData.totalFollowers">
-          und insgesamt {{ formatNumber(metaData.totalFollowers) }} Follower</span
+          {{ t('main.andFollowers', { count: formatNumber(metaData.totalFollowers) }) }}</span
         >.
         <span v-if="metaData?.totalPopulation">
-          Die Gesamtbevölkerung beträgt {{ formatNumber(metaData.totalPopulation) }}.</span
+          {{ t('main.totalPopulation', { count: formatNumber(metaData.totalPopulation) }) }}</span
         >
       </p>
       <div class="layout-main">
         <TabView>
-          <TabPanel header="Tabelle">
+          <TabPanel :header="t('main.table')">
             <template v-if="selectedList.type === 'accounts'">
               <AccountsTable :data="tableData" :meta-data="metaData" />
             </template>
@@ -132,7 +149,7 @@ loadData()
               <InstancesTables :data="tableData" />
             </template>
           </TabPanel>
-          <TabPanel header="Karte" v-if="!!showMapTab">
+          <TabPanel :header="t('main.map')" v-if="!!showMapTab">
             <MapConsentWrapper>
               <MainMap
                 :data="tableData"
@@ -144,11 +161,16 @@ loadData()
         </TabView>
       </div>
       <p>
-        <a :href="dataserverUrl">Formatierte Datenquelle im JSON Format</a>. Das letzte mal wurden
-        die Daten aktualisiert: {{ new Date(metaData?.created_at).toLocaleString('de-DE') }}
+        <a :href="dataserverUrl">{{ t('main.dataSource') }}</a
+        >.
+        {{
+          t('main.lastUpdated', {
+            date: new Date(metaData?.created_at).toLocaleString(locale === 'de' ? 'de-DE' : 'en-US')
+          })
+        }}
       </p>
       <div class="flex flex-column gap-2" v-if="selectedList.type === 'accounts'">
-        <label for="mastodonAccounts">Liste aller Mastodon Accounts zum kopieren</label>
+        <label for="mastodonAccounts">{{ t('main.copyList') }}</label>
         <InputText v-model="mastodonAccounts" readonly id="mastodonAccounts" />
       </div>
     </template>

@@ -1,0 +1,207 @@
+{
+  "nav": {
+    "science": "Science",
+    "publicAdministration": "Public Administration (DE)",
+    "other": "Other",
+    "netherlands": "Netherlands (NL)",
+    "faq": "FAQ",
+    "mastodonLists": "Mastodon Lists"
+  },
+  "main": {
+    "listNotFound": "List not found",
+    "accounts": "Accounts",
+    "instances": "Instances",
+    "loading": "Loading data.",
+    "listTitle": "Mastodon {type} List",
+    "createdAt": "Created on: {date}",
+    "description": "List of {mastodonLink} {type} of all {subTitle}. The data comes from {wikidataLink}.",
+    "totalCount": "In total there are {count} {type}",
+    "withToots": "with a total of {count} toots ",
+    "andFollowers": "and a total of {count} followers",
+    "totalPopulation": "The total population is {count}.",
+    "table": "Table",
+    "map": "Map",
+    "dataSource": "Formatted data source in JSON format",
+    "lastUpdated": "The data was last updated: {date}",
+    "copyList": "List of all Mastodon accounts to copy"
+  },
+  "table": {
+    "avatar": "Profile picture",
+    "avatarAlt": "Profile picture of {name}",
+    "name": "Name",
+    "mastodon": "Mastodon",
+    "country": "Country",
+    "score": "Score",
+    "follower": "Followers",
+    "toots": "Toots",
+    "lastToot": "Last Toot",
+    "created": "Created",
+    "verified": "Verified",
+    "wikidata": "Wikidata",
+    "resetSearch": "Reset search",
+    "search": "Search",
+    "noData": "No data available.",
+    "activeAccounts": "Active Accounts",
+    "version": "Version",
+    "languages": "Languages"
+  },
+  "doings": {
+    "sharedBy": "The following activities were shared by 5 or more researchers:",
+    "tip": "Tip: You can also filter by activity in the search, or click on an activity in this list."
+  },
+  "statistics": {
+    "title": "Statistics for this list",
+    "avgScore": "Avg. Score",
+    "displayName": "Display Name",
+    "profileDescription": "Profile Description",
+    "discoverable": "Discoverable",
+    "indexable": "Indexable",
+    "verifiedLinks": "Verified Links",
+    "pinnedPosts": "Pinned Posts",
+    "note": "Statistics only include accounts that have published at least one toot within the last year."
+  },
+  "export": {
+    "followImport": "Import Follow Accounts",
+    "listImport": "Import Account List",
+    "dialogTitle": "Mastodon Import",
+    "intro": "As of 18.03.2025: If you want to follow all Mastodon accounts in the table or create a list with all accounts, you can import the CSV file in the standard web interface in your settings.",
+    "warning": "If you want to create a list of accounts, you must first follow all accounts. The \"Follow Accounts\" must be imported first before the \"Account List\" can be imported.",
+    "moreAboutLists": "More about lists in Mastodon (English)",
+    "step1": "You can find the settings either by clicking the gear icon or simply clicking \"Settings\".",
+    "step2": "Then click on \"Import and Export\".",
+    "step3": "Then click on \"Import\".",
+    "step4": "You will now see a form. Under \"Type\", select \"Following\" if you want to follow the accounts, or \"Lists\". In the next step, under \"Data\", select the downloaded CSV list. Then import the accounts by clicking \"Import file\".",
+    "step5": "Tip: If you have created a list, you can view the toots from this list in the advanced view (Settings -> Design -> Use advanced web interface) of Mastodon by clicking the \"Lists\" icon. You can also pin this list as a permanent column. Initially, this column is empty and fills up gradually.",
+    "close": "Close",
+    "follow": "Follow",
+    "list": "List"
+  },
+  "mapConsent": {
+    "title": "Privacy",
+    "description": "The map software is provided by the external provider {mapboxLink}. The {privacyLink} applies. By consenting to load the maps, your IP address and other data will be shared with the provider.",
+    "mapboxPrivacy": "Mapbox Inc Privacy Policy",
+    "consent": "Agree and show map"
+  },
+  "mapPopup": {
+    "mastodon": "Mastodon:",
+    "follower": "Followers:",
+    "toots": "Toots:",
+    "lastToot": "Last Toot:",
+    "created": "Created:",
+    "verified": "Verified:",
+    "activeAccounts": "Active Accounts:",
+    "scrollCtrl": "Use Ctrl + Scroll to zoom the map.",
+    "scrollCmd": "Use ⌘ + Scroll to zoom the map."
+  },
+  "score": {
+    "title": "Score Explanation",
+    "ariaLabel": "Analysis result",
+    "excellent": "Excellent",
+    "good": "Good",
+    "needsImprovement": "Needs improvement",
+    "optimizationRecommended": "Optimization recommended",
+    "detailedRating": "Detailed Rating",
+    "points": "{points} Points",
+    "optimized": "Your account is excellently optimized! Keep it up!",
+    "testAny": "Test any Mastodon account easily",
+    "displayName": {
+      "title": "Display Name",
+      "description": "A display name helps others recognize you at first glance. It can differ from your username and contain emojis or your real name.",
+      "yours": "Your display name:",
+      "tip": "Go to {link} and add a display name.",
+      "tipLinkText": "Settings > Profile"
+    },
+    "bio": {
+      "title": "Profile Description (Bio)",
+      "description": "The profile description gives others an insight into your interests, profession, or personality. It is often the first thing people read.",
+      "tip": "Tell others about yourself in your {link}.",
+      "tipLinkText": "profile description"
+    },
+    "discoverable": {
+      "title": "Discoverable - \"Include profile and posts in search algorithms\"",
+      "description": "When this option is enabled, your profile appears in your instance's profile directory. This makes it easier for others to discover new interesting accounts.",
+      "tip": "Enable \"Appear in profile directory\" in {link}.",
+      "tipLinkText": "Settings > Privacy and Reach"
+    },
+    "indexable": {
+      "title": "Indexable - \"Include public posts in search results\"",
+      "description": "Allows your public posts to be found in search. This significantly increases your visibility in the Fediverse.",
+      "tip": "Allow indexing of your posts in {link}.",
+      "tipLinkText": "Settings > Privacy and Reach"
+    },
+    "verifiedLinks": {
+      "title": "Verified Links",
+      "description": "Verified links prove that you own a website. You can do this by adding a special link on your website that points back to your Mastodon profile.",
+      "yours": "Verified links:",
+      "tip": "Go to {link} and add a rel=\"me\" link on your website.",
+      "tipLinkText": "Settings > Public Profile > Verification"
+    },
+    "pinnedPosts": {
+      "title": "Pinned Posts",
+      "description": "Pinned posts appear at the top of your profile and are the first thing visitors see. Use them to highlight important information about yourself or your best posts.",
+      "yours": "Pinned posts:",
+      "tip": "Pin interesting posts so profile visitors can see them immediately."
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "lists": "Lists",
+    "listsDescription": "There are different lists with different categories:",
+    "mastodon": "Mastodon",
+    "mastodonDescription": "Mastodon is a decentralized social network based on open standards. It is part of a larger network called the Fediverse. More information about what Mastodon is can be found here: {joinLink}. Further information can also be found in our german {blogLink}.",
+    "blogLinkText": "Blog article: \"Hackathons & super RE-toot\"",
+    "howCanBenefit": "How can universities benefit from decentralized social networks?",
+    "fediverse": "Universities of all countries into the Fediverse!",
+    "fediverseQuote": "While much is being discussed about possible engagement of public broadcasters in the Fediverse, the potential of Fediverse instances at universities has hardly been a topic. Yet it is high time for universities to enter the Fediverse. A call to action.",
+    "fullArticle": "The full article can be found {netzpolitikLink}, where there is also this worth-reading german article: {interviewLink}.",
+    "netzpolitikLinkText": "on netzpolitik.org",
+    "interviewLinkText": "\"Sovereignty over own, central communication spaces\"",
+    "wikidataTitle": "Wikidata",
+    "wikidataDescription": "Wikidata is a free knowledge base of the Wikimedia Foundation. You can think of it like Wikipedia, but with structured data. More information is available here: {wikidataLink} or in our blog article: {blogLink}.",
+    "wikidataBlogLinkText": "\"Wikidata or Linked Open Data\"",
+    "wikidataDataExplanation": "We did not collect the data manually ourselves, but retrieve data from all universities in Germany every day via an interface.",
+    "queryLinked": "We have linked the {queryLink}.",
+    "queryLinkText": "query",
+    "addDataTitle": "Add or change data",
+    "addDataDescription": "Anyone can contribute to Wikidata and add data. More information can be found in the article about {dataObjectsLink}. Specifically, you first need to find the right data object. In our case, the {europaUniLink}. There are various statements there. If you already have a Mastodon account and want to change this Mastodon account, you can simply go to the existing statement \"Mastodon address\" and edit the content. This is sometimes only possible with an account. If there is no statement about Mastodon yet, you need to add a new statement. With the value \"Mastodon address\" and then the Mastodon account handle. After pressing \"Publish\", the value is now available. The next time we fetch data, the value will also be displayed.",
+    "dataObjectsLinkText": "data objects",
+    "europaUniLinkText": "Europa-Universität Flensburg (Q506436)"
+  },
+  "footer": {
+    "by": "By:",
+    "github": "GitHub (Software)",
+    "license": "MIT License",
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "tip": "Tip:"
+  },
+  "lists": {
+    "hochschulen-DE": "Universities and Colleges (DE)",
+    "hochschulen-ACH": "Universities and Colleges (AT, CH)",
+    "institute-DE": "Research Institutions (DE)",
+    "wissenschaftler_innen-de": "Scientists (de)",
+    "staedte-und-gemeinden-DE": "Cities and Municipalities (DE)",
+    "kreise-DE": "Districts and Independent Cities (DE)",
+    "bundesbehoerden-DE": "Federal Authorities (DE)",
+    "landesbehoerden-regierungen-DE": "State Authorities and State Governments (DE)",
+    "non-profit-organisationen-DE": "Non-Profit Organizations (DE)",
+    "archive-DE": "Archives (DE)",
+    "all-organisations": "All Organizations (DACH)",
+    "hochschulen-mastodon-instance-GLOBAL": "University Mastodon Instances (Global)",
+    "museum-DACH": "Museums (DACH)",
+    "fachgesellschaften-DE": "Professional Associations (DE)",
+    "schulen-DE": "Schools (DE)",
+    "hochschulen-NL": "Universities and Colleges (NL)",
+    "behoerden-NL": "Authorities (NL)",
+    "institute-NL": "Research Institutions (NL)",
+    "non-profit-organisationen-NL": "Non-Profit Organizations (NL)",
+    "staedte-und-gemeinden-NL": "Cities and Municipalities (NL)",
+    "grosse-staedte-DE": "Major Cities (DE)",
+    "volkshochschulen-DE": "Adult Education Centers (DE)",
+    "bibliotheken-DE": "Libraries (DE)"
+  }
+}
