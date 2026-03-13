@@ -6,6 +6,12 @@ services:
     ports:
       - "3002:3002"
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        - VITE_DATA_SERVER_URL=${VITE_DATA_SERVER_URL}
+        - VITE_ENABLE_PLAUSIBLE_ANALYTICS=${VITE_ENABLE_PLAUSIBLE_ANALYTICS}
+        - VITE_PLAUSIBLE_ANALYTICS_DOMAIN=${VITE_PLAUSIBLE_ANALYTICS_DOMAIN}
+        - VITE_MAPBOX_ACCESS_TOKEN=${VITE_MAPBOX_ACCESS_TOKEN}
     ports:
       - "3001:3001"

@@ -10,6 +10,7 @@ import MastodonLink from './MastodonLink.vue';
 const { t } = useI18n()
 const route = useRoute()
 const currentList = getCurrentList(route.params.liste)
+const mapboxAccessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
 const props = defineProps({
     mapCenter: {
@@ -41,7 +42,7 @@ const formatCoordinates = (coordinates) => {
 
 <template>
     <MapboxMap style="height: 600px"
-        access-token="pk.eyJ1Ijoic2JyYSIsImEiOiJjbG02ZjF6ZDgwbG1jM2VtbWZyNXkza2E3In0.lRf9QNEJKwhvuirQwPKFCA"
+        :access-token="mapboxAccessToken"
         map-style="mapbox://styles/mapbox/streets-v11" :center="mapCenter" :zoom="mapZoom"
         :cooperativeGestures="!isMobile()" :locale="{
             'ScrollZoomBlocker.CtrlMessage': t('mapPopup.scrollCtrl'),
