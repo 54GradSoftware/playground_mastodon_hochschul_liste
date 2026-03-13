@@ -25,7 +25,10 @@ const main = async () => {
       if (!!query.sparqlQuery1) {
         const resultsSparqlQuery1 = await getWikidataResults(query.key, query.sparqlQuery1);
         const resultsSparqlQuery2 = await getWikidataResults(query.key, query.sparqlQuery2);
-        uniqueResults = [...resultsSparqlQuery1, ...resultsSparqlQuery2]
+        const combined = [...resultsSparqlQuery1, ...resultsSparqlQuery2]
+        uniqueResults = combined.filter((obj1, i, arr) =>
+          arr.findIndex(obj2 => obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase()) === i
+        )
       } else {
         uniqueResults = await getWikidataResults(query.key, query.sparqlQuery);
       }
