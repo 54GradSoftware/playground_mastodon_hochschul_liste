@@ -1,27 +1,19 @@
 export default {
-    key: 'bundesbehoerden-DE',
+    key: 'behoerden-NL',
     type: 'accounts',
     isOrganisations: true,
-    country: 'DE',
+    country: 'NL',
     sparqlQuery: `
-SELECT ?item ?itemLabel ?itemLabel_en ?mastodon ?coordinates WHERE {
+SELECT ?item ?itemLabel ?itemLabel_en ?itemLabel_nl ?mastodon ?coordinates WHERE {
   {
-    ?item wdt:P31/wdt:P279* wd:Q99934885;
-      wdt:P17 wd:Q183.
+    ?item wdt:P31/wdt:P279* wd:Q327333;
+      wdt:P17 wd:Q55.
   }
-  UNION
-  {
-    ?item wdt:P31/wdt:P279* wd:Q99935030;
-      wdt:P17 wd:Q183.
-  } 
-  UNION
-  {
-    ?item wdt:P31/wdt:P279* wd:Q314024;
-  }  
   ?item wdt:P4033 ?mastodon.
   OPTIONAL { ?item wdt:P625 ?coordinates. }
   OPTIONAL { ?item rdfs:label ?itemLabel. FILTER(LANG(?itemLabel) = "de") }
   OPTIONAL { ?item rdfs:label ?itemLabel_en. FILTER(LANG(?itemLabel_en) = "en") }
+  OPTIONAL { ?item rdfs:label ?itemLabel_nl. FILTER(LANG(?itemLabel_nl) = "nl") }
 }
 `
 }

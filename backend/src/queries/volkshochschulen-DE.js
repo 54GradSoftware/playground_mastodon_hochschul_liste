@@ -1,25 +1,17 @@
 export default {
-    key: 'bundesbehoerden-DE',
+    key: 'volkshochschulen-DE',
     type: 'accounts',
     isOrganisations: true,
     country: 'DE',
     sparqlQuery: `
-SELECT ?item ?itemLabel ?itemLabel_en ?mastodon ?coordinates WHERE {
+SELECT ?item ?itemLabel ?itemLabel_en ?mastodon ?coordinates ?population WHERE {
   {
-    ?item wdt:P31/wdt:P279* wd:Q99934885;
+    ?item wdt:P31/wdt:P279* wd:Q170087;
       wdt:P17 wd:Q183.
   }
-  UNION
-  {
-    ?item wdt:P31/wdt:P279* wd:Q99935030;
-      wdt:P17 wd:Q183.
-  } 
-  UNION
-  {
-    ?item wdt:P31/wdt:P279* wd:Q314024;
-  }  
   ?item wdt:P4033 ?mastodon.
   OPTIONAL { ?item wdt:P625 ?coordinates. }
+  OPTIONAL { ?item wdt:P1082 ?population. }
   OPTIONAL { ?item rdfs:label ?itemLabel. FILTER(LANG(?itemLabel) = "de") }
   OPTIONAL { ?item rdfs:label ?itemLabel_en. FILTER(LANG(?itemLabel_en) = "en") }
 }

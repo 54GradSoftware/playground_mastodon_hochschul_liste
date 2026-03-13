@@ -99,7 +99,7 @@ const main = async () => {
             ).sort((a, b) => b.count - a.count)
 
         }
-      } else if (query?.type != 'instances') {
+      } else if (query?.type != 'instances' && query?.country !== 'NL') {
         allOrganistions = [...allOrganistions, ...filteredData]
       }
       const jsonData = JSON.stringify({

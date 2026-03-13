@@ -12,8 +12,11 @@ import bundesbehoerdenDE from './queries/bundesbehoerden-DE.js'
 import landesbehoerdenRegierungenDE from './queries/landesbehoerden-regierungen-DE.js'
 import archiveDE from './queries/archive-DE.js'
 import schulenDE from './queries/schulen-DE.js'
+import volkshochschulenDE from './queries/volkshochschulen-DE.js'
+import bibliothekenDE from './queries/bibliotheken-DE.js'
+import { nlQueries } from './queries/NL/index.js'
 
-export const queries = [
+export const queries = [/*
   // Hochschulen und Universitäten in Deutschland
   hochschulenDE,
   // Forschungseinrichtungen und Institute in Deutschland
@@ -41,7 +44,14 @@ export const queries = [
   // Archive in Deutschland
   archiveDE,
   // Schulen in Deutschland
-  schulenDE
+  schulenDE,
+  */
+  // Volkshochschulen in Deutschland
+  volkshochschulenDE,
+  // Bibliotheken in Deutschland
+  bibliothekenDE,
+  // Niederländische Institutionen
+ ...nlQueries
 ]
 
 
