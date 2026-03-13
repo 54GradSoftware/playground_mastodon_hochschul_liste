@@ -15,7 +15,7 @@ export default {
     ?doing rdfs:label ?doingName .
   }
 }`,
-    sparqlQuery1: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
+    sparqlQuery2: `SELECT ?item ?itemName ?mastodon ?doingName WHERE {
   {
     ?item wdt:P106/wdt:P279* wd:Q1622272.
     ?item wdt:P1412/wdt:P279* wd:Q188;
