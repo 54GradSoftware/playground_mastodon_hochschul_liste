@@ -47,7 +47,7 @@ const main = async () => {
             })
             accountLookup = response.data
           } catch (error) {
-            console.error(error)
+            console.error(`Error fetching instance ${result.mastodon.value}:`, error.message)
           }
           filteredData.push({
             ...result,
@@ -62,15 +62,23 @@ const main = async () => {
               timeout: 15_000
             })
             accountLookup = response.data
-            score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
-          } catch (error) {
-            console.error(`Error looking up account ${mastodonHandle}:`, error.message)
-          }
+             if (accountLookup) {
+              try {
+                score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
+              } catch (error) {
+                console.error(`Error calculating score for ${mastodonHandle}:`, error.message)
+              }
+            }
+
           filteredData.push({
             ...result,
             score,
             accountLookup
           })
+          } catch (error) {
+            console.error(`Error looking up account ${mastodonHandle}:`, error.message)
+          }
+         
         }
 
         // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
@@ -90,10 +98,10 @@ const main = async () => {
         meta = {
           ...meta,
           doingsStats:
-            [...new Set(filteredData.flatMap(obj => obj.doings))].map(doing => {
+            [...new Set(filteredData.flatMap(obj => obj.doings || []))].map(doing => {
               return {
                 doing,
-                count: filteredData.filter(obj => obj.doings.includes(doing)).length
+                count: filteredData.filter(obj => (obj.doings || []).includes(doing)).length
               }
             }
             ).sort((a, b) => b.count - a.count)
@@ -159,4 +167,7 @@ const getWikidataResults = async (key, sparqlQuery) => {
   }
 }
 
-main()
+main().catch(error => {
+  console.error('Unhandled error in main:', error)
+  process.exit(1)
+})
