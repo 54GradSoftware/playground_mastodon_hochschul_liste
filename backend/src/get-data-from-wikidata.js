@@ -33,56 +33,60 @@ const main = async () => {
       let filteredData = []
 
       for (let result of uniqueResults) {
-        console.log(result)
-        if (query?.type === 'instances') {
-          let accountLookup;
-          try {
-            let mastodonInstanceUrl = result.mastodon.value
-            // check if last charachter of "mastodonInstanceUrl" is / if, not add a /
-            if (!mastodonInstanceUrl.endsWith('/')) {
-              mastodonInstanceUrl = `${mastodonInstanceUrl}/`
-            }
-            const response = await axios.get(`${mastodonInstanceUrl}api/v2/instance`, {
-              timeout: 25_000
-            })
-            accountLookup = response.data
-          } catch (error) {
-            console.error(`Error fetching instance ${result.mastodon.value}:`, error.message)
-          }
-          filteredData.push({
-            ...result,
-            accountLookup
-          })
-        } else if (query?.type === 'accounts') {
-          const mastodonHandle = result.mastodon.value
-          let accountLookup = null
-          let score = null
-          try {
-            const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
-              timeout: 15_000
-            })
-            accountLookup = response.data
-             if (accountLookup) {
-              try {
-                score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
-              } catch (error) {
-                console.error(`Error calculating score for ${mastodonHandle}:`, error.message)
+        try{
+          console.log(result)
+          if (query?.type === 'instances') {
+            let accountLookup;
+            try {
+              let mastodonInstanceUrl = result.mastodon.value
+              // check if last charachter of "mastodonInstanceUrl" is / if, not add a /
+              if (!mastodonInstanceUrl.endsWith('/')) {
+                mastodonInstanceUrl = `${mastodonInstanceUrl}/`
               }
+              const response = await axios.get(`${mastodonInstanceUrl}api/v2/instance`, {
+                timeout: 25_000
+              })
+              accountLookup = response.data
+            } catch (error) {
+              console.error(`Error fetching instance ${result.mastodon.value}:`, error.message)
             }
+            filteredData.push({
+              ...result,
+              accountLookup
+            })
+          } else if (query?.type === 'accounts') {
+            const mastodonHandle = result.mastodon.value
+            let accountLookup = null
+            let score = null
+            try {
+              const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
+                timeout: 15_000
+              })
+              accountLookup = response.data
+              if (accountLookup) {
+                try {
+                  score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
+                } catch (error) {
+                  console.error(`Error calculating score for ${mastodonHandle}:`, error.message)
+                }
+              }
 
-          filteredData.push({
-            ...result,
-            score,
-            accountLookup
-          })
-          } catch (error) {
-            console.error(`Error looking up account ${mastodonHandle}:`, error.message)
+            filteredData.push({
+              ...result,
+              score,
+              accountLookup
+            })
+            } catch (error) {
+              console.error(`Error looking up account ${mastodonHandle}:`, error.message)
+            }
+          
           }
-         
-        }
 
-        // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
-        await new Promise(resolve => setTimeout(resolve, 2_050));
+          // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
+          await new Promise(resolve => setTimeout(resolve, 1_200));
+        } catch (error) {
+          console.error('Error processing result in list '+query.key+' :', error)
+        }
       }
 
       filteredData = filteredData.sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
@@ -117,6 +121,7 @@ const main = async () => {
       writeFileSync(`./data/wikidata-mastodon-${query.key}.json`, jsonData);
       console.log('write json file', `./data/wikidata-mastodon-${query.key}.json`)
     }
+
     // write all organistions to one file
     allOrganistions = allOrganistions.filter((obj1, i, arr) =>
       arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
