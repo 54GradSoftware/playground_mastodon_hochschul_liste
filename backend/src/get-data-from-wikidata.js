@@ -74,7 +74,7 @@ const main = async () => {
         }
 
         // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
-        await new Promise(resolve => setTimeout(resolve, 1_100));
+        await new Promise(resolve => setTimeout(resolve, 2_050));
       }
 
       filteredData = filteredData.sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
