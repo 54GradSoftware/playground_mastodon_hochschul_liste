@@ -14,6 +14,7 @@ import archiveDE from './queries/archive-DE.js'
 import schulenDE from './queries/schulen-DE.js'
 import volkshochschulenDE from './queries/volkshochschulen-DE.js'
 import bibliothekenDE from './queries/bibliotheken-DE.js'
+import stiftungenDE from './queries/stiftungen-DE.js'
 import { nlQueries } from './queries/NL/index.js'
 
 export const queries = [
@@ -49,6 +50,8 @@ export const queries = [
   volkshochschulenDE,
   // Bibliotheken in Deutschland
   bibliothekenDE,
+  // Stiftungen in Deutschland
+  stiftungenDE,
   // Niederländische Institutionen
  ...nlQueries
 ]

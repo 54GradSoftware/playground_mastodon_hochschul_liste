@@ -83,6 +83,20 @@
         }
     },
     {
+        "key": "stiftungen-DE",
+        "type": "accounts",
+        "subTitle": "Stiftungen (DE)",
+        "category": "Weitere",
+        "icon": "pi pi-wallet",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
         "key": "all-organisations",
         "type": "accounts",
         "subTitle": "Alle Organisationen",
