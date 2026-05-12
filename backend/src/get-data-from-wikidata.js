@@ -17,7 +17,10 @@ const main = async () => {
     console.log('Starting to fetch data from Wikidata...')
     console.log('Queries to run:', queries.map(query => query.key).join(', '))
     let allOrganistions = []
-    for (const query of queries) {
+    for (const [queryIndex, query] of queries.entries()) {
+      if (queryIndex > 0) {
+        await new Promise(resolve => setTimeout(resolve, 4_000));
+      }
       console.log('Running query:', query.key)
 
       let uniqueResults;
@@ -117,6 +120,10 @@ const main = async () => {
       } else if (query?.type != 'instances' && query?.country !== 'NL') {
         allOrganistions = [...allOrganistions, ...filteredData]
       }
+      if (filteredData.length === 0) {
+        console.error('skip write, no data:', query.key)
+        continue
+      }
       const jsonData = JSON.stringify({
         meta,
         data: filteredData
@@ -149,13 +156,30 @@ const main = async () => {
 const getWikidataResults = async (key, sparqlQuery) => {
   try {
     const url = wbk.sparqlQuery(sparqlQuery)
-    const { data } = await axios.get(url, {
-      timeout: 65000,
-      headers: {
-        'Accept': 'application/sparql-results+json',
-        ...userAgent
+    const backoffs = [5_000, 15_000, 45_000]
+    let data
+    for (let attempt = 0; attempt <= backoffs.length; attempt++) {
+      try {
+        const response = await axios.get(url, {
+          timeout: 65000,
+          headers: {
+            'Accept': 'application/sparql-results+json',
+            ...userAgent
+          }
+        })
+        data = response.data
+        break
+      } catch (error) {
+        const status = error.response?.status
+        const retriable = status === 429 || (status >= 500 && status < 600) || !status
+        if (!retriable || attempt === backoffs.length) throw error
+        const retryAfter = parseInt(error.response?.headers?.['retry-after']) * 1000
+        const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : backoffs[attempt]
+        console.error(error)
+        console.error(`Retry ${key} in ${wait}ms (status ${status ?? 'network'}, attempt ${attempt + 1})`)
+        await new Promise(resolve => setTimeout(resolve, wait))
       }
-    })
+    }
     const results = data.results.bindings
     let uniqueResults = results.filter((obj1, i, arr) =>
       arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
@@ -170,7 +194,11 @@ const getWikidataResults = async (key, sparqlQuery) => {
     }
     return uniqueResults
   } catch (error) {
-    console.error(`Error fetching data for query ${key}:`, error)
+    const status = error.response?.status
+    const body = typeof error.response?.data === 'string'
+      ? error.response.data.slice(0, 500)
+      : JSON.stringify(error.response?.data)?.slice(0, 500)
+    console.error(`Error fetching data for query ${key}: status=${status ?? 'network'} message=${error.message}${body ? ` body=${body}` : ''}`)
     return []
   }
 }
