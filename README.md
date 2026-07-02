@@ -21,6 +21,7 @@ Bugs oder Feature wünsche können gerne als [Issue angelegt werden](https://git
 - [x] Karten Ansicht
 - [x] Liste von NGOs in DE anbieten
 - [x] Niederlande hinzufügen
+- [x] Peertube Accounts und Channel
 - [ ] Andere Länder hinzufügen
 - [ ] PDFs pro Liste erstellen, mit allen Logos und Links zu den Accounts
 - [ ] Verbesserte SEO und aussagen in natürlicher Sprache 
@@ -35,6 +36,6 @@ Die komplette Software steht unter [der MIT-Lizenz](/LICENSE).
 Wir freuen uns immer über neue Kontakte und Projekt(ideen). Mehr Infos zu findest du auf unserer [Website](https://www.54gradsoftware.de/) oder schreib uns direkt an kontakt@54gradsoftware.de. Mann kann uns auch auf Mastodon folgen [54gradsoftware@norden.social](https://norden.social/@54gradsoftware).
 
 ## Changes
-
+- 02.07.2026: Peertube Channels und Instanzen für öffentliche Einrichtungen
 - 13.03.2026: Neue URL Struktur, Mehrsprachigkeit, Listen aus den Niederlanden, Volkshochschulen und Bibliotheken aus DE
 

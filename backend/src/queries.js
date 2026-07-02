@@ -16,6 +16,7 @@ import volkshochschulenDE from './queries/volkshochschulen-DE.js'
 import bibliothekenDE from './queries/bibliotheken-DE.js'
 import stiftungenDE from './queries/stiftungen-DE.js'
 import { nlQueries } from './queries/NL/index.js'
+import { peertubeQueries } from './queries/peertube/index.js'
 
 export const queries = [
   // Hochschulen und Universitäten in Deutschland
@@ -53,7 +54,9 @@ export const queries = [
   // Stiftungen in Deutschland
   stiftungenDE,
   // Niederländische Institutionen
- ...nlQueries
+ ...nlQueries,
+  // PeerTube-Kanäle (Plattform: peertube)
+ ...peertubeQueries
 ]
 
 

@@ -11,7 +11,9 @@ export const getCurrentList = (listeParam) => {
 const getLocale = () => i18n.global.locale.value || 'de'
 
 export const formatDate = (date) => {
-  return new Date(date).toLocaleString(getLocale() === 'de' ? 'de-DE' : 'en-US', {
+  const parsed = new Date(date)
+  if (!date || isNaN(parsed)) return ''
+  return parsed.toLocaleString(getLocale() === 'de' ? 'de-DE' : 'en-US', {
     year: "numeric", month: "2-digit",
     day: "2-digit"
   })

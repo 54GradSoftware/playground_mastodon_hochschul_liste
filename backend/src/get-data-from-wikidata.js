@@ -1,209 +1,22 @@
-import { WBK } from 'wikibase-sdk'
-import axios from 'axios'
-import { writeFileSync } from 'fs'
-import { queries } from './queries.js'
-import { calculateMastodonAccountScore } from "mastodon-account-checker"
+import { build } from './build.js'
 
-// Make sure you initialize wbk with a sparqlEndpoint
-const wbk = WBK({
-  instance: 'https://www.wikidata.org',
-  sparqlEndpoint: 'https://query.wikidata.org/sparql'
-})
-const userAgent = { 'User-Agent': 'MastodonListeBot/1.0 (https://mastodon-listen.playground.54gradsoftware.de/)' }; // see https://foundation.wikimedia.org/wiki/Policy:User-Agent_policy
-
-
-const main = async () => {
-  try {
-    console.log('Starting to fetch data from Wikidata...')
-    console.log('Queries to run:', queries.map(query => query.key).join(', '))
-    let allOrganistions = []
-    for (const [queryIndex, query] of queries.entries()) {
-      if (queryIndex > 0) {
-        await new Promise(resolve => setTimeout(resolve, 4_000));
-      }
-      console.log('Running query:', query.key)
-
-      let uniqueResults;
-
-      if (!!query.sparqlQuery1) {
-        const resultsSparqlQuery1 = await getWikidataResults(query.key, query.sparqlQuery1);
-        const resultsSparqlQuery2 = await getWikidataResults(query.key, query.sparqlQuery2);
-        const combined = [...resultsSparqlQuery1, ...resultsSparqlQuery2]
-        uniqueResults = combined.filter((obj1, i, arr) =>
-          arr.findIndex(obj2 => obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase()) === i
-        )
-      } else {
-        uniqueResults = await getWikidataResults(query.key, query.sparqlQuery);
-      }
-
-      let filteredData = []
-
-      for (let result of uniqueResults) {
-        try{
-          console.log(result)
-          if (query?.type === 'instances') {
-            let accountLookup;
-            try {
-              let mastodonInstanceUrl = result.mastodon.value
-              // check if last charachter of "mastodonInstanceUrl" is / if, not add a /
-              if (!mastodonInstanceUrl.endsWith('/')) {
-                mastodonInstanceUrl = `${mastodonInstanceUrl}/`
-              }
-              const response = await axios.get(`${mastodonInstanceUrl}api/v2/instance`, {
-                timeout: 25_000
-              })
-              accountLookup = response.data
-            } catch (error) {
-              console.error(`Error fetching instance ${result.mastodon.value}:`, error.message)
-            }
-            filteredData.push({
-              ...result,
-              accountLookup
-            })
-          } else if (query?.type === 'accounts') {
-            const mastodonHandle = result.mastodon.value
-            let accountLookup = null
-            let score = null
-            try {
-              const response = await axios.get(`https://mastodon.social/api/v1/accounts/lookup?acct=${mastodonHandle}`, {
-                timeout: 15_000
-              })
-              accountLookup = response.data
-              if (accountLookup) {
-                try {
-                  score = await calculateMastodonAccountScore(mastodonHandle, accountLookup)
-                } catch (error) {
-                  console.error(`Error calculating score for ${mastodonHandle}:`, error.message)
-                }
-              }
-
-            filteredData.push({
-              ...result,
-              score,
-              accountLookup
-            })
-            } catch (error) {
-              console.error(`Error looking up account ${mastodonHandle}:`, error.message)
-            }
-          
-          }
-
-          // slowing the requests down to avoid rate limiting https://mastodonpy.readthedocs.io/en/stable/01_general.html#:~:text=Mastodon's%20API%20rate%20limits%20per,and%20is%20subject%20to%20change.
-          await new Promise(resolve => setTimeout(resolve, 1_200));
-        } catch (error) {
-          console.error('Error processing result in list '+query.key+' :', error)
-        }
-      }
-
-      filteredData = filteredData.sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
-
-      let meta = {
-        created_at: +new Date(),
-        mastodonAccounts: filteredData.length,
-        totalPopulation: filteredData.map(obj => obj.population?.value).filter(population => !!population).reduce((acc, population) => acc + parseInt(population), 0),
-        totalToots: filteredData.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
-        totalFollowers: filteredData.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
-      }
-      if (!query.isOrganisations) {
-        meta = {
-          ...meta,
-          doingsStats:
-            [...new Set(filteredData.flatMap(obj => obj.doings || []))].map(doing => {
-              return {
-                doing,
-                count: filteredData.filter(obj => (obj.doings || []).includes(doing)).length
-              }
-            }
-            ).sort((a, b) => b.count - a.count)
-
-        }
-      } else if (query?.type != 'instances' && query?.country !== 'NL') {
-        allOrganistions = [...allOrganistions, ...filteredData]
-      }
-      if (filteredData.length === 0) {
-        console.error('skip write, no data:', query.key)
-        continue
-      }
-      const jsonData = JSON.stringify({
-        meta,
-        data: filteredData
-      })
-      writeFileSync(`./data/wikidata-mastodon-${query.key}.json`, jsonData);
-      console.log('write json file', `./data/wikidata-mastodon-${query.key}.json`)
-    }
-
-    // write all organistions to one file
-    allOrganistions = allOrganistions.filter((obj1, i, arr) =>
-      arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
-    )
-      .sort((a, b) => (b?.accountLookup?.followers_count || 0) - (a?.accountLookup?.followers_count || 0))
-    const jsonDataAllOrganistions = JSON.stringify({
-      meta: {
-        created_at: +new Date(),
-        mastodonAccounts: allOrganistions.length,
-        totalToots: allOrganistions.map(obj => obj.accountLookup?.statuses_count).filter(status_count => !!status_count).reduce((acc, statuses_count) => acc + statuses_count, 0),
-        totalFollowers: allOrganistions.map(obj => obj.accountLookup?.followers_count).filter(followers_count => !!followers_count).reduce((acc, followers_count) => acc + followers_count, 0),
-      },
-      data: allOrganistions
-    })
-    writeFileSync(`./data/wikidata-mastodon-all-organisations.json`, jsonDataAllOrganistions);
-    console.log('write json file', `./data/wikidata-mastodon-all-organisations.json`)
-  } catch (error) {
-    console.error(error)
+const parseArgs = (argv) => {
+  const opts = { only: null, platform: null, dryRun: false }
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i]
+    if (arg === '--only') opts.only = argv[++i]
+    else if (arg.startsWith('--only=')) opts.only = arg.slice('--only='.length)
+    else if (arg === '--platform') opts.platform = argv[++i]
+    else if (arg.startsWith('--platform=')) opts.platform = arg.slice('--platform='.length)
+    else if (arg === '--dry-run') opts.dryRun = true
   }
+  return opts
 }
 
-const getWikidataResults = async (key, sparqlQuery) => {
-  try {
-    const url = wbk.sparqlQuery(sparqlQuery)
-    const backoffs = [5_000, 15_000, 45_000]
-    let data
-    for (let attempt = 0; attempt <= backoffs.length; attempt++) {
-      try {
-        const response = await axios.get(url, {
-          timeout: 65000,
-          headers: {
-            'Accept': 'application/sparql-results+json',
-            ...userAgent
-          }
-        })
-        data = response.data
-        break
-      } catch (error) {
-        const status = error.response?.status
-        const retriable = status === 429 || (status >= 500 && status < 600) || !status
-        if (!retriable || attempt === backoffs.length) throw error
-        const retryAfter = parseInt(error.response?.headers?.['retry-after']) * 1000
-        const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : backoffs[attempt]
-        console.error(error)
-        console.error(`Retry ${key} in ${wait}ms (status ${status ?? 'network'}, attempt ${attempt + 1})`)
-        await new Promise(resolve => setTimeout(resolve, wait))
-      }
-    }
-    const results = data.results.bindings
-    let uniqueResults = results.filter((obj1, i, arr) =>
-      arr.findIndex(obj2 => (obj2.mastodon?.value.toLowerCase() === obj1.mastodon?.value.toLowerCase())) === i
-    )
-    if (key == 'wissenschaftler_innen-de') {
-      uniqueResults = uniqueResults.map(result => {
-        return {
-          ...result,
-          doings: [...new Set(results.filter(obj => obj?.item?.value === result?.item?.value).map(obj => obj?.doingName?.value))]
-        }
-      })
-    }
-    return uniqueResults
-  } catch (error) {
-    const status = error.response?.status
-    const body = typeof error.response?.data === 'string'
-      ? error.response.data.slice(0, 500)
-      : JSON.stringify(error.response?.data)?.slice(0, 500)
-    console.error(`Error fetching data for query ${key}: status=${status ?? 'network'} message=${error.message}${body ? ` body=${body}` : ''}`)
-    return []
-  }
-}
+const options = parseArgs(process.argv.slice(2))
+console.log('Starting to fetch data from Wikidata...', options)
 
-main().catch(error => {
+build(options).catch((error) => {
   console.error('Unhandled error in main:', error)
   process.exit(1)
 })

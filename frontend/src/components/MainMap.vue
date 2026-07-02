@@ -6,6 +6,7 @@ import { formatDate, formatNumber, formatBoolean } from '../helper.js'
 import { getCurrentList } from '../helper.js'
 import { useRoute } from 'vue-router'
 import MastodonLink from './MastodonLink.vue';
+import PeerTubeLink from './PeerTubeLink.vue';
 
 const { t } = useI18n()
 const route = useRoute()
@@ -55,14 +56,25 @@ const formatCoordinates = (coordinates) => {
                     <div class="mapbox-popup-content">
                         <h2>{{ entry.name }}</h2>
                         <ul>
-                            <li><b>{{ t('mapPopup.mastodon') }} </b>
-                                <template v-if="currentList.type=== 'accounts'">
-                                    <MastodonLink :mastodonHandle="entry.mastodon" />
+                            <li>
+                                <template v-if="currentList.type=== 'peertube'">
+                                    <b>{{ t('mapPopup.peertube') }} </b>
+                                    <PeerTubeLink :handle="entry.peertube" />
                                 </template>
-                                <template v-else-if="currentList.type=== 'instances'">
-                                    <a target="_blank" :href="entry.mastodon">
-                                                        {{ entry.mastodon }}
-                                                        </a>
+                                <template v-else-if="currentList.type=== 'peertube-instances'">
+                                    <b>{{ t('mapPopup.peertube') }} </b>
+                                    <a target="_blank" :href="entry.url || entry.peertube">{{ entry.peertube }}</a>
+                                </template>
+                                <template v-else>
+                                    <b>{{ t('mapPopup.mastodon') }} </b>
+                                    <template v-if="currentList.type=== 'accounts'">
+                                        <MastodonLink :mastodonHandle="entry.mastodon" />
+                                    </template>
+                                    <template v-else-if="currentList.type=== 'instances'">
+                                        <a target="_blank" :href="entry.mastodon">
+                                                            {{ entry.mastodon }}
+                                                            </a>
+                                    </template>
                                 </template>
                             </li>
                             <li v-if="entry.accountLookup?.followers_count"><b>{{ t('mapPopup.follower') }} </b> {{
@@ -76,6 +88,16 @@ const formatCoordinates = (coordinates) => {
                             <li v-if="entry.verified"><b>{{ t('mapPopup.verified') }} </b> {{ formatBoolean(entry.verified) }}</li>
                             <li v-if="entry.users_active_last_month"><b>{{ t('mapPopup.activeAccounts') }} </b> {{
                                 formatNumber(entry.users_active_last_month) }}</li>
+                            <li v-if="entry.followersCount"><b>{{ t('mapPopup.follower') }} </b> {{
+                                formatNumber(entry.followersCount) }}</li>
+                            <li v-if="entry.videosCount"><b>{{ t('mapPopup.videos') }} </b> {{
+                                formatNumber(entry.videosCount) }}</li>
+                            <li v-if="entry.createdAt"><b>{{ t('mapPopup.created') }} </b> {{
+                                formatDate(entry.createdAt) }}</li>
+                            <li v-if="entry.totalLocalVideos"><b>{{ t('mapPopup.videos') }} </b> {{
+                                formatNumber(entry.totalLocalVideos) }}</li>
+                            <li v-if="entry.totalUsers"><b>{{ t('mapPopup.users') }} </b> {{
+                                formatNumber(entry.totalUsers) }}</li>
                         </ul>
                     </div>
                 </template>

@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "get-data": "node src/get-data-from-wikidata.js",
+    "get-data:peertube": "node src/get-data-from-wikidata.js --platform peertube",
     "start-server": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -195,6 +195,104 @@
         }
     },
     {
+        "key": "peertube-channels-by-country",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle öffentlicher Einrichtungen (nach Ländern)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                10,
+                50
+            ],
+            "zoom": 4
+        }
+    },
+    {
+        "key": "peertube-DE",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle öffentlicher Einrichtungen (DE)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "peertube-DE-alle",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle – alle Accounts (DE)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 5
+        }
+    },
+    {
+        "key": "peertube-NL",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle öffentlicher Einrichtungen (NL)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                5.2913,
+                52.1326
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "peertube-AT",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle öffentlicher Einrichtungen (AT)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                14.55,
+                47.52
+            ],
+            "zoom": 6
+        }
+    },
+    {
+        "key": "peertube-CH",
+        "type": "peertube",
+        "subTitle": "PeerTube-Kanäle öffentlicher Einrichtungen (CH)",
+        "category": "PeerTube",
+        "icon": "pi pi-video",
+        "map": {
+            "center": [
+                8.23,
+                46.8
+            ],
+            "zoom": 7
+        }
+    },
+    {
+        "key": "peertube-instances-GLOBAL",
+        "type": "peertube-instances",
+        "subTitle": "PeerTube-Instanzen öffentlicher Einrichtungen (Global)",
+        "category": "PeerTube",
+        "icon": "pi pi-server",
+        "map": {
+            "center": [
+                10,
+                50
+            ],
+            "zoom": 4
+        }
+    },
+    {
         "key": "hochschulen-NL",
         "type": "accounts",
         "subTitle": "Hochschulen und Universitäten (NL)",

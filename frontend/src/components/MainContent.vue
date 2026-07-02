@@ -13,6 +13,8 @@ import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InstancesTables from './InstancesTable.vue'
 import AccountsTable from './AccountsTable.vue'
+import PeerTubeChannelsTable from './PeerTubeChannelsTable.vue'
+import PeerTubeInstancesTable from './PeerTubeInstancesTable.vue'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -35,7 +37,11 @@ const loadData = async () => {
       return
     }
     selectedListType.value =
-      selectedList.value.type === 'accounts' ? t('main.accounts') : t('main.instances')
+      selectedList.value.type === 'accounts'
+        ? t('main.accounts')
+        : selectedList.value.type === 'peertube'
+          ? t('main.channels')
+          : t('main.instances')
     const { data } = await axios.get(
       `${import.meta.env.VITE_DATA_SERVER_URL}/${selectedList.value.key}`
     )
@@ -57,6 +63,42 @@ const loadData = async () => {
           }
         })
         .sort((a, b) => b?.users_active_last_month - a?.users_active_last_month)
+    } else if (selectedList.value.type === 'peertube') {
+      tableData.value = data?.data
+        ?.map((item) => {
+          return {
+            name: getLocalizedLabel(item),
+            peertube: item.peertube.value,
+            item: item.item.value,
+            avatar: item?.channelLookup?.avatar,
+            host: item?.channelLookup?.host,
+            url: item?.channelLookup?.url,
+            followersCount: item?.channelLookup?.followersCount,
+            videosCount: item?.channelLookup?.videosCount,
+            createdAt: item?.channelLookup?.createdAt,
+            countryName: item?.countryName?.value,
+            coordinates: item?.coordinates?.value
+          }
+        })
+        .sort((a, b) => (b?.followersCount || 0) - (a?.followersCount || 0))
+    } else if (selectedList.value.type === 'peertube-instances') {
+      tableData.value = data?.data
+        ?.map((item) => {
+          return {
+            name: item?.instanceLookup?.name || getLocalizedLabel(item),
+            peertube: item.peertube.value,
+            item: item.item.value,
+            url: item?.instanceLookup?.url,
+            avatar: item?.instanceLookup?.avatar,
+            version: item?.instanceLookup?.version,
+            totalLocalVideos: item?.instanceLookup?.totalLocalVideos,
+            totalUsers: item?.instanceLookup?.totalUsers,
+            totalChannels: item?.instanceLookup?.totalChannels,
+            countryName: item?.countryName?.value,
+            coordinates: item?.coordinates?.value
+          }
+        })
+        .sort((a, b) => (b?.totalLocalVideos || 0) - (a?.totalLocalVideos || 0))
     } else {
       tableData.value = data?.data
         ?.map((item) => {
@@ -77,10 +119,15 @@ const loadData = async () => {
         .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
     }
     metaData.value = data?.meta
-    mastodonAccounts.value = tableData.value.map((item) => item.mastodon).join(' ')
+    mastodonAccounts.value = tableData.value.map((item) => item.mastodon || item.peertube).join(' ')
     showMapTab.value = tableData.value.find((item) => !!item.coordinates)
   } catch (error) {
+    // e.g. a list whose data file does not exist yet (no entries in Wikidata so far)
     console.error(error)
+    tableData.value = []
+    metaData.value = {}
+    mastodonAccounts.value = ''
+    showMapTab.value = false
   } finally {
     loading.value = false
   }
@@ -106,7 +153,11 @@ watch(
     <template v-else>
       <div class="grid">
         <div class="col-12 md:col-8">
-          <h1 class="mb-1">{{ t('main.listTitle', { type: selectedListType }) }}</h1>
+          <h1 v-if="selectedList.type === 'peertube'" class="mb-1">{{ t('main.listTitlePeertube') }}</h1>
+          <h1 v-else-if="selectedList.type === 'peertube-instances'" class="mb-1">
+            {{ t('main.listTitlePeertubeInstances') }}
+          </h1>
+          <h1 v-else class="mb-1">{{ t('main.listTitle', { type: selectedListType }) }}</h1>
           <h2 class="mt-1 text-grey">{{ t('lists.' + selectedList?.key) }}</h2>
         </div>
         <div
@@ -121,7 +172,37 @@ watch(
         </div>
       </div>
       <p>{{ t('main.createdAt', { date: formatDate(metaData?.created_at) }) }}</p>
-      <p>
+      <p v-if="selectedList.type === 'peertube'">
+        <i18n-t keypath="main.descriptionPeertube" tag="span">
+          <template #peertubeLink
+            ><a href="https://joinpeertube.org/" target="_blank">PeerTube</a></template
+          >
+          <template #subTitle>{{ t('lists.' + selectedList?.key) }}</template>
+          <template #wikidataLink><a href="#wikidata">Wikidata</a></template>
+        </i18n-t>
+        {{ t('main.totalCount', { count: tableData?.length, type: selectedListType }) }}
+        <span v-if="metaData.totalFollowers">
+          {{ t('main.andFollowers', { count: formatNumber(metaData.totalFollowers) }) }}</span
+        ><span v-if="metaData.totalVideos">
+          {{ t('main.withVideos', { count: formatNumber(metaData.totalVideos) }) }}</span
+        >.
+      </p>
+      <p v-else-if="selectedList.type === 'peertube-instances'">
+        <i18n-t keypath="main.descriptionPeertubeInstances" tag="span">
+          <template #peertubeLink
+            ><a href="https://joinpeertube.org/" target="_blank">PeerTube</a></template
+          >
+          <template #subTitle>{{ t('lists.' + selectedList?.key) }}</template>
+          <template #wikidataLink><a href="#wikidata">Wikidata</a></template>
+        </i18n-t>
+        {{ t('main.totalCount', { count: tableData?.length, type: selectedListType }) }}
+        <span v-if="metaData.totalVideos">
+          {{ t('main.withVideos', { count: formatNumber(metaData.totalVideos) }) }}</span
+        ><span v-if="metaData.totalUsers">
+          {{ t('main.andUsers', { count: formatNumber(metaData.totalUsers) }) }}</span
+        >.
+      </p>
+      <p v-else>
         <i18n-t keypath="main.description" tag="span">
           <template #mastodonLink><a href="#mastodon">Mastodon</a></template>
           <template #type>{{ selectedListType }}</template>
@@ -148,6 +229,12 @@ watch(
             <template v-else-if="selectedList.type === 'instances'">
               <InstancesTables :data="tableData" />
             </template>
+            <template v-else-if="selectedList.type === 'peertube'">
+              <PeerTubeChannelsTable :data="tableData" />
+            </template>
+            <template v-else-if="selectedList.type === 'peertube-instances'">
+              <PeerTubeInstancesTable :data="tableData" />
+            </template>
           </TabPanel>
           <TabPanel :header="t('main.map')" v-if="!!showMapTab">
             <MapConsentWrapper>
@@ -163,14 +250,19 @@ watch(
       <p>
         <a :href="dataserverUrl">{{ t('main.dataSource') }}</a
         >.
-        {{
+        <span v-if="metaData?.created_at">{{
           t('main.lastUpdated', {
             date: new Date(metaData?.created_at).toLocaleString(locale === 'de' ? 'de-DE' : 'en-US')
           })
-        }}
+        }}</span>
       </p>
-      <div class="flex flex-column gap-2" v-if="selectedList.type === 'accounts'">
-        <label for="mastodonAccounts">{{ t('main.copyList') }}</label>
+      <div
+        class="flex flex-column gap-2"
+        v-if="selectedList.type === 'accounts' || selectedList.type === 'peertube'"
+      >
+        <label for="mastodonAccounts">{{
+          selectedList.type === 'peertube' ? t('main.copyListPeertube') : t('main.copyList')
+        }}</label>
         <InputText v-model="mastodonAccounts" readonly id="mastodonAccounts" />
       </div>
     </template>

@@ -82,6 +82,17 @@ const items = computed(() => [
             }))
     },
     {
+        label: t('nav.peertube'),
+        icon: 'pi pi-video',
+        hasSubmenu: true,
+        items: lists.filter(list => list.category === 'PeerTube')
+            .map(list => ({
+                label: t('lists.' + list.key),
+                icon: list?.icon || 'pi pi-video',
+                listKey: list.key
+            }))
+    },
+    {
         label: t('nav.faq'),
         icon: 'pi pi-info-circle',
         isFaq: true
