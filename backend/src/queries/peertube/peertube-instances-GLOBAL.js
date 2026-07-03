@@ -10,6 +10,7 @@ export default {
   addressVar: 'peertube',
   isOrganisations: true,
   sparqlQuery: `SELECT DISTINCT ?item ?itemLabel ?peertube ?countryName ?coordinates WHERE {
+  hint:Query hint:optimizer "None".
   ?item wdt:P14256 ?peertube.
   ${institutionFilterClause()}
   OPTIONAL { ?item wdt:P17 ?country. }

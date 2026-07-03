@@ -16,6 +16,19 @@ const userAgent = {
 // Exponential backoff for transient Wikidata errors (429 / 5xx / network).
 const backoffs = [5_000, 15_000, 45_000]
 
+// A short, human-readable label for the failure
+const errorReason = (error) =>
+  error.response?.status ??
+  (error.code === 'ECONNABORTED' ? 'timeout' : error.code || 'network')
+
+// The response body Wikidata sent back (e.g. a SPARQL parse/timeout message on 400/500),
+// truncated. Empty string when there was no response (pure network failure).
+const errorBody = (error) => {
+  const data = error.response?.data
+  if (data == null) return ''
+  const text = typeof data === 'string' ? data : JSON.stringify(data)
+  return text ? ` body=${text.slice(0, 500)}` : ''
+}
 
 export const fetchWikidataBindings = async (key, sparqlQuery) => {
   try {
@@ -24,7 +37,7 @@ export const fetchWikidataBindings = async (key, sparqlQuery) => {
     for (let attempt = 0; attempt <= backoffs.length; attempt++) {
       try {
         const response = await axios.get(url, {
-          timeout: 65_000,
+          timeout: 120_000,
           headers: {
             Accept: 'application/sparql-results+json',
             ...userAgent
@@ -39,22 +52,19 @@ export const fetchWikidataBindings = async (key, sparqlQuery) => {
         const retryAfter = parseInt(error.response?.headers?.['retry-after']) * 1000
         const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : backoffs[attempt]
         console.error(
-          `Retry ${key} in ${wait}ms (status ${status ?? 'network'}, attempt ${attempt + 1})`
+          `Retry ${key} in ${wait}ms (${errorReason(error)}: ${error.message}, attempt ${
+            attempt + 1
+          })${errorBody(error)}`
         )
         await sleep(wait)
       }
     }
     return data.results.bindings
   } catch (error) {
-    const status = error.response?.status
-    const body =
-      typeof error.response?.data === 'string'
-        ? error.response.data.slice(0, 500)
-        : JSON.stringify(error.response?.data)?.slice(0, 500)
     console.error(
-      `Error fetching data for query ${key}: status=${status ?? 'network'} message=${error.message}${
-        body ? ` body=${body}` : ''
-      }`
+      `Error fetching data for query ${key}: status=${errorReason(error)} message=${
+        error.message
+      }${errorBody(error)}`
     )
     return []
   }
