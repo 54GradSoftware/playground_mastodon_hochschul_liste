@@ -97,6 +97,34 @@
         }
     },
     {
+        "key": "theater-DACH",
+        "type": "accounts",
+        "subTitle": "Theater und Bühnen (DACH)",
+        "category": "Weitere",
+        "icon": "pi pi-ticket",
+        "map": {
+            "center": [
+                10.4515,
+                51.1657
+            ],
+            "zoom": 4
+        }
+    },
+    {
+        "key": "eu-institutionen",
+        "type": "accounts",
+        "subTitle": "EU-Institutionen und -Agenturen",
+        "category": "Weitere",
+        "icon": "pi pi-building",
+        "map": {
+            "center": [
+                6.5,
+                50.0
+            ],
+            "zoom": 4
+        }
+    },
+    {
         "key": "all-organisations",
         "type": "accounts",
         "subTitle": "Alle Organisationen",

@@ -118,11 +118,13 @@ export const build = async ({ only = null, platform = null, dryRun = false } = {
     })
 
     // Aggregate DACH organisations into the combined "all-organisations" list (Mastodon only).
+    // Non-DACH scopes (NL, EU) are kept out of this aggregate.
     if (
       queryPlatform === 'mastodon' &&
       query.isOrganisations &&
       query.type !== 'instances' &&
-      query.country !== 'NL'
+      query.country !== 'NL' &&
+      query.country !== 'EU'
     ) {
       allOrganisations = [...allOrganisations, ...filteredData]
     }

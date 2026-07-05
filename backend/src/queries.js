@@ -15,6 +15,8 @@ import schulenDE from './queries/schulen-DE.js'
 import volkshochschulenDE from './queries/volkshochschulen-DE.js'
 import bibliothekenDE from './queries/bibliotheken-DE.js'
 import stiftungenDE from './queries/stiftungen-DE.js'
+import theaterDACH from './queries/theater-DACH.js'
+import euInstitutionen from './queries/eu-institutionen.js'
 import { nlQueries } from './queries/NL/index.js'
 import { peertubeQueries } from './queries/peertube/index.js'
 
@@ -53,6 +55,10 @@ export const queries = [
   bibliothekenDE,
   // Stiftungen in Deutschland
   stiftungenDE,
+  // Theater, Opern und Bühnen in Deutschland, Österreich und der Schweiz
+  theaterDACH,
+  // Institutionen, Organe und Agenturen der Europäischen Union
+  euInstitutionen,
   // Niederländische Institutionen
  ...nlQueries,
   // PeerTube-Kanäle (Plattform: peertube)

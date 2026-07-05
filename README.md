@@ -36,6 +36,7 @@ Die komplette Software steht unter [der MIT-Lizenz](/LICENSE).
 Wir freuen uns immer über neue Kontakte und Projekt(ideen). Mehr Infos zu findest du auf unserer [Website](https://www.54gradsoftware.de/) oder schreib uns direkt an kontakt@54gradsoftware.de. Mann kann uns auch auf Mastodon folgen [54gradsoftware@norden.social](https://norden.social/@54gradsoftware).
 
 ## Changes
+- 05.07.2026: Neue Listen: Theater und Bühnen (DACH) sowie EU-Institutionen und -Agenturen
 - 02.07.2026: Peertube Channels und Instanzen für öffentliche Einrichtungen
 - 13.03.2026: Neue URL Struktur, Mehrsprachigkeit, Listen aus den Niederlanden, Volkshochschulen und Bibliotheken aus DE
 
