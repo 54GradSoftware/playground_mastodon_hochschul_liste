@@ -4,9 +4,9 @@ export default {
     isOrganisations: true,
     sparqlQuery: `SELECT DISTINCT ?item ?itemLabel ?itemLabel_en ?mastodon ?countryName ?coordinates WHERE {
   {
-    # Theaterhäuser, Opernhäuser, Opernkompagnien, Schiffs- und Freilichttheater (inkl. Unterklassen)
+    # Theaterhäuser, Opernhäuser, Opernkompagnien, Schiffs-, Freilicht- und Freie Theater (inkl. Unterklassen)
     ?item wdt:P31/wdt:P279* ?class .
-    VALUES ?class { wd:Q24354 wd:Q153562 wd:Q20819922 wd:Q17149955 wd:Q11183017 }
+    VALUES ?class { wd:Q24354 wd:Q153562 wd:Q20819922 wd:Q17149955 wd:Q11183017 wd:Q1751375 }
   }
   UNION
   {
