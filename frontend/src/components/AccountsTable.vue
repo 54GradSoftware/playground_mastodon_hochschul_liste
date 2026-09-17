@@ -1,68 +1,65 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
-import InputIcon from 'primevue/inputicon';
-import Image from 'primevue/image';
-import MastodonLink from './MastodonLink.vue';
-import ScoreExplainerDialog from './ScoreExplainerDialog.vue';
-import InputText from 'primevue/inputtext';
-import Tag from 'primevue/tag';
-import { useRoute } from 'vue-router'
-import { getCurrentList, formatDate, formatNumber, formatBoolean } from '../helper.js'
-import { FilterMatchMode } from 'primevue/api';
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Button from 'primevue/button'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import Image from 'primevue/image'
+import MastodonLink from './MastodonLink.vue'
+import ScoreExplainerDialog from './ScoreExplainerDialog.vue'
+import InputText from 'primevue/inputtext'
+import Tag from 'primevue/tag'
+import { formatDate, formatNumber, formatBoolean } from '../helper.js'
+import { FilterMatchMode } from 'primevue/api'
 
 const { t } = useI18n()
-const route = useRoute()
 
-const filters = ref();
-const selectedList = ref(getCurrentList(route.params.liste));
-const scoreDialogVisible = ref(false);
-const selectedScore = ref(null);
+const filters = ref()
+const scoreDialogVisible = ref(false)
+const selectedScore = ref(null)
 
 const openScoreDialog = (score) => {
-  selectedScore.value = score;
-  scoreDialogVisible.value = true;
-};
+  selectedScore.value = score
+  scoreDialogVisible.value = true
+}
 
 const props = defineProps({
   data: {
     type: Array,
-    required: true,
+    required: true
   },
   metaData: {
     type: Object,
-    required: false,
-  },
-});
+    required: false
+  }
+})
 
 const initFilters = () => {
   filters.value = {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  };
-};
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  }
+}
 
-initFilters();
+initFilters()
 
 const statistics = computed(() => {
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  const oneYearAgo = new Date()
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
 
-  const accountsWithScore = props.data.filter(item => {
-    if (!item.scoreData?.values) return false;
-    const lastStatusAt = item.accountLookup?.last_status_at;
-    if (!lastStatusAt) return false;
-    return new Date(lastStatusAt) >= oneYearAgo;
-  });
-  const total = accountsWithScore.length;
+  const accountsWithScore = props.data.filter((item) => {
+    if (!item.scoreData?.values) return false
+    const lastStatusAt = item.accountLookup?.last_status_at
+    if (!lastStatusAt) return false
+    return new Date(lastStatusAt) >= oneYearAgo
+  })
+  const total = accountsWithScore.length
 
-  if (total === 0) return null;
+  if (total === 0) return null
 
-  const scoresSum = accountsWithScore.reduce((sum, item) => sum + (item.score || 0), 0);
-  const averageScore = Math.round(scoresSum / total);
+  const scoresSum = accountsWithScore.reduce((sum, item) => sum + (item.score || 0), 0)
+  const averageScore = Math.round(scoresSum / total)
 
   const stats = {
     display_name: 0,
@@ -71,66 +68,111 @@ const statistics = computed(() => {
     indexable: 0,
     verifiedFields: 0,
     featuredCollection: 0
-  };
+  }
 
-  accountsWithScore.forEach(item => {
-    const values = item.scoreData?.values;
-    if (values?.display_name) stats.display_name++;
-    if (values?.note) stats.note++;
-    if (values?.discoverable) stats.discoverable++;
-    if (values?.indexable === true) stats.indexable++;
-    if (values?.verifiedFields?.length > 0) stats.verifiedFields++;
-    if (values?.featuredCollection?.length > 0) stats.featuredCollection++;
-  });
+  accountsWithScore.forEach((item) => {
+    const values = item.scoreData?.values
+    if (values?.display_name) stats.display_name++
+    if (values?.note) stats.note++
+    if (values?.discoverable) stats.discoverable++
+    if (values?.indexable === true) stats.indexable++
+    if (values?.verifiedFields?.length > 0) stats.verifiedFields++
+    if (values?.featuredCollection?.length > 0) stats.featuredCollection++
+  })
 
   return {
     total,
     averageScore,
-    display_name: { count: stats.display_name, percent: Math.round((stats.display_name / total) * 100) },
+    display_name: {
+      count: stats.display_name,
+      percent: Math.round((stats.display_name / total) * 100)
+    },
     note: { count: stats.note, percent: Math.round((stats.note / total) * 100) },
-    discoverable: { count: stats.discoverable, percent: Math.round((stats.discoverable / total) * 100) },
+    discoverable: {
+      count: stats.discoverable,
+      percent: Math.round((stats.discoverable / total) * 100)
+    },
     indexable: { count: stats.indexable, percent: Math.round((stats.indexable / total) * 100) },
-    verifiedFields: { count: stats.verifiedFields, percent: Math.round((stats.verifiedFields / total) * 100) },
-    featuredCollection: { count: stats.featuredCollection, percent: Math.round((stats.featuredCollection / total) * 100) }
-  };
-});
-const clearFilter = () => {
-  initFilters();
-};
+    verifiedFields: {
+      count: stats.verifiedFields,
+      percent: Math.round((stats.verifiedFields / total) * 100)
+    },
+    featuredCollection: {
+      count: stats.featuredCollection,
+      percent: Math.round((stats.featuredCollection / total) * 100)
+    }
+  }
+})
+const COUNTRY_COLUMN_MIN_SHARE = 0.5
+const showCountry = computed(() => {
+  if (!props.data.length) return false
+  const withCountry = props.data.filter((row) => !!row.countryName).length
+  return withCountry / props.data.length >= COUNTRY_COLUMN_MIN_SHARE
+})
 
+const clearFilter = () => {
+  initFilters()
+}
 </script>
 <template>
-  <DataTable :value="data" stripedRows="" paginator :rows="50" :rowsPerPageOptions="[25, 50, 100, 250]"
-    v-model:filters="filters">
+  <DataTable
+    :value="data"
+    stripedRows=""
+    paginator
+    :rows="50"
+    :rowsPerPageOptions="[25, 50, 100, 250]"
+    v-model:filters="filters"
+  >
     <template #header>
       <div class="flex justify-content-between">
         <div>
-          <Button v-if="!!filters['global'].value" type="button" icon="pi pi-filter-slash" :label="t('table.resetSearch')"
-            outlined @click="clearFilter()" />
+          <Button
+            v-if="!!filters['global'].value"
+            type="button"
+            icon="pi pi-filter-slash"
+            :label="t('table.resetSearch')"
+            outlined
+            @click="clearFilter()"
+          />
         </div>
         <div class="flex justify-content-end">
           <IconField iconPosition="left">
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" :placeholder="t('table.search')" :aria-label="t('table.search')" />
+            <InputText
+              v-model="filters['global'].value"
+              :placeholder="t('table.search')"
+              :aria-label="t('table.search')"
+            />
           </IconField>
         </div>
       </div>
     </template>
     <Column field="avatar" :header="t('table.avatar')">
       <template #body="slotProps">
-        <Image :alt="t('table.avatarAlt', { name: slotProps.data.name })" :src="`${slotProps.data?.accountLookup?.avatar_static}`"
-          width="85" height="85" />
+        <Image
+          :alt="t('table.avatarAlt', { name: slotProps.data.name })"
+          :src="`${slotProps.data?.accountLookup?.avatar_static}`"
+          width="85"
+          height="85"
+        />
       </template>
     </Column>
     <Column field="filerNmame" :header="t('table.name')" sortable>
       <template #body="slotProps">
         {{ slotProps.data.name }}
         <div v-if="slotProps.data.doings">
-          <Tag style="transform: scale(1.2)" class="m-3 cursor-pointer	" severity="secondary" value="Secondary"
-            v-for="doing in slotProps.data.doings" :key="doing" @click="filters['global'].value = doing">{{ doing
-            }}</Tag>
+          <Tag
+            style="transform: scale(1.2)"
+            class="m-3 cursor-pointer"
+            severity="secondary"
+            value="Secondary"
+            v-for="doing in slotProps.data.doings"
+            :key="doing"
+            @click="filters['global'].value = doing"
+            >{{ doing }}</Tag
+          >
         </div>
       </template>
     </Column>
@@ -139,12 +181,14 @@ const clearFilter = () => {
         <MastodonLink :mastodonHandle="slotProps.data.mastodon" />
       </template>
     </Column>
-    <Column v-if="selectedList.key === 'museum-DACH'" field="countryName" :header="t('table.country')" sortable />
+    <Column v-if="showCountry" field="countryName" :header="t('table.country')" sortable />
     <Column field="score" :header="t('table.score')" sortable>
       <template #body="slotProps">
-        <span v-if="slotProps.data.score !== undefined"
-          style="cursor: pointer; text-decoration: underline; color: var(--p-primary-color);"
-          @click="openScoreDialog(slotProps.data.scoreData)">
+        <span
+          v-if="slotProps.data.score !== undefined"
+          style="cursor: pointer; text-decoration: underline; color: var(--p-primary-color)"
+          @click="openScoreDialog(slotProps.data.scoreData)"
+        >
           {{ slotProps.data.score }}
         </span>
         <span v-else>-</span>
@@ -162,14 +206,12 @@ const clearFilter = () => {
     </Column>
     <Column field="accountLookup.last_status_at" :header="t('table.lastToot')" sortable="">
       <template #body="slotProps">
-
         <span v-if="!!slotProps.data?.accountLookup?.last_status_at">
           {{ formatDate(slotProps.data?.accountLookup?.last_status_at) }}
         </span>
       </template>
     </Column>
     <Column field="accountLookup.created_at" :header="t('table.created')" sortable="">
-
       <template #body="slotProps">
         {{ formatDate(slotProps.data?.accountLookup?.created_at) }}
       </template>
@@ -190,69 +232,157 @@ const clearFilter = () => {
   </DataTable>
   <template v-if="metaData?.doingsStats">
     <p>{{ t('doings.sharedBy') }}</p>
-    <Tag style="transform: scale(1.5)" class="mx-6 my-3 cursor-pointer" severity="secondary" value="Secondary"
-      v-for="doing in metaData?.doingsStats.filter(doing => doing.count > 5)" :key="doing"
-      @click="filters['global'].value = doing.doing">{{ doing.doing }} ({{ doing.count }})</Tag>.
+    <Tag
+      style="transform: scale(1.5)"
+      class="mx-6 my-3 cursor-pointer"
+      severity="secondary"
+      value="Secondary"
+      v-for="doing in metaData?.doingsStats.filter((doing) => doing.count > 5)"
+      :key="doing"
+      @click="filters['global'].value = doing.doing"
+      >{{ doing.doing }} ({{ doing.count }})</Tag
+    >.
     <p>{{ t('doings.tip') }}</p>
   </template>
-  <ScoreExplainerDialog v-if="selectedScore" :result="selectedScore" v-model:visible="scoreDialogVisible" />
+  <ScoreExplainerDialog
+    v-if="selectedScore"
+    :result="selectedScore"
+    v-model:visible="scoreDialogVisible"
+  />
 
-  <div v-if="statistics"
-    style="margin-top: 2rem; padding: 1.5rem; background: var(--p-surface-100); border-radius: 8px;">
-    <h3 style="margin: 0 0 1rem 0;">{{ t('statistics.title') }}</h3>
+  <div
+    v-if="statistics"
+    style="margin-top: 2rem; padding: 1.5rem; background: var(--p-surface-100); border-radius: 8px"
+  >
+    <h3 style="margin: 0 0 1rem 0">{{ t('statistics.title') }}</h3>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700; color: var(--p-primary-color);">{{ statistics.averageScore }}
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem"
+    >
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700; color: var(--p-primary-color)">
+          {{ statistics.averageScore }}
         </div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.avgScore') }}</div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.avgScore') }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.display_name.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.displayName') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.display_name.count }}/{{
-          statistics.total }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">{{ statistics.display_name.percent }}%</div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.displayName') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.display_name.count }}/{{ statistics.total }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.note.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.profileDescription') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.note.count }}/{{
-          statistics.total
-        }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">{{ statistics.note.percent }}%</div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.profileDescription') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.note.count }}/{{ statistics.total }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.discoverable.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.discoverable') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.discoverable.count }}/{{
-          statistics.total }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">{{ statistics.discoverable.percent }}%</div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.discoverable') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.discoverable.count }}/{{ statistics.total }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.indexable.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.indexable') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.indexable.count }}/{{
-          statistics.total }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">{{ statistics.indexable.percent }}%</div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.indexable') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.indexable.count }}/{{ statistics.total }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.verifiedFields.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.verifiedLinks') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.verifiedFields.count }}/{{
-          statistics.total }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">
+          {{ statistics.verifiedFields.percent }}%
+        </div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.verifiedLinks') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.verifiedFields.count }}/{{ statistics.total }}
+        </div>
       </div>
 
-      <div style="background: var(--p-surface-0); padding: 1rem; border-radius: 6px; text-align: center;">
-        <div style="font-size: 2rem; font-weight: 700;">{{ statistics.featuredCollection.percent }}%</div>
-        <div style="color: var(--p-text-muted-color); font-size: 0.9rem;">{{ t('statistics.pinnedPosts') }}</div>
-        <div style="font-size: 0.8rem; color: var(--p-text-muted-color);">{{ statistics.featuredCollection.count }}/{{
-          statistics.total }}</div>
+      <div
+        style="
+          background: var(--p-surface-0);
+          padding: 1rem;
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <div style="font-size: 2rem; font-weight: 700">
+          {{ statistics.featuredCollection.percent }}%
+        </div>
+        <div style="color: var(--p-text-muted-color); font-size: 0.9rem">
+          {{ t('statistics.pinnedPosts') }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--p-text-muted-color)">
+          {{ statistics.featuredCollection.count }}/{{ statistics.total }}
+        </div>
       </div>
     </div>
 
-    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--p-text-muted-color);">
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--p-text-muted-color)">
       {{ t('statistics.note') }}
     </p>
   </div>

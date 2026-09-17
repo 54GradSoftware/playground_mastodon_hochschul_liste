@@ -167,6 +167,20 @@
         }
     },
     {
+        "key": "museum-EUROPA",
+        "type": "accounts",
+        "subTitle": "Museen (Europa)",
+        "category": "Wissenschaft",
+        "icon": "pi pi-database",
+        "map": {
+            "center": [
+                9.0,
+                50.5
+            ],
+            "zoom": 3
+        }
+    },
+    {
         "key": "fachgesellschaften-DE",
         "type": "accounts",
         "subTitle": "Fachgesellschaften DE",

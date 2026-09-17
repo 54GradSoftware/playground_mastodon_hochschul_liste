@@ -6,6 +6,12 @@ export default {
     sparqlQuery: `
 SELECT ?item ?itemLabel ?itemLabel_en ?itemLabel_nl ?mastodon ?coordinates ?population WHERE {
 {
+  # Verwaltungseinheit ("Nederlandse gemeente") …
+  ?item wdt:P31/wdt:P279* wd:Q2039348;
+}
+UNION
+{
+  # … oder amtlicher Wohnort ("woonplaats"), z.B. Den Haag, Enschede.
   ?item wdt:P31/wdt:P279* wd:Q1852859;
 }
 ?item wdt:P4033 ?mastodon.

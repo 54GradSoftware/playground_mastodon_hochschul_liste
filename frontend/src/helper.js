@@ -29,8 +29,16 @@ export const getLocalizedLabel = (item) => {
   if (item?.itemLabel?.value) return item.itemLabel.value
   if (item?.itemLabel_en?.value) return item.itemLabel_en.value
   if (item?.itemLabel_nl?.value) return item.itemLabel_nl.value
+  // Landessprachliches Label, z.B. bei europaweiten Listen ohne deutsches oder englisches Label
+  if (item?.itemLabel_local?.value) return item.itemLabel_local.value
   if (item?.itemName?.value) return item.itemName.value
   return ''
+}
+
+export const getLocalizedCountryName = (item) => {
+  const locale = getLocale()
+  if (locale === 'en' && item?.countryName_en?.value) return item.countryName_en.value
+  return item?.countryName?.value || item?.countryName_en?.value || ''
 }
 
 export const formatBoolean = (value) => {

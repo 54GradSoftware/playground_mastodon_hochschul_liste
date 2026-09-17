@@ -1,12 +1,18 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProgressSpinner from 'primevue/progressspinner'
 import InputText from 'primevue/inputtext'
 import ExportCsv from './ExportCsv.vue'
-import { getCurrentList, formatDate, formatNumber, getLocalizedLabel } from '../helper.js'
+import {
+  getCurrentList,
+  formatDate,
+  formatNumber,
+  getLocalizedLabel,
+  getLocalizedCountryName
+} from '../helper.js'
 import MainMap from './MainMap.vue'
 import MapConsentWrapper from './MapConsentWrapper.vue'
 import TabView from 'primevue/tabview'
@@ -19,14 +25,106 @@ import PeerTubeInstancesTable from './PeerTubeInstancesTable.vue'
 const { t, locale } = useI18n()
 const route = useRoute()
 
+const rawItems = ref([])
 const tableData = ref([])
 const metaData = ref({})
 const loading = ref(false)
 
 const mastodonAccounts = ref('')
 const selectedList = ref({})
-const selectedListType = ref('')
 const showMapTab = ref(false)
+
+const selectedListType = computed(() =>
+  selectedList.value?.type === 'accounts'
+    ? t('main.accounts')
+    : selectedList.value?.type === 'peertube'
+      ? t('main.channels')
+      : t('main.instances')
+)
+
+// Namen und Ländernamen stecken mehrsprachig in den Daten, deshalb werden sie hier
+// (und bei jedem Sprachwechsel erneut) in die Sprache der Oberfläche übersetzt.
+const mapItems = (items) => {
+  if (selectedList.value.type === 'instances') {
+    return items
+      ?.map((item) => {
+        return {
+          name: item?.itemLabel?.value,
+          mastodon: item?.mastodon?.value,
+          item: item.item.value,
+          countryName: getLocalizedCountryName(item),
+          version: item?.accountLookup?.version,
+          users_active_last_month: item?.accountLookup?.usage?.users?.active_month,
+          laguages: item?.accountLookup?.languages,
+          coordinates: item?.coordinates?.value,
+          accountLookup: {
+            avatar_static: item?.accountLookup?.contact?.account?.avatar_static
+          }
+        }
+      })
+      .sort((a, b) => b?.users_active_last_month - a?.users_active_last_month)
+  } else if (selectedList.value.type === 'peertube') {
+    return items
+      ?.map((item) => {
+        return {
+          name: getLocalizedLabel(item),
+          peertube: item.peertube.value,
+          item: item.item.value,
+          avatar: item?.channelLookup?.avatar,
+          host: item?.channelLookup?.host,
+          url: item?.channelLookup?.url,
+          followersCount: item?.channelLookup?.followersCount,
+          videosCount: item?.channelLookup?.videosCount,
+          createdAt: item?.channelLookup?.createdAt,
+          countryName: getLocalizedCountryName(item),
+          coordinates: item?.coordinates?.value
+        }
+      })
+      .sort((a, b) => (b?.followersCount || 0) - (a?.followersCount || 0))
+  } else if (selectedList.value.type === 'peertube-instances') {
+    return items
+      ?.map((item) => {
+        return {
+          name: item?.instanceLookup?.name || getLocalizedLabel(item),
+          peertube: item.peertube.value,
+          item: item.item.value,
+          url: item?.instanceLookup?.url,
+          avatar: item?.instanceLookup?.avatar,
+          version: item?.instanceLookup?.version,
+          totalLocalVideos: item?.instanceLookup?.totalLocalVideos,
+          totalUsers: item?.instanceLookup?.totalUsers,
+          totalChannels: item?.instanceLookup?.totalChannels,
+          countryName: getLocalizedCountryName(item),
+          coordinates: item?.coordinates?.value
+        }
+      })
+      .sort((a, b) => (b?.totalLocalVideos || 0) - (a?.totalLocalVideos || 0))
+  } else {
+    return items
+      ?.map((item) => {
+        return {
+          filerNmame: `${getLocalizedLabel(item)} ${item?.doings?.join(' ')}`,
+          name: getLocalizedLabel(item),
+          mastodon: item.mastodon.value,
+          item: item.item.value,
+          accountLookup: item.accountLookup,
+          doings: item?.doings,
+          score: item.score?.score,
+          scoreData: item.score,
+          coordinates: item?.coordinates?.value,
+          verified: !!item.accountLookup?.fields?.find((field) => !!field?.verified_at),
+          countryName: getLocalizedCountryName(item)
+        }
+      })
+      .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
+  }
+}
+
+const applyItems = () => {
+  tableData.value = mapItems(rawItems.value) || []
+  mastodonAccounts.value = tableData.value.map((item) => item.mastodon || item.peertube).join(' ')
+  showMapTab.value = tableData.value.find((item) => !!item.coordinates)
+}
 
 const loadData = async () => {
   try {
@@ -36,94 +134,16 @@ const loadData = async () => {
       alert(t('main.listNotFound'))
       return
     }
-    selectedListType.value =
-      selectedList.value.type === 'accounts'
-        ? t('main.accounts')
-        : selectedList.value.type === 'peertube'
-          ? t('main.channels')
-          : t('main.instances')
     const { data } = await axios.get(
       `${import.meta.env.VITE_DATA_SERVER_URL}/${selectedList.value.key}`
     )
-    if (selectedList.value.type === 'instances') {
-      tableData.value = data?.data
-        ?.map((item) => {
-          return {
-            name: item?.itemLabel?.value,
-            mastodon: item?.mastodon?.value,
-            item: item.item.value,
-            countryName: item?.countryName?.value,
-            version: item?.accountLookup?.version,
-            users_active_last_month: item?.accountLookup?.usage?.users?.active_month,
-            laguages: item?.accountLookup?.languages,
-            coordinates: item?.coordinates?.value,
-            accountLookup: {
-              avatar_static: item?.accountLookup?.contact?.account?.avatar_static
-            }
-          }
-        })
-        .sort((a, b) => b?.users_active_last_month - a?.users_active_last_month)
-    } else if (selectedList.value.type === 'peertube') {
-      tableData.value = data?.data
-        ?.map((item) => {
-          return {
-            name: getLocalizedLabel(item),
-            peertube: item.peertube.value,
-            item: item.item.value,
-            avatar: item?.channelLookup?.avatar,
-            host: item?.channelLookup?.host,
-            url: item?.channelLookup?.url,
-            followersCount: item?.channelLookup?.followersCount,
-            videosCount: item?.channelLookup?.videosCount,
-            createdAt: item?.channelLookup?.createdAt,
-            countryName: item?.countryName?.value,
-            coordinates: item?.coordinates?.value
-          }
-        })
-        .sort((a, b) => (b?.followersCount || 0) - (a?.followersCount || 0))
-    } else if (selectedList.value.type === 'peertube-instances') {
-      tableData.value = data?.data
-        ?.map((item) => {
-          return {
-            name: item?.instanceLookup?.name || getLocalizedLabel(item),
-            peertube: item.peertube.value,
-            item: item.item.value,
-            url: item?.instanceLookup?.url,
-            avatar: item?.instanceLookup?.avatar,
-            version: item?.instanceLookup?.version,
-            totalLocalVideos: item?.instanceLookup?.totalLocalVideos,
-            totalUsers: item?.instanceLookup?.totalUsers,
-            totalChannels: item?.instanceLookup?.totalChannels,
-            countryName: item?.countryName?.value,
-            coordinates: item?.coordinates?.value
-          }
-        })
-        .sort((a, b) => (b?.totalLocalVideos || 0) - (a?.totalLocalVideos || 0))
-    } else {
-      tableData.value = data?.data
-        ?.map((item) => {
-          return {
-            filerNmame: `${getLocalizedLabel(item)} ${item?.doings?.join(' ')}`,
-            name: getLocalizedLabel(item),
-            mastodon: item.mastodon.value,
-            item: item.item.value,
-            accountLookup: item.accountLookup,
-            doings: item?.doings,
-            score: item.score?.score,
-            scoreData: item.score,
-            coordinates: item?.coordinates?.value,
-            verified: !!item.accountLookup?.fields?.find((field) => !!field?.verified_at),
-            countryName: item?.countryName?.value
-          }
-        })
-        .sort((a, b) => b?.accountLookup?.followers_count - a?.accountLookup?.followers_count)
-    }
+    rawItems.value = data?.data || []
     metaData.value = data?.meta
-    mastodonAccounts.value = tableData.value.map((item) => item.mastodon || item.peertube).join(' ')
-    showMapTab.value = tableData.value.find((item) => !!item.coordinates)
+    applyItems()
   } catch (error) {
     // e.g. a list whose data file does not exist yet (no entries in Wikidata so far)
     console.error(error)
+    rawItems.value = []
     tableData.value = []
     metaData.value = {}
     mastodonAccounts.value = ''
@@ -141,6 +161,10 @@ watch(
     loadData()
   }
 )
+
+watch(locale, () => {
+  applyItems()
+})
 </script>
 <template>
   <div class="card">

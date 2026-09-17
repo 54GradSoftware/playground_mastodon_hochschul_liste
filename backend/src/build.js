@@ -13,6 +13,9 @@ import { enrichPeerTubeInstance } from './platforms/peertube/enrich-instance.js'
 const MASTODON_REQUEST_DELAY_MS = 1_200
 const BETWEEN_QUERY_DELAY_MS = 4_000
 
+// Scopes outside DACH, kept out of the combined "all-organisations" list.
+const NON_DACH_SCOPES = ['NL', 'EU', 'EUROPA']
+
 const platformOf = (query) => query.platform || 'mastodon'
 const addressVarOf = (query) => query.addressVar || 'mastodon'
 
@@ -118,13 +121,12 @@ export const build = async ({ only = null, platform = null, dryRun = false } = {
     })
 
     // Aggregate DACH organisations into the combined "all-organisations" list (Mastodon only).
-    // Non-DACH scopes (NL, EU) are kept out of this aggregate.
+    // Non-DACH scopes (NL, EU, EUROPA) are kept out of this aggregate.
     if (
       queryPlatform === 'mastodon' &&
       query.isOrganisations &&
       query.type !== 'instances' &&
-      query.country !== 'NL' &&
-      query.country !== 'EU'
+      !NON_DACH_SCOPES.includes(query.country)
     ) {
       allOrganisations = [...allOrganisations, ...filteredData]
     }

@@ -4,6 +4,7 @@ import staedteUndGemeindenDE from './queries/staedte-und-gemeinden-DE.js'
 import kreiseDE from './queries/kreise-DE.js'
 import nonProfitOrganisationenDE from './queries/non-profit-organisationen-DE.js'
 import museumDACH from './queries/museum-DACH.js'
+import museumEUROPA from './queries/museum-EUROPA.js'
 import wissenschatlerInnenDe from './queries/wissenschaftler_innen-de.js'
 import hochschulenMastodonInstanceGLOBAL from './queries/hochschulen-mastodon-instance-GLOBAL.js'
 import hochschulenACH from './queries/hochschulen-ACH.js'
@@ -37,6 +38,8 @@ export const queries = [
   hochschulenACH,
   // Museen in Deutschland, Österreich und der Schweiz
   museumDACH,
+  // Museen und Gedenkstätten in ganz Europa
+  museumEUROPA,
   // Wissenschaftler:innen die auch deutsch Sprechen
   wissenschatlerInnenDe,
   // Fachgesellschaften in Deutschland

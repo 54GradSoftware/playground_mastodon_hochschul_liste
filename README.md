@@ -1,6 +1,6 @@
 # Playground: Mastodon Liste
 
-A web application that tracks Mastodon (Fediverse) presence of public institutions. It pulls lists of universities, research institutes, government agencies, museums, NGOs, schools, and more from Wikidata, then enriches them with live account data (followers, posts, activity) fetched directly from Mastodon. Covers primarily Germany, Austria, Switzerland, and the Netherlands. Features include a searchable table view, an interactive map, CSV export, and an activity score for each account.
+A web application that tracks Mastodon (Fediverse) presence of public institutions. It pulls lists of universities, research institutes, government agencies, museums, NGOs, schools, and more from Wikidata, then enriches them with live account data (followers, posts, activity) fetched directly from Mastodon. Covers primarily Germany, Austria, Switzerland, and the Netherlands, plus Europe-wide lists such as museums and EU institutions. Features include a searchable table view, an interactive map, CSV export, and an activity score for each account.
 
 ## As is
 
@@ -36,6 +36,7 @@ Die komplette Software steht unter [der MIT-Lizenz](/LICENSE).
 Wir freuen uns immer über neue Kontakte und Projekt(ideen). Mehr Infos zu findest du auf unserer [Website](https://www.54gradsoftware.de/) oder schreib uns direkt an kontakt@54gradsoftware.de. Mann kann uns auch auf Mastodon folgen [54gradsoftware@norden.social](https://norden.social/@54gradsoftware).
 
 ## Changes
+- 17.09.2026: Neue Liste: Museen (Europa) - europaweit und mehrsprachig (Namen und Länder in DE/EN)
 - 05.07.2026: Neue Listen: Theater und Bühnen (DACH) sowie EU-Institutionen und -Agenturen
 - 02.07.2026: Peertube Channels und Instanzen für öffentliche Einrichtungen
 - 13.03.2026: Neue URL Struktur, Mehrsprachigkeit, Listen aus den Niederlanden, Volkshochschulen und Bibliotheken aus DE
