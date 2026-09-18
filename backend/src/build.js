@@ -19,31 +19,37 @@ const NON_DACH_SCOPES = ['NL', 'EU', 'EUROPA']
 const platformOf = (query) => query.platform || 'mastodon'
 const addressVarOf = (query) => query.addressVar || 'mastodon'
 
-// "wissenschaftler_innen-de" doings special case.
+// "wissenschaftler_innen-de" doings special case: every profession of a person is
+// its own SPARQL row, so they have to be collected from the raw bindings before
+// dedupeByAddress drops all but the first row per account.
+const attachDoings = (unique, raw) =>
+  unique.map((result) => ({
+    ...result,
+    doings: [
+      ...new Set(
+        raw
+          .filter((obj) => obj?.item?.value === result?.item?.value)
+          .map((obj) => obj?.doingName?.value)
+          .filter(Boolean)
+      )
+    ]
+  }))
+
 const getUniqueResults = async (query) => {
   const addressVar = addressVarOf(query)
 
+  let raw
   if (query.sparqlQuery1) {
     const a = await fetchWikidataBindings(query.key, query.sparqlQuery1)
     const b = await fetchWikidataBindings(query.key, query.sparqlQuery2)
-    return dedupeByAddress([...a, ...b], addressVar)
+    raw = [...a, ...b]
+  } else {
+    raw = await fetchWikidataBindings(query.key, query.sparqlQuery)
   }
 
-  const raw = await fetchWikidataBindings(query.key, query.sparqlQuery)
-  let unique = dedupeByAddress(raw, addressVar)
+  const unique = dedupeByAddress(raw, addressVar)
 
-  if (query.key === 'wissenschaftler_innen-de') {
-    unique = unique.map((result) => ({
-      ...result,
-      doings: [
-        ...new Set(
-          raw
-            .filter((obj) => obj?.item?.value === result?.item?.value)
-            .map((obj) => obj?.doingName?.value)
-        )
-      ]
-    }))
-  }
+  if (query.key === 'wissenschaftler_innen-de') return attachDoings(unique, raw)
 
   return unique
 }

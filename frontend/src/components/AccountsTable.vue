@@ -230,7 +230,7 @@ const clearFilter = () => {
     </Column>
     <template #empty> {{ t('table.noData') }} </template>
   </DataTable>
-  <template v-if="metaData?.doingsStats">
+  <template v-if="metaData?.doingsStats?.length">
     <p>{{ t('doings.sharedBy') }}</p>
     <Tag
       style="transform: scale(1.5)"

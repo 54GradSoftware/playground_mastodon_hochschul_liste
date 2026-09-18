@@ -103,7 +103,7 @@ const mapItems = (items) => {
     return items
       ?.map((item) => {
         return {
-          filerNmame: `${getLocalizedLabel(item)} ${item?.doings?.join(' ')}`,
+          filerNmame: [getLocalizedLabel(item), ...(item?.doings || [])].join(' '),
           name: getLocalizedLabel(item),
           mastodon: item.mastodon.value,
           item: item.item.value,
